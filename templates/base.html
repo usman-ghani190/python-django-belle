@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="x-ua-compatible" content="ie=edge">
-<title>Belle Multipurpose Bootstrap 4 Html Template</title>
+<title>Belle Shop-Easy</title>
 <meta name="description" content="description">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -33,12 +33,12 @@
                 <button class="go-btn search__button" type="submit"><i class="icon anm anm-search-l"></i></button>
                 <input class="search__input" type="search" name="q" value="" placeholder="Search entire store..." aria-label="Search" autocomplete="off">
             </form>
-            <button type="button" class="search-trigger close-btn"><i class="anm anm-times-l"></i></button>
+            <button type="button" class="search-trigger close-btn"><i class="icon anm anm-times-l"></i></button>
         </div>
     </div>
     <!--End Search Form Drawer-->
-    <!--Top Header-->
-    <div class="top-header">
+     <!--Top Header-->
+     <div class="top-header">
         <div class="container-fluid">
             <div class="row">
             	<div class="col-10 col-sm-8 col-md-5 col-lg-4">
@@ -69,9 +69,8 @@
                 <div class="col-2 col-sm-4 col-md-3 col-lg-4 text-right">
                 	<span class="user-menu d-block d-lg-none"><i class="anm anm-user-al" aria-hidden="true"></i></span>
                     <ul class="customer-links list-inline">
-                        <li><a href="login.html">Login</a></li>
-                        <li><a href="register.html">Create Account</a></li>
-                        <li><a href="wishlist.html">Wishlist</a></li>
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                        <li><a href="{% url 'register' %}">Create Account</a></li>
                     </ul>
                 </div>
             </div>
@@ -79,7 +78,7 @@
     </div>
     <!--End Top Header-->
     <!--Header-->
-    <div class="header-wrap classicHeader animated d-flex">
+    <div class="header-wrap animated d-flex">
     	<div class="container-fluid">        
             <div class="row align-items-center">
             	<!--Desktop Logo-->
@@ -99,159 +98,109 @@
                 	<!--Desktop Menu-->
                 	<nav class="grid__item" id="AccessibleNav"><!-- for mobile -->
                         <ul id="siteNav" class="site-nav medium center hidearrow">
-                            <li class="lvl1 parent megamenu"><a href="{% url 'index' %}">Home <i class="anm anm-angle-down-l"></i></a>
+                            <li class="lvl1 parent megamenu"><a href="{% url 'index' %}">Home <i class="anm anm-angle-down-l"></i></a>  
                             </li>
                             <li class="lvl1 parent megamenu"><a href="{% url 'shop' %}">Shop <i class="anm anm-angle-down-l"></i></a>
                             </li>
                         <li class="lvl1 parent megamenu"><a href="{% url 'product' %}">Product <i class="anm anm-angle-down-l"></i></a>
                         </li>
-                        <li class="lvl1 parent dropdown"><a href="#">Pages <i class="anm anm-angle-down-l"></i></a>
-                          <ul class="dropdown">
-                          	<li><a href="{% url 'cart' %}" class="site-nav">Cart<i class="anm anm-angle-right-l"></i></a>
-                            </li>
-                            
-							<li><a href="checkout.html" class="site-nav">Checkout</a></li>
-                            <li><a href="about-us.html" class="site-nav">About Us <span class="lbl nm_label1">New</span> </a></li>
-                          </ul>
+                        <li class="lvl1 parent dropdown"><a href="{% url 'cart' %}">Cart <i class="anm anm-angle-down-l"></i></a>
                         </li>
-                        
                         <li class="lvl1"><a href="{% url 'shop' %}"><b>Buy Now!</b> <i class="anm anm-angle-down-l"></i></a></li>
                       </ul>
                     </nav>
                     <!--End Desktop Menu-->
                 </div>
-                    
-                                <!--Mobile Logo-->
-                                <div class="col-6 col-sm-6 col-md-6 col-lg-2 d-block d-lg-none mobile-logo">
-                                    <div class="logo">
-                                        <a href="index.html">
-                                            <img src="{% static 'images/main-logo.svg' %}" alt="Belle Multipurpose Html Template" title="Belle Multipurpose Html Template" />
-                                        </a>
-                                    </div>
-                                </div>
-                                <!--Mobile Logo-->
-                                <div class="col-4 col-sm-3 col-md-3 col-lg-2">
-                                    <div class="site-cart">
-                                        <a href="{% url 'cart' %};" class="site-header__cart" title="Cart">
-                                            <i class="icon anm anm-bag-l"></i>
-                                            <span id="CartCount" class="site-header__cart-count" data-cart-render="item_count">2</span>
-                                        </a>
-                                        <!--Minicart Popup-->
-                                        <div id="header-cart" class="block block-cart">
-                                            <ul class="mini-products-list">
-                                                <li class="item">
-                                                    <a class="product-image" href="#">
-                                                        <img src="{% static 'images/cape-dress-1.jpg' %} " alt="3/4 Sleeve Kimono Dress" title="" />
-                                                    </a>
-                                                    <div class="product-details">
-                                                        <a href="#" class="remove"><i class="anm anm-times-l" aria-hidden="true"></i></a>
-                                                        <a href="#" class="edit-i remove"><i class="anm anm-edit" aria-hidden="true"></i></a>
-                                                        <a class="pName" href="cart.html">Sleeve Kimono Dress</a>
-                                                        <div class="variant-cart">Black / XL</div>
-                                                        <div class="wrapQtyBtn">
-                                                            <div class="qtyField">
-                                                                <span class="label">Qty:</span>
-                                                                <a class="qtyBtn minus" href="javascript:void(0);"><i class="fa anm anm-minus-r" aria-hidden="true"></i></a>
-                                                                <input type="text" id="Quantity" name="quantity" value="1" class="product-form__input qty">
-                                                                <a class="qtyBtn plus" href="javascript:void(0);"><i class="fa anm anm-plus-r" aria-hidden="true"></i></a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="priceRow">
-                                                            <div class="product-price">
-                                                                <span class="money">$59.00</span>
-                                                            </div>
-                                                         </div>
-                                                    </div>
-                                                </li>
-                                                <li class="item">
-                                                    <a class="product-image" href="#">
-                                                        <img src="{% static 'images/cape-dress-2.jpg' %} " alt="Elastic Waist Dress - Black / Small" title="" />
-                                                    </a>
-                                                    <div class="product-details">
-                                                        <a href="#" class="remove"><i class="anm anm-times-l" aria-hidden="true"></i></a>
-                                                        <a href="#" class="edit-i remove"><i class="anm anm-edit" aria-hidden="true"></i></a>
-                                                        <a class="pName" href="cart.html">Elastic Waist Dress</a>
-                                                        <div class="variant-cart">Gray / XXL</div>
-                                                        <div class="wrapQtyBtn">
-                                                            <div class="qtyField">
-                                                                <span class="label">Qty:</span>
-                                                                <a class="qtyBtn minus" href="javascript:void(0);"><i class="fa anm anm-minus-r" aria-hidden="true"></i></a>
-                                                                <input type="text" id="Quantity" name="quantity" value="1" class="product-form__input qty">
-                                                                <a class="qtyBtn plus" href="javascript:void(0);"><i class="fa anm anm-plus-r" aria-hidden="true"></i></a>
-                                                            </div>
-                                                        </div>
-                                                           <div class="priceRow">
-                                                            <div class="product-price">
-                                                                <span class="money">$99.00</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                            <div class="total">
-                                                <div class="total-in">
-                                                    <span class="label">Cart Subtotal:</span><span class="product-price"><span class="money">$748.00</span></span>
-                                                </div>
-                                                 <div class="buttonSet text-center">
-                                                    <a href="cart.html" class="btn btn-secondary btn--small">View Cart</a>
-                                                    <a href="checkout.html" class="btn btn-secondary btn--small">Checkout</a>
-                                                </div>
+                <div class="col-6 col-sm-6 col-md-6 col-lg-2 d-block d-lg-none mobile-logo">
+                	<div class="logo">
+                        <a href="index.html">
+                            <img src="assets/images/logo.svg" alt="Belle Multipurpose Html Template" title="Belle Multipurpose Html Template" />
+                        </a>
+                    </div>
+                </div>
+                <div class="col-4 col-sm-3 col-md-3 col-lg-2">
+                	<div class="site-cart">
+                    	<a href="#;" class="site-header__cart" title="Cart">
+                        	<i class="icon anm anm-bag-l"></i>
+                            <span id="CartCount" class="site-header__cart-count" data-cart-render="item_count">2</span>
+                        </a>
+                        <!--Minicart Popup-->
+                        <div id="header-cart" class="block block-cart">
+                            <ul class="mini-products-list">
+                                <li class="item">
+                                    <a class="product-image" href="#">
+                                        <img src="{% static 'images/product-images/cape-dress-1.jpg' %}" alt="3/4 Sleeve Kimono Dress" title="" />
+                                    </a>
+                                    <div class="product-details">
+                                        <a href="#" class="remove"><i class="anm anm-times-l" aria-hidden="true"></i></a>
+                                        <a href="#" class="edit-i remove"><i class="anm anm-edit" aria-hidden="true"></i></a>
+                                        <a class="pName" href="cart.html">Sleeve Kimono Dress</a>
+                                        <div class="variant-cart">Black / XL</div>
+                                        <div class="wrapQtyBtn">
+                                            <div class="qtyField">
+                                                <span class="label">Qty:</span>
+                                                <a class="qtyBtn minus" href="javascript:void(0);"><i class="fa anm anm-minus-r" aria-hidden="true"></i></a>
+                                                <input type="text" id="Quantity" name="quantity" value="1" class="product-form__input qty">
+                                                <a class="qtyBtn plus" href="javascript:void(0);"><i class="fa anm anm-plus-r" aria-hidden="true"></i></a>
                                             </div>
                                         </div>
-                                        <!--EndMinicart Popup-->
+                                        <div class="priceRow">
+                                            <div class="product-price">
+                                                <span class="money">$59.00</span>
+                                            </div>
+                                         </div>
                                     </div>
-                                    <div class="site-header__search">
-                                        <button type="button" class="search-trigger"><i class="icon anm anm-search-l"></i></button>
+                                </li>
+                                <li class="item">
+                                    <a class="product-image" href="#">
+                                        <img src="{% static 'images/product-images/cape-dress-2.jpg' %}" alt="Elastic Waist Dress - Black / Small" title="" />
+                                    </a>
+                                    <div class="product-details">
+                                        <a href="#" class="remove"><i class="anm anm-times-l" aria-hidden="true"></i></a>
+                                        <a href="#" class="edit-i remove"><i class="anm anm-edit" aria-hidden="true"></i></a>
+                                        <a class="pName" href="cart.html">Elastic Waist Dress</a>
+                                        <div class="variant-cart">Gray / XXL</div>
+                                        <div class="wrapQtyBtn">
+                                            <div class="qtyField">
+                                                <span class="label">Qty:</span>
+                                                <a class="qtyBtn minus" href="javascript:void(0);"><i class="fa anm anm-minus-r" aria-hidden="true"></i></a>
+                                                <input type="text" id="Quantity" name="quantity" value="1" class="product-form__input qty">
+                                                <a class="qtyBtn plus" href="javascript:void(0);"><i class="fa anm anm-plus-r" aria-hidden="true"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="priceRow">
+                                            <div class="product-price">
+                                                <span class="money">$99.00</span>
+                                            </div>
+                                        </div>
                                     </div>
+                                </li>
+                            </ul>
+                            <div class="total">
+                                <div class="total-in">
+                                    <span class="label">Cart Subtotal:</span><span class="product-price"><span class="money">$748.00</span></span>
+                                </div>
+                                 <div class="buttonSet text-center">
+                                    <a href="cart.html" class="btn btn-secondary btn--small">View Cart</a>
+                                    <a href="checkout.html" class="btn btn-secondary btn--small">Checkout</a>
                                 </div>
                             </div>
                         </div>
+                        <!--End Minicart Popup-->
                     </div>
-                    <!--End Header-->
-                    <!--Mobile Menu-->
-                    <div class="mobile-nav-wrapper" role="navigation">
-                        <div class="closemobileMenu"><i class="icon anm anm-times-l pull-right"></i> Close Menu</div>
-                        <ul id="MobileNav" class="mobile-nav">
-                            <li class="lvl1 parent megamenu"><a href="{% url 'index' %}">Home <i class="anm anm-plus-l"></i></a>
-                          <ul>
-                            <li class="lvl1 parent megamenu"><a href="{% url 'shop' %}">Shop <i class="anm anm-plus-l"></i></a>
-                          
-                            </li>
-                            <li class="lvl1 parent megamenu"><a href="product-layout-1.html">Product <i class="anm anm-plus-l"></i></a>
-                          <ul>
-                            
-                            
-                           
-                          </ul>
-                        </li>
-                            <li class="lvl1 parent megamenu"><a href="about-us.html">Pages <i class="anm anm-plus-l"></i></a>
-                          <ul>
-                              <li><a href="{% url 'cart' %}" class="site-nav">Cart Page <i class="anm anm-plus-l"></i></a>
-                            </li>
-                            <li><a href="checkout.html" class="site-nav">Checkout</a></li>
-                          </ul>
-                        </li>
-                            <li class="lvl1 parent megamenu"><a href="blog-left-sidebar.html">Blog <i class="anm anm-plus-l"></i></a>
-                          <ul>
-                            <li><a href="blog-left-sidebar.html" class="site-nav">Left Sidebar</a></li>
-                            <li><a href="blog-right-sidebar.html" class="site-nav">Right Sidebar</a></li>
-                            <li><a href="blog-fullwidth.html" class="site-nav">Fullwidth</a></li>
-                            <li><a href="blog-grid-view.html" class="site-nav">Gridview</a></li>
-                            <li><a href="blog-article.html" class="site-nav">Article</a></li>
-                          </ul>
-                        </li>
-                            <li class="lvl1"><a href="{% url 'shop' %}"><b>Buy Now!</b></a>
-                        </li>
-                      </ul>
+                    <div class="site-header__search">
+                    	<button type="button" class="search-trigger"><i class="icon anm anm-search-l"></i></button>
                     </div>
-                    <!--End Mobile Menu-->
-                    
-                    {% block content %}
+                </div>
+        	</div>
+        </div>
+    </div>
+    <!--End Header-->          
+    {% block content %}
                         
-                    {% endblock content %}
+    {% endblock content %}
 
     <!--Footer-->
-
     <footer id="footer">
         <div class="newsletter-section">
             <div class="container">
@@ -360,6 +309,11 @@
     </footer>
     <!--End Footer-->
     
+    
+    {% block after-footer %}
+        
+    {% endblock after-footer %}
+        
 
     
      <!-- Including Jquery -->
@@ -373,11 +327,10 @@
      <script src="{% static 'app/popper.min.js' %}"></script>
      <script src="{% static 'app/lazysizes.js' %}"></script>
      <script src="{% static 'app/main.js' %}"></script>
-     <!--For Newsletter Popup-->
     
-</body>
+        
 
-<!-- belle/index.html   11 Nov 2019 12:20:55 GMT -->
+</body>
 </html>
 
                         
