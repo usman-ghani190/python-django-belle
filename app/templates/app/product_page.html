@@ -34,24 +34,11 @@
                                         </div>
                                         <div class="product-thumb product-thumb-1">
                                             <div id="gallery" class="product-dec-slider-1 product-tab-left">
-                                                <a data-image="{% static 'images/camelia-reversible-big1.jpg' %}" data-zoom-image="{% static 'images/camelia-reversible-big1.jpg' %}" class="slick-slide slick-cloned" data-slick-index="-4" aria-hidden="true" tabindex="-1">
-                                                    <img class="blur-up lazyload" src="{% static 'images/camelia-reversible0.jpg' %}" alt="" />
-                                                </a>
-                                                <a data-image="{% static 'images/camelia-reversible-big2.jpg' %}" data-zoom-image="{% static 'images/camelia-reversible-big2.jpg' %}" class="slick-slide slick-cloned" data-slick-index="-3" aria-hidden="true" tabindex="-1">
-                                                    <img class="blur-up lazyload" src="{% static 'camelia-reversible.jpg' %}" alt="" />
-                                                </a>
-                                                <a data-image="{% static 'images/camelia-reversible-big3.jpg' %}" data-zoom-image="{% static 'images/camelia-reversible-big3.jpg' %}" class="slick-slide slick-cloned" data-slick-index="-2" aria-hidden="true" tabindex="-1">
-                                                    <img class="blur-up lazyload" src="{% static 'camelia-reversible6.jpg' %}" alt="" />
-                                                </a>
-                                                <a data-image="{% static 'images/camelia-reversible-big4.jpg' %}" data-zoom-image="{% static 'images/camelia-reversible-big4.jpg' %}" class="slick-slide slick-cloned" data-slick-index="0" aria-hidden="true" tabindex="-1">
-                                                    <img class="blur-up lazyload" src="{% static 'camelia-reversible8.jpg' %}" alt="" />
-                                                </a>
-                                                <a data-image="{% static 'images/camelia-reversible-big1.jpg' %}" data-zoom-image="{% static 'images/camelia-reversible-big5.jpg' %}" class="slick-slide slick-cloned" data-slick-index="1" aria-hidden="true" tabindex="-1">
-                                                    <img class="blur-up lazyload" src="{% static 'camelia-reversible9.jpg' %}" alt="" />
-                                                </a>
-                                                <a data-image="{% static 'images/camelia-reversible-big6.jpg' %}" data-zoom-image="{% static 'images/camelia-reversible-big6.jpg' %}" class="slick-slide slick-cloned" data-slick-index="2" aria-hidden="true" tabindex="-1">
-                                                    <img class="blur-up lazyload" src="{% static 'camelia-reversible1.jpg' %}" alt="" />
-                                                </a>
+                                              {% for image in product.image.all %}
+                                              <a data-image="{{ image.image.url }}" data-zoom-image="{{ image.image.url }}" class="slick-slide" data-slick-index="{{ forloop.counter }}" aria-hidden="true" tabindex="-1">
+                                                  <img class="blur-up lazyload" src="{{ image.image.url }}" alt="{{ image.alt_text }}" />
+                                              </a>
+                                              {% endfor %}
                                             </div>
                                         </div>
                                         <div class="lightboximages">
@@ -67,20 +54,26 @@
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                                     <div class="product-single__meta">
-                                        <h1 class="product-single__title">Product</h1>
+                                        <h1 class="product-single__title">{{product.name}}</h1>
                                         <div class="product-nav clearfix">					
                                             <a href="#" class="next" title="Next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
                                         </div>
                                         <div class="prInfoRow">
+                                            
+                                            {% if product.in_stock %}
                                             <div class="product-stock"> <span class="instock ">In Stock</span> <span class="outstock hide">Unavailable</span> </div>
-                                            <div class="product-sku">SKU: <span class="variant-sku">19115-rdxs</span></div>
-                                            <div class="product-review"><a class="reviewLink" href="#tab2"><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star-o"></i><i class="font-13 fa fa-star-o"></i><span class="spr-badge-caption">6 reviews</span></a></div>
+                                            {% else %}
+                                            <div class="product-stock"> <span class="instock ">Out of Stock</span> <span class="outstock hide">Unavailable</span> </div>
+                                            {% endif %}
+                                              
+                                            <div class="product-sku">SKU: <span class="variant-sku">{{product.SKU}}</span></div>
+                                            <div class="product-review"><a class="reviewLink" href="#tab2"><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star-o"></i><i class="font-13 fa fa-star-o"></i><span class="spr-badge-caption">{{product.reviews_count}}</span></a></div>
                                         </div>
                                         <p class="product-single__price product-single__price-product-template">
                                             <span class="visually-hidden">Regular price</span>
-                                            <s id="ComparePrice-product-template"><span class="money">$900.00</span></s>
+                                            <s id="ComparePrice-product-template"><span class="money">{{product.price}}</span></s>
                                             <span class="product-price__price product-price__price-product-template product-price__sale product-price__sale--single">
-                                                <span id="ProductPrice-product-template"><span class="money">$788.00</span></span>
+                                                <span id="ProductPrice-product-template"><span class="money">{{product.discounted_price}}</span></span>
                                             </span>
                                             <span class="discount-badge"> <span class="devider">|</span>&nbsp;
                                                 <span>You Save</span>
@@ -91,53 +84,40 @@
                                             </span>  
                                         </p>
                                     <div class="product-single__description rte">
-                                        <ul>
-                                            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit</li>
-                                            <li>Sed ut perspiciatis unde omnis iste natus error sit</li>
-                                            <li>Neque porro quisquam est qui dolorem ipsum quia dolor</li>
-                                            <li>Lorem Ipsum is not simply random text.</li>
-                                        </ul>
+                                        {{product.drescription|truncatechars:200}}
                                     </div>
-                                    <div id="quantity_message">Hurry! Only  <span class="items">4</span>  left in stock.</div>
+                                    <div id="quantity_message">Hurry! Only  <span class="items">{{product.stock}}</span>  left in stock.</div>
                                     <form method="post" action="http://annimexweb.com/cart/add" id="product_form_10508262282" accept-charset="UTF-8" class="product-form product-form-product-template hidedropdown" enctype="multipart/form-data">
+                                      {% csrf_token %}
                                         <div class="swatch clearfix swatch-0 option1" data-option-index="0">
                                             <div class="product-form__item">
-                                              <label class="header">Color: <span class="slVariant">Red</span></label>
-                                              <div data-value="Black" class="swatch-element color black available">
-                                                <input class="swatchInput" id="swatch-0-black" type="radio" name="option-0" value="Black"><label class="swatchLbl color small rounded" for="swatch-0-black" style="background-color:black;" title="Black"></label>
+                                              <label class="header">Color: </label>
+                                              {% for color in product.available_colors.all %}
+                                              <div data-value="{{ color.name }}" class="swatch-element color {{ color.name|lower }} available">
+                                                <input class="swatchInput" id="swatch-{{ forloop.counter }}-{{ color.name|lower }}" type="radio" name="option-0" value="{{ color.name }}"><label class="swatchLbl color small rounded" for="swatch-{{ forloop.counter }}-{{ color.name|lower }}" style="background-color:#{{ color.code }};" title="{{ color.name }}"></label>
                                               </div>
-                                              <div data-value="Maroon" class="swatch-element color maroon available">
-                                                <input class="swatchInput" id="swatch-0-maroon" type="radio" name="option-0" value="Maroon"><label class="swatchLbl color small rounded" for="swatch-0-maroon" style="background-color:maroon;" title="Maroon"></label>
-                                              </div>
-                                              <div data-value="Blue" class="swatch-element color blue available">
-                                                <input class="swatchInput" id="swatch-0-blue" type="radio" name="option-0" value="Blue"><label class="swatchLbl color small rounded" for="swatch-0-blue" style="background-color:blue;" title="Blue"></label>
-                                              </div>
-                                              <div data-value="Dark Green" class="swatch-element color dark-green available">
-                                                <input class="swatchInput" id="swatch-0-dark-green" type="radio" name="option-0" value="Dark Green"><label class="swatchLbl color small rounded" for="swatch-0-dark-green" style="background-color:darkgreen;" title="Dark Green"></label>
-                                              </div>
-                                              <div data-value="aqua" class="swatch-element color aqua available">
-                                                  <input class="swatchInput" id="swatch-0-aqua" type="radio" name="option-0" value="aqua"><label class="swatchLbl color small flat rounded" for="swatch-0-aqua" style="background-color:aqua;" title="aqua"></label></div>
-                                            </div>
+                                              {% endfor %}
+                                             
+                                              
                                         </div>
                                         <div class="swatch clearfix swatch-1 option2" data-option-index="1">
                                             <div class="product-form__item">
                                               <label class="header">Size: <span class="slVariant">XS</span></label>
-                                              <div data-value="XS" class="swatch-element xs available">
-                                                <input class="swatchInput" id="swatch-1-xs" type="radio" name="option-1" value="XS"><label class="swatchLbl small flat" for="swatch-1-xs" title="XS">XS</label>
-                                              </div>
-                                              <div data-value="S" class="swatch-element s available">
-                                                  <input class="swatchInput" id="swatch-1-s" type="radio" name="option-1" value="S"><label class="swatchLbl small flat" for="swatch-1-s" title="S">S</label></div>
-                                              <div data-value="M" class="swatch-element m available">
-                                                  <input class="swatchInput" id="swatch-1-m" type="radio" name="option-1" value="M"><label class="swatchLbl small flat" for="swatch-1-m" title="M">M</label></div>
-                                              <div data-value="L" class="swatch-element l available">
-                                                  <input class="swatchInput" id="swatch-1-l" type="radio" name="option-1" value="L"><label class="swatchLbl small flat" for="swatch-1-l" title="L">L</label></div>
-                                              <div data-value="XL" class="swatch-element xl available">
-                                                  <input class="swatchInput" id="swatch-1-xl" type="radio" name="option-1" value="XL"><label class="swatchLbl small flat" for="swatch-1-xl" title="XL">XL</label></div>
+                                              {% for size in product.available_sizes.all %}
+                                              <div data-value="{{ size }}" class="swatch-element {{ size|lower }} available">
+                                                <input class="swatchInput" id="swatch-{{ forloop.counter }}-{{ size|lower }}" type="radio" name="option-1" value="{{ size }}">
+                                                <label class="swatchLbl small flat" for="swatch-{{ forloop.counter }}-{{ size|lower }}" title="{{ size }}">{{ size }}</label>
                                             </div>
+                                              {% endfor %}
+                                              
+                                              
                                         </div>
-                                        <p class="infolinks"><a href="#sizechart" class="sizelink btn"> Size Guide</a> <a href="#productInquiry" class="emaillink btn"> Ask About this Product</a></p>
+                                        <p class="infolinks"><a href="#sizechart" class="sizelink btn"> Size Guide</a> </p>
                                         <!-- Product Action -->
                                         <div class="product-action clearfix">
+                                          <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                                            {% csrf_token %}
+                                            {{ form.as_p }}
                                             <div class="product-form__item--quantity">
                                                 <div class="wrapQtyBtn">
                                                     <div class="qtyField">
@@ -146,12 +126,14 @@
                                                         <a class="qtyBtn plus" href="javascript:void(0);"><i class="fa anm anm-plus-r" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
-                                            </div>                                
-                                            <div class="product-form__item--submit">
-                                                <button type="button" name="add" class="btn product-form__cart-submit">
-                                                    <span>Add to cart</span>
-                                                </button>
                                             </div>
+                                            <div class="product-form__item--submit">
+                                              <button type="button" name="add" class="btn product-form__cart-submit">
+                                                  <span>Add to cart</span>
+                                              </button>
+                                          </div>
+                                        </form>                           
+                                            
                                             <div class="shopify-payment-button" data-shopify="payment-button">
                                                 <button type="button" class="shopify-payment-button__button shopify-payment-button__button--unbranded">Buy it now</button>
                                             </div>
@@ -531,6 +513,23 @@
 	<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
         	<div class="pswp__bg"></div>
             <div class="pswp__scroll-wrap"><div class="pswp__container"><div class="pswp__item"></div><div class="pswp__item"></div><div class="pswp__item"></div></div><div class="pswp__ui pswp__ui--hidden"><div class="pswp__top-bar"><div class="pswp__counter"></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button><button class="pswp__button pswp__button--share" title="Share"></button><button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button><button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class="pswp__preloader"><div class="pswp__preloader__icn"><div class="pswp__preloader__cut"><div class="pswp__preloader__donut"></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class="pswp__share-tooltip"></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button><button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class="pswp__caption"><div class="pswp__caption__center"></div></div></div></div></div>
+
+            <script>
+              function updateQuantity(change) {
+                const quantityInput = document.getElementById("Quantity");
+                let currentQuantity = parseInt(quantityInput.value);
+            
+                // Update the quantity based on the clicked button (+1 or -1)
+                currentQuantity += change;
+            
+                // Ensure the quantity doesn't go below 1
+                if (currentQuantity < 1) {
+                    currentQuantity = 1;
+                }
+            
+                quantityInput.value = currentQuantity;
+            }
+            </script>
 
 </body>
 {% endblock content %}
