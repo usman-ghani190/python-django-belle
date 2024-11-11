@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 
 from app.forms import OrderItemForm
-from app.models import Color, Product
+from app.models import Color, OrderItem, Product
 
 # Create your views here.
 def index(request):
@@ -20,6 +20,7 @@ def shop_page(request):
 #     return render(request, 'app/product_page.html', context)
 
 def product_page(request):
+    
     product = Product.objects.get()
 
     context= {'product':product}
@@ -30,25 +31,24 @@ def cart_page(request):
     return render(request, 'app/cart.html', context)
 
 def add_to_cart(request, slug):
-    product = get_object_or_404(Product, slug=product.objects.get('slug'))
+    # Retrieve the product based on the slug
+    product = get_object_or_404(Product, slug=slug)
 
     if request.method == 'POST':
-        form = OrderItemForm(request.POST)
-        if form.is_valid():
-            order_item = form.save(commit=False)
-            order_item.product = product
+        # Retrieve the quantity from the hidden form field
+        quantity = int(request.POST.get('quantity', 1))  # Defaults to 1 if not set
+        order_item, created = OrderItem.objects.get_or_create(
+            product=product,
+            defaults={'quantity': quantity}
+        )
+        if not created:
+            # If the item is already in the cart, update its quantity
+            order_item.quantity += quantity
             order_item.save()
-            return redirect('cart')  # or any other page you want to redirect to
-    else:
-        form = OrderItemForm()
 
-    context = {
-        'product': product,
-        'form': form
-    }
-    return render(request, 'app/product_page.html', context)
+        return redirect('cart')  # Redirect to the cart page or desired page
 
-
+    return render(request, 'app/product_page.html', {'product': product})
 
 def listview(request):
     context= {}
