@@ -6,7 +6,10 @@ from app.models import Color, OrderItem, Product, SliderImages
 # Create your views here.
 def index(request):
     slider= SliderImages.objects.all()
-    context= {'slider':slider}
+    product= Product.objects.get()
+    rating= product.rating
+
+    context= {'slider':slider, 'product':product, 'rating':rating, 'stars': range(5),}
     return render(request, 'app/index.html', context)
 
 def shop_page(request):

@@ -53,6 +53,8 @@ class Product(models.Model):
         # Generates a URL for the Buy It Now functionality
         return reverse('buy_now', kwargs={'product_id': self.id})
     
+
+
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='product_images/')
