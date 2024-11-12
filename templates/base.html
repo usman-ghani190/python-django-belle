@@ -20,6 +20,12 @@
 <!-- Main Style CSS -->
 <link rel="stylesheet" href="{% static 'app/style.css' %}">
 <link rel="stylesheet" href="{% static 'app/responsive.css' %}">
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
 </head>
 <body class="template-index belle template-index-belle">
 <div id="pre-loader">
@@ -102,8 +108,11 @@
                             </li>
                             <li class="lvl1 parent megamenu"><a href="{% url 'shop' %}">Shop <i class="anm anm-angle-down-l"></i></a>
                             </li>
-                        <li class="lvl1 parent megamenu"><a href="{% url 'product' %}">Product <i class="anm anm-angle-down-l"></i></a>
-                        </li>
+                        
+                            <li class="lvl1 parent megamenu"><a href="{% url 'product' %}">Product <i class="anm anm-angle-down-l"></i></a>
+                
+                        
+                        </li> 
                         <li class="lvl1 parent dropdown"><a href="{% url 'cart' %}">Cart <i class="anm anm-angle-down-l"></i></a>
                         </li>
                         <li class="lvl1"><a href="{% url 'shop' %}"><b>Buy Now!</b> <i class="anm anm-angle-down-l"></i></a></li>

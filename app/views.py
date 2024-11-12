@@ -1,11 +1,12 @@
 from django.shortcuts import get_object_or_404, redirect, render
 
 from app.forms import OrderItemForm
-from app.models import Color, OrderItem, Product
+from app.models import Color, OrderItem, Product, SliderImages
 
 # Create your views here.
 def index(request):
-    context= {}
+    slider= SliderImages.objects.all()
+    context= {'slider':slider}
     return render(request, 'app/index.html', context)
 
 def shop_page(request):
@@ -19,7 +20,7 @@ def shop_page(request):
 #     context= {'product':product}
 #     return render(request, 'app/product_page.html', context)
 
-def product_page(request):
+def product_page(request, ):
     
     product = Product.objects.get()
 
