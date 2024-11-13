@@ -871,21 +871,36 @@
 	/*----------------------------------
 	  26. Quantity Plus Minus
 	------------------------------------*/
-	function qnt_incre(){
-		$(".qtyBtn").on("click", function() {
-		  var qtyField = $(this).parent(".qtyField"),
-			 oldValue = $(qtyField).find(".qty").val(),
-			  newVal = 1;
+	$(document).ready(function () {
+		// Increment Quantity
+		$('.qtyBtn.plus').click(function (e) {
+			e.preventDefault();
 	
-		  if ($(this).is(".plus")) {
-			newVal = parseInt(oldValue) + 1;
-		  } else if (oldValue > 1) {
-			newVal = parseInt(oldValue) - 1;
-		  }
-		  $(qtyField).find(".qty").val(newVal);
+			var $input = $(this).closest('.qtyField').find('.qty');
+			var value = parseInt($input.val(), 10);
+			value = isNaN(value) ? 0 : value;
+	
+			if (value < 10) {
+				value++;
+				$input.val(value);
+			}
 		});
-	}
-	qnt_incre();
+	
+		// Decrement Quantity
+		$('.qtyBtn.minus').click(function (e) {
+			e.preventDefault();
+	
+			var $input = $(this).closest('.qtyField').find('.qty');
+			var value = parseInt($input.val(), 10);
+			value = isNaN(value) ? 0 : value;
+	
+			if (value > 1) {
+				value--;
+				$input.val(value);
+			}
+		});
+	});
+	
 	
 	/*----------------------------------
 	  27. Visitor Fake Message
@@ -1054,6 +1069,9 @@
 	/*-----------------------------------
 	  End Infinite Scroll js
 	  -------------------------------------*/
+
+
+	
 
 	
 

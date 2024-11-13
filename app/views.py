@@ -15,7 +15,9 @@ def index(request, slug=None):
         context = {'slider': slider, 'products': products, 'stars': range(5), 'variants':variants}
     else:
         # If no slug is provided, return all products (or a default set)
-        products = Product.objects.all()
+        products = Product.objects.filter(is_featured=True)[:6]
+        products = Product.objects.filter(is_new=True)[:4]
+
         variants= ProductImage.objects.all()  # Or adjust this to show a default set
         context = {'slider': slider, 'products': products, 'stars': range(5), 'variants':variants}
     

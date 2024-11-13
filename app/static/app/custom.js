@@ -1,46 +1,50 @@
-// $(document).ready(function () {
-//     $('.qtyBtn plus').click(function (e) { 
-//         e.preventDefault();
+// (function ($) {
+//     'use strict';
 
-//         var inc_value = $(this).closest('.qtyField').find('.input qty').val();
-//         var value = parseInt(inc_value, 10);
-//         value= isNaN(value) ? 0: value;
+//     // Function to initialize the Slick Slider
+//     function product_slider() {
+//         // Initialize the slider
+//         $('.productSlider').slick({
+//             dots: false,         // Remove dots navigation
+//             infinite: true,      // Infinite loop of slides
+//             slidesToShow: 4,     // Number of products to show at once
+//             slidesToScroll: 1,   // Scroll 1 product at a time
+//             arrows: true,        // Enable arrows for navigation
+//             responsive: [
+//                 {
+//                     breakpoint: 1024,
+//                     settings: {
+//                         slidesToShow: 3,
+//                         slidesToScroll: 1
+//                     }
+//                 },
+//                 {
+//                     breakpoint: 600,
+//                     settings: {
+//                         slidesToShow: 2,
+//                         slidesToScroll: 1
+//                     }
+//                 },
+//                 {
+//                     breakpoint: 480,
+//                     settings: {
+//                         slidesToShow: 1,
+//                         slidesToScroll: 1
+//                     }
+//                 }
+//             ]
+//         });
+//     }
 
-//         if(value < 10)
-//         {
-//             value++;
-//             $(this).closest('.qtyField').find('.input qty').val(value);
-//         }
-        
+//     // Trigger the Slick slider initialization when the document is ready
+//     $(document).ready(function () {
+//         // Ensure the productSlider is initialized correctly
+//         product_slider();
 //     });
-// });
 
-$(document).ready(function () {
-    // Increment Quantity
-    $('.qtyBtn.plus').click(function (e) {
-        e.preventDefault();
+//     // Re-initialize the slider on window resize or after dynamic content loading
+//     $(window).on('resize', function() {
+//         $('.productSlider').slick('setPosition');
+//     });
 
-        var $input = $(this).closest('.qtyField').find('.qty');
-        var value = parseInt($input.val(), 10);
-        value = isNaN(value) ? 0 : value;
-
-        if (value < 10) {
-            value++;
-            $input.val(value);
-        }
-    });
-
-    // Decrement Quantity
-    $('.qtyBtn.minus').click(function (e) {
-        e.preventDefault();
-
-        var $input = $(this).closest('.qtyField').find('.qty');
-        var value = parseInt($input.val(), 10);
-        value = isNaN(value) ? 0 : value;
-
-        if (value > 1) {
-            value--;
-            $input.val(value);
-        }
-    });
-});
+// })(jQuery);

@@ -40,6 +40,7 @@ class Product(models.Model):
     hover_image = models.ImageField(upload_to='app/images/product_images/', blank=True, null=True)
     discount_percentage = models.IntegerField(null=True, blank=True)
     limited_stock_message = models.CharField(max_length=255, null=True, blank=True)
+    is_featured= models.BooleanField(default=False)
 
 
     def __str__(self):
