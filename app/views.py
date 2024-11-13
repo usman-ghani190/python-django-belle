@@ -1,20 +1,25 @@
 from django.shortcuts import get_object_or_404, redirect, render
 
 from app.forms import OrderItemForm
-from app.models import Color, OrderItem, Product, SliderImages
+from app.models import Color, OrderItem, Product, ProductImage, SliderImages
 
 # Create your views here.
 def index(request, slug=None):
+    
     slider = SliderImages.objects.all()
     
     if slug:
         # If slug is provided, filter the product by slug
         products = get_object_or_404(Product, slug=slug)
+        variants = ProductImage.objects.filter(product=products)
+        context = {'slider': slider, 'products': products, 'stars': range(5), 'variants':variants}
     else:
         # If no slug is provided, return all products (or a default set)
-        products = Product.objects.all()  # Or adjust this to show a default set
+        products = Product.objects.all()
+        variants= ProductImage.objects.all()  # Or adjust this to show a default set
+        context = {'slider': slider, 'products': products, 'stars': range(5), 'variants':variants}
     
-    context = {'slider': slider, 'products': products, 'stars': range(5)}
+    
     return render(request, 'app/index.html', context)
 
 def shop_page(request):

@@ -878,15 +878,13 @@
                             
                                     <!-- Variant -->
                                     <ul class="swatches text-center">
-                                        <li class="swatch medium rounded">
-                                            <img src="{% static 'images/product-images/variant1.jpg' %}" alt="image" />
-                                        </li>
-                                        <li class="swatch medium rounded">
-                                            <img src="{% static 'images/product-images/variant2.jpg' %}" alt="image" />
-                                        </li>
-                                        <li class="swatch medium rounded">
-                                            <img src="{% static 'images/product-images/variant3.jpg' %}" alt="image" />
-                                        </li>
+                                        {% for variant in product.images.all %}
+                                            <li class="swatch medium rounded">
+                                                <img src="{{ variant.image.url }}" alt="variant image" />
+                                            </li>
+                                        {% empty %}
+                                            <p>No variants available.</p>
+                                        {% endfor %}
                                     </ul>
                                     <!-- End Variant -->
                                 
