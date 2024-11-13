@@ -1711,3 +1711,29 @@ body.home15-funiture-template { font-size:14px; }
 .q-c-container{
   padding-bottom: 10px;
 }
+
+
+.productSlider {
+  display: flex;
+  flex-wrap: wrap;  /* Allows wrapping of items to next line when needed */
+  gap: 20px;        /* Adds space between items */
+}
+
+.productSlider .item {
+  flex: 1 1 25%;  /* Makes each product take up 25% of the container width */
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+/* You can adjust the percentage for a different number of products per row */
+@media (max-width: 768px) {
+  .productSlider .item {
+      flex: 1 1 50%;  /* Two items per row on medium screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .productSlider .item {
+      flex: 1 1 100%;  /* One item per row on small screens */
+  }
+}

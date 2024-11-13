@@ -36,7 +36,8 @@ class Product(models.Model):
     available_sizes = models.ManyToManyField(Size, blank=True)
     product_type = models.CharField(max_length=50)
     collection = models.CharField(max_length=100)
-    main_image = models.ImageField(upload_to='product_images/')
+    main_image = models.ImageField(upload_to='app/images/product_images/')
+    hover_image = models.ImageField(upload_to='app/images/product_images/', blank=True, null=True)
     discount_percentage = models.IntegerField(null=True, blank=True)
     limited_stock_message = models.CharField(max_length=255, null=True, blank=True)
 

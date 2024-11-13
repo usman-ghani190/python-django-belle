@@ -4,12 +4,17 @@ from app.forms import OrderItemForm
 from app.models import Color, OrderItem, Product, SliderImages
 
 # Create your views here.
-def index(request):
-    slider= SliderImages.objects.all()
-    product= Product.objects.get()
-    rating= product.rating
-
-    context= {'slider':slider, 'product':product, 'rating':rating, 'stars': range(5),}
+def index(request, slug=None):
+    slider = SliderImages.objects.all()
+    
+    if slug:
+        # If slug is provided, filter the product by slug
+        products = get_object_or_404(Product, slug=slug)
+    else:
+        # If no slug is provided, return all products (or a default set)
+        products = Product.objects.all()  # Or adjust this to show a default set
+    
+    context = {'slider': slider, 'products': products, 'stars': range(5)}
     return render(request, 'app/index.html', context)
 
 def shop_page(request):
@@ -23,9 +28,9 @@ def shop_page(request):
 #     context= {'product':product}
 #     return render(request, 'app/product_page.html', context)
 
-def product_page(request, ):
+def product_page(request, slug):
     
-    product = Product.objects.get()
+    product = get_object_or_404(Product, slug=slug)
 
     context= {'product':product}
     return render(request, 'app/product_page.html', context)
@@ -39,12 +44,20 @@ def add_to_cart(request, slug):
     product = get_object_or_404(Product, slug=slug)
 
     if request.method == 'POST':
-        # Retrieve the quantity from the hidden form field
+        # Retrieve the quantity from the form, with a default value of 1 if not set
         quantity = int(request.POST.get('quantity', 1))  # Defaults to 1 if not set
+
+        # Make sure quantity is a positive integer
+        if quantity <= 0:
+            # Handle invalid quantity (optional: could be an error message)
+            return redirect('product', slug=slug)  # Redirect back to the product page
+
+        # Get or create the order item
         order_item, created = OrderItem.objects.get_or_create(
             product=product,
             defaults={'quantity': quantity}
         )
+
         if not created:
             # If the item is already in the cart, update its quantity
             order_item.quantity += quantity
