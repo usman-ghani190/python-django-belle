@@ -34,7 +34,7 @@ urlpatterns = [
         # path('add/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
         # Update the URL pattern to use the slug
         path('cart/add/<slug:slug>/', views.add_to_cart, name='add_to_cart'),
-
+        path('wishlist/<slug:slug>/', views.wishlist, name='wishlist'),
         path('checkout/', views.checkout, name='checkout'),
     ])),
     path('checkout/buy-now/<int:product_id>/', views.buy_now, name='buy_now'),

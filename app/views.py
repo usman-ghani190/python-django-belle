@@ -38,8 +38,10 @@ def shop_page(request):
 def product_page(request, slug):
     
     product = get_object_or_404(Product, slug=slug)
+    
+    variants= ProductImage.objects.all()  # Or adjust this to show a default set
 
-    context= {'product':product}
+    context= {'product':product, 'variants':variants}
     return render(request, 'app/product_page.html', context)
 
 def cart_page(request):
@@ -99,3 +101,8 @@ def buy_now(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     # Logic to create an order and redirect to the checkout page
     return redirect('checkout')
+
+def wishlist(request, slug):
+
+    context={}
+    return render(request, 'app/wishlist.html', context)
