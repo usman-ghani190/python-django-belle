@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 
 from app.forms import OrderItemForm
-from app.models import Color, OrderItem, Product, ProductImage, SliderImages
+from app.models import Color, OrderItem, Product, ProductBigImage, ProductImage, SliderImages
 
 # Create your views here.
 def index(request, slug=None):
@@ -40,8 +40,9 @@ def product_page(request, slug):
     product = get_object_or_404(Product, slug=slug)
     
     variants= ProductImage.objects.all()  # Or adjust this to show a default set
+    big_variants= ProductBigImage.objects.all()
 
-    context= {'product':product, 'variants':variants}
+    context= {'product':product, 'variants':variants, 'big_variants':big_variants,}
     return render(request, 'app/product_page.html', context)
 
 def cart_page(request):

@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
+from PIL import Image
 
 # Create your models here.
 
@@ -64,6 +65,24 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f"Image for {self.product.name}"
+    
+
+class ProductBigImage(models.Model):
+    product = models.ForeignKey(Product, related_name='big_images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='product_big_images/')
+    alt_text = models.CharField(max_length=255, blank=True, null=True)
+    width = models.PositiveIntegerField(null=True, blank=True)
+    height = models.PositiveIntegerField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        # Open the image to get dimensions
+        if self.image:
+            img = Image.open(self.image)
+            self.width, self.height = img.size
+        super().save(*args, **kwargs)  # Call the "real" save method
+
+    def __str__(self):
+        return f"Big Image for {self.product.name}"
     
 
 class OrderItem(models.Model):
