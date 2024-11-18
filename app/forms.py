@@ -1,7 +1,8 @@
-import email
+
 from django import forms
-from .models import OrderItem, Product
+from .models import OrderItem, ProductQueryAsk
 from django.utils.translation import gettext_lazy as _
+
 
 class OrderItemForm(forms.ModelForm):
     quantity = forms.IntegerField(min_value=1, initial=1)
@@ -13,13 +14,12 @@ class OrderItemForm(forms.ModelForm):
 
 class ProductQeuryAskForm(forms.ModelForm):
     class Meta:
-        model= Product
+        model= ProductQueryAsk
         fields='__all__'
         labels= {'name': _(''),
                  'email': _(''),
                  'phone_number': _(''),
-                 'message': _(''),
-        }
+                 'message': _('')}
 
         
         def __init__(self, *args, **kwargs):
@@ -27,6 +27,14 @@ class ProductQeuryAskForm(forms.ModelForm):
             self.fields['name'].widget.attrs['placeholder'] = 'Name'
             self.fields['email'].widget.attrs['placeholder'] = 'Email'
             self.fields['phone_number'].widget.attrs['placeholder'] = 'Phone Number'
-            self.fields['message'].widget.attrs['placeholder'] = 'Messsage'
+            # self.fields['message'].widget.attrs.update({
+            # 'placeholder': 'Message',
+            # 'rows': 10,  # Add the rows attribute here
+            self.fields['message'].widget.attrs['placeholder'] = 'Message'
+
+        
+        
+            
+    
         
                  

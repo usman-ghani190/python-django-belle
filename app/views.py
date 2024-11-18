@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
 
-from app.forms import OrderItemForm
+from app.forms import OrderItemForm, ProductQeuryAskForm
 from app.models import Color, OrderItem, Product, ProductBigImage, ProductImage, SliderImages
 
 # Create your views here.
@@ -50,7 +50,16 @@ def product_page(request, slug):
         you_saved = None
         percentage_saved = None
 
-    context= {'product':product, 'variants':variants, 'big_variants':big_variants, 'you_saved':you_saved, 'percentage_saved':percentage_saved}
+    if request.method == 'POST':
+        form = ProductQeuryAskForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # Add success message or redirection
+            return render(request, 'product_page.html')
+    else:
+        form = ProductQeuryAskForm()
+
+    context= {'product':product, 'variants':variants, 'big_variants':big_variants, 'you_saved':you_saved, 'percentage_saved':percentage_saved, 'form':form}
     return render(request, 'app/product_page.html', context)
 
 def cart_page(request):

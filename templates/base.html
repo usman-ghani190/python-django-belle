@@ -11,8 +11,8 @@
 <meta name="description" content="description">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-<script src="https://cdn.jsdelivr.net/npm/wowjs@1.1.2/dist/wow.min.js"></script>
+{% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<script src="https://cdn.jsdelivr.net/npm/wowjs@1.1.2/dist/wow.min.js"></script> {% endcomment %}
 
 
 <!-- Favicon -->
@@ -330,18 +330,23 @@
 
     
      <!-- Including Jquery -->
-     <script src="{% static 'app/jquery-3.3.1.min.js' %}"></script>
-     <script src="{% static 'app/modernizr-3.6.0.min.js' %}"></script>
-     <script src="{% static 'app/jquery.cookie.js' %}"></script>
-     <script src="{% static 'app/wow.min.js' %}"></script>
-     <script src="{% static 'app/custom.js' %}"></script>
+     <script src="{% static 'app/js/vendor/jquery-3.3.1.min.js' %}"></script>
+     <script src="{% static 'app/js/vendor/modernizr-3.6.0.min.js' %}"></script>
+     <script src="{% static 'app/js/vendor/jquery.cookie.js' %}"></script>
+     <script src="{% static 'app/js/vendor/wow.min.js' %}"></script>
+     <script src="{% static 'app/js/vendor/custom.js' %}"></script>
+     <script src="{% static 'app/js/vendor/instagram-feed.js' %}"></script>
+     <script src="{% static 'app/js/vendor/masonry.js' %}"></script>
+     <script src="{% static 'app/js/vendor/photoswipe-ui-default.min.js' %}"></script>
+     <script src="{% static 'app/js/vendor/photoswipe.min.js' %}"></script>
 
+     
      <!-- Including Javascript -->
-     <script src="{% static 'app/bootstrap.min.js' %}"></script>
-     <script src="{% static 'app/plugins.js' %}"></script>
-     <script src="{% static 'app/popper.min.js' %}"></script>
-     <script src="{% static 'app/lazysizes.js' %}"></script>
-     <script src="{% static 'app/main.js' %}"></script>
+     <script src="{% static 'app/js/bootstrap.min.js' %}"></script>
+     <script src="{% static 'app/js/plugins.js' %}"></script>
+     <script src="{% static 'app/js/popper.min.js' %}"></script>
+     <script src="{% static 'app/js/lazysizes.js' %}"></script>
+     <script src="{% static 'app/js/main.js' %}"></script>
     
         
 

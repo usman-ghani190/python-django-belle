@@ -1110,30 +1110,29 @@
 <div id="productInquiry">
   <div class="contact-form form-vertical">
   <div class="page-title">
-    <h3>Camelia Reversible Jacket</h3>
+    <h3>{{product.name}}</h3>
   </div>
   <form method="post" action="#" id="contact_form" class="contact-form">
-    <input type="hidden" name="form_type" value="contact" />
-    <input type="hidden" name="utf8" value="✓" />
+    {% csrf_token %}
     <div class="formFeilds">
       <input type="hidden"  name="contact[product name]" value="Camelia Reversible Jacket">
       <input type="hidden"  name="contact[product link]" value="/products/camelia-reversible-jacket-black-red">
       <div class="row">
           <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-            <input type="text" id="ContactFormName" name="contact[name]" placeholder="Name"  value="" required>
+            {{form.name}}
           </div>
       </div>
       <div class="row">
         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-          <input type="email" id="ContactFormEmail" name="contact[email]" placeholder="Email"  autocapitalize="off" value="" required>
+          {{form.email}}
         </div>
         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-            <input required type="tel" id="ContactFormPhone" name="contact[phone]" pattern="[0-9\-]*" placeholder="Phone Number"  value="">
+            {{form.phone_number}}
         </div>
       </div>
       <div class="row">
         <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-          <textarea required rows="10" id="ContactFormMessage" name="contact[body]" placeholder="Message" ></textarea>
+          {{form.message}}
         </div>  
       </div>
       <div class="row">
