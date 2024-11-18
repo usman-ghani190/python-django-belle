@@ -1,9 +1,23 @@
+from phonenumber_field.modelfields import PhoneNumberField
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
 from PIL import Image
 
+
 # Create your models here.
+
+class ProductQueryAsk(models.Model):  # Fixed typo in class name
+    name = models.CharField(max_length=200)
+    email = models.EmailField(max_length=150)
+    phone_number = PhoneNumberField(null=False, blank=False, unique=True)  
+    message= models.TextField(blank=True, null=True)
+
+
+    def __str__(self):
+        return self.name
+    
+
 
 class Color(models.Model):
     name = models.CharField(max_length=50, unique=True)  # e.g., "Red", "Black"
