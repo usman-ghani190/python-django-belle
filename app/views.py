@@ -1,6 +1,8 @@
 from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib import messages
 
-from app.forms import OrderItemForm, ProductQeuryAskForm
+
+from app.forms import OrderItemForm, ProductQueryAskForm
 from app.models import Color, OrderItem, Product, ProductBigImage, ProductImage, SliderImages
 
 # Create your views here.
@@ -36,30 +38,40 @@ def shop_page(request):
 #     return render(request, 'app/product_page.html', context)
 
 def product_page(request, slug):
-    
     product = get_object_or_404(Product, slug=slug)
-    
-    variants= ProductImage.objects.all()  # Or adjust this to show a default set
-    big_variants= ProductBigImage.objects.all()
+    variants = ProductImage.objects.all()
+    big_variants = ProductBigImage.objects.all()
 
+    # Calculate savings
+    you_saved, percentage_saved = None, None
     if product.price and product.discounted_price:
         you_saved = product.price - product.discounted_price
-        # Calculate the percentage savings
         percentage_saved = (you_saved / product.price) * 100
-    else:
-        you_saved = None
-        percentage_saved = None
 
+    # Form handling
     if request.method == 'POST':
-        form = ProductQeuryAskForm(request.POST)
+        form = ProductQueryAskForm(request.POST)
         if form.is_valid():
             form.save()
-            # Add success message or redirection
-            return render(request, 'product_page.html')
-    else:
-        form = ProductQeuryAskForm()
+            messages.success(request, "Your query has been submitted successfully!")
+            form = ProductQueryAskForm()
 
-    context= {'product':product, 'variants':variants, 'big_variants':big_variants, 'you_saved':you_saved, 'percentage_saved':percentage_saved, 'form':form}
+            return redirect('product', slug=slug)
+        else:
+            messages.error(request, "There was an error submitting your query. Please correct the form.")
+
+    else:
+        form = ProductQueryAskForm()
+
+    # Context for the template
+    context = {
+        'product': product,
+        'variants': variants,
+        'big_variants': big_variants,
+        'you_saved': you_saved,
+        'percentage_saved': percentage_saved,
+        'form': form,
+    }
     return render(request, 'app/product_page.html', context)
 
 def cart_page(request):

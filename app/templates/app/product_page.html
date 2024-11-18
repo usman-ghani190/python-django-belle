@@ -1112,29 +1112,68 @@
   <div class="page-title">
     <h3>{{product.name}}</h3>
   </div>
-  <form method="post" action="#" id="contact_form" class="contact-form">
+  <form method="POST" action="#" id="contact_form" class="contact-form">
     {% csrf_token %}
     <div class="formFeilds">
-      <input type="hidden"  name="contact[product name]" value="Camelia Reversible Jacket">
-      <input type="hidden"  name="contact[product link]" value="/products/camelia-reversible-jacket-black-red">
-      <div class="row">
-          <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-            {{form.name}}
-          </div>
-      </div>
-      <div class="row">
-        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-          {{form.email}}
+      <!-- Display non-field errors -->
+      {% if form.non_field_errors %}
+        <div class="form-errors">
+          {% for error in form.non_field_errors %}
+            <p class="error">{{ error }}</p>
+          {% endfor %}
         </div>
-        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-            {{form.phone_number}}
-        </div>
-      </div>
+      {% endif %}
+      <!-- Name Field -->
       <div class="row">
         <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-          {{form.message}}
-        </div>  
+          {{ form.name }}
+          {% if form.name.errors %}
+            <div class="field-error">
+              {% for error in form.name.errors %}
+                <p class="error">{{ error }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
       </div>
+
+      <!-- Email and Phone Number Fields -->
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+          {{ form.email }}
+          {% if form.email.errors %}
+            <div class="field-error">
+              {% for error in form.email.errors %}
+                <p class="error">{{ error }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+          {{ form.phone_number }}
+          {% if form.phone_number.errors %}
+            <div class="field-error">
+              {% for error in form.phone_number.errors %}
+                <p class="error">{{ error }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Message Field -->
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+          {{ form.message }}
+          {% if form.message.errors %}
+            <div class="field-error">
+              {% for error in form.message.errors %}
+                <p class="error">{{ error }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      </div>     
       <div class="row">
         <div class="col-12 col-sm-12 col-md-12 col-lg-12">
           <input type="submit" class="btn" value="Send Message">
