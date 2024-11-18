@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
+
 
 
 {% comment %} {% block content %}     {% endcomment %}
@@ -377,7 +379,7 @@
                                     <div id="gallery" class="product-dec-slider-1 product-tab-left">
                                       
                                       {% for big_variant in big_variants %}
-                                      <a data-image="{{big_variant.image.url}}" data-zoom-image="{{big_variant.image.url}}" class="slick-slide slick-cloned" data-slick-index="-4" aria-hidden="true" tabindex="-1">
+                                      <a data-image="{{big_variant.image.url}}" data-zoom-image="{{big_variant.image.url}}" class="slick-slide slick-cloned" data-slick-index="{{ forloop.revcounter|negative }}" aria-hidden="true" tabindex="-1">
                                         <img class="blur-up lazyload" src="{{big_variant.image.url}}" alt="" />
                                     </a>
                                       {% endfor %}
@@ -394,57 +396,55 @@
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                             <div class="product-single__meta">
-                                <h1 class="product-single__title">Product Layout Style3</h1>
+                                <h1 class="product-single__title">{{product.name}}</h1>
                                 <div class="product-nav clearfix">					
                                     <a href="#" class="next" title="Next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
                                 </div>
                                 <div class="prInfoRow">
-                                    <div class="product-stock"> <span class="instock ">In Stock</span> <span class="outstock hide">Unavailable</span> </div>
-                                    <div class="product-sku">SKU: <span class="variant-sku">19115-rdxs</span></div>
-                                    <div class="product-review"><a class="reviewLink" href="#tab2"><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star-o"></i><i class="font-13 fa fa-star-o"></i><span class="spr-badge-caption">6 reviews</span></a></div>
+                                    <div class="product-stock"> 
+                                      
+                                      {% if product.in_stock %}
+                                      <span class="instock ">In Stock</span>
+                                      {% else %}
+                                      <span class="outstock hide">Unavailable</span>
+                                      {% endif %}
+                                      </div>
+                                    <div class="product-sku">SKU: <span class="variant-sku">{{product.SKU}}</span></div>
+                                    <div class="product-review"><a class="reviewLink" href="#tab2"><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star-o"></i><i class="font-13 fa fa-star-o"></i><span class="spr-badge-caption">{{product.reviews_count}} review{{product.reviews_count|pluralize}}</span></a></div>
                                 </div>
                                 <p class="product-single__price product-single__price-product-template">
                                     <span class="visually-hidden">Regular price</span>
-                                    <s id="ComparePrice-product-template"><span class="money">$900.00</span></s>
+                                    <s id="ComparePrice-product-template"><span class="money">${{product.price}}</span></s>
                                     <span class="product-price__price product-price__price-product-template product-price__sale product-price__sale--single">
-                                        <span id="ProductPrice-product-template"><span class="money">$788.00</span></span>
+                                        <span id="ProductPrice-product-template"><span class="money">${{product.discounted_price}}</span></span>
                                     </span>
                                     <span class="discount-badge"> <span class="devider">|</span>&nbsp;
                                         <span>You Save</span>
                                         <span id="SaveAmount-product-template" class="product-single__save-amount">
-                                        <span class="money">$100.00</span>
+                                        <span class="money">${{you_saved}}</span>
                                         </span>
-                                        <span class="off">(<span>16</span>%)</span>
+                                        <span class="off">(<span>{{percentage_saved}}</span>%)</span>
                                     </span>  
                                 </p>
                             <div class="product-single__description rte">
                                 <ul>
-                                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit</li>
+                                    <li>Product description in bullets.</li>
                                     <li>Sed ut perspiciatis unde omnis iste natus error sit</li>
                                     <li>Neque porro quisquam est qui dolorem ipsum quia dolor</li>
                                     <li>Lorem Ipsum is not simply random text.</li>
                                 </ul>
                             </div>
-                            <div id="quantity_message">Hurry! Only  <span class="items">4</span>  left in stock.</div>
-                            <form method="post" action="http://annimexweb.com/cart/add" id="product_form_10508262282" accept-charset="UTF-8" class="product-form product-form-product-template hidedropdown" enctype="multipart/form-data">
+                            
+                            {% if product.stock <= 5 %}
+                            <div id="quantity_message">Hurry! Only  <span class="items">{{product.stock}}</span>  left in stock.</div>
+                            {% endif %}
+                            <form method="post" action="{% url 'add_to_cart' product.slug %}" id="product_form_10508262282" accept-charset="UTF-8" class="product-form product-form-product-template hidedropdown" enctype="multipart/form-data">
                                 <div class="swatch clearfix swatch-0 option1" data-option-index="0">
-                                    <div class="product-form__item">
-                                      <label class="header">Color: <span class="slVariant">Red</span></label>
-                                      <div data-value="Black" class="swatch-element color black available">
-                                        <input class="swatchInput" id="swatch-0-black" type="radio" name="option-0" value="Black"><label class="swatchLbl color small rounded" for="swatch-0-black" style="background-color:black;" title="Black"></label>
-                                      </div>
-                                      <div data-value="Maroon" class="swatch-element color maroon available">
-                                        <input class="swatchInput" id="swatch-0-maroon" type="radio" name="option-0" value="Maroon"><label class="swatchLbl color small rounded" for="swatch-0-maroon" style="background-color:maroon;" title="Maroon"></label>
-                                      </div>
-                                      <div data-value="Blue" class="swatch-element color blue available">
-                                        <input class="swatchInput" id="swatch-0-blue" type="radio" name="option-0" value="Blue"><label class="swatchLbl color small rounded" for="swatch-0-blue" style="background-color:blue;" title="Blue"></label>
-                                      </div>
-                                      <div data-value="Dark Green" class="swatch-element color dark-green available">
-                                        <input class="swatchInput" id="swatch-0-dark-green" type="radio" name="option-0" value="Dark Green"><label class="swatchLbl color small rounded" for="swatch-0-dark-green" style="background-color:darkgreen;" title="Dark Green"></label>
-                                      </div>
-                                      <div data-value="aqua" class="swatch-element color aqua available">
-                                          <input class="swatchInput" id="swatch-0-aqua" type="radio" name="option-0" value="aqua"><label class="swatchLbl color small flat rounded" for="swatch-0-aqua" style="background-color:aqua;" title="aqua"></label></div>
+                                  {% for color in product.available_colors.all %}
+                                    <div data-value="{{color.name}}" class="swatch-element color {{color.name|lower}} available">
+                                      <input class="swatchInput" id="swatch-{{forloop.counter}}-{{color.name|lower}}" type="radio" name="option-0" value="{{color.name}}"><label class="swatchLbl color small rounded" for="swatch-{{forloop.counter}}-{{color.name|lower}}" style="background-color:#{{color.code}};" title="{{color.name}}"></label>
                                     </div>
+                                  {% endfor %}
                                 </div>
                                 <div class="swatch clearfix swatch-1 option2" data-option-index="1">
                                     <div class="product-form__item">

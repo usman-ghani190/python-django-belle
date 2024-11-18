@@ -42,7 +42,15 @@ def product_page(request, slug):
     variants= ProductImage.objects.all()  # Or adjust this to show a default set
     big_variants= ProductBigImage.objects.all()
 
-    context= {'product':product, 'variants':variants, 'big_variants':big_variants,}
+    if product.price and product.discounted_price:
+        you_saved = product.price - product.discounted_price
+        # Calculate the percentage savings
+        percentage_saved = (you_saved / product.price) * 100
+    else:
+        you_saved = None
+        percentage_saved = None
+
+    context= {'product':product, 'variants':variants, 'big_variants':big_variants, 'you_saved':you_saved, 'percentage_saved':percentage_saved}
     return render(request, 'app/product_page.html', context)
 
 def cart_page(request):
