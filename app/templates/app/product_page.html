@@ -439,9 +439,8 @@
                             {% if product.stock <= 5 %}
                             <div id="quantity_message">Hurry! Only  <span class="items">{{product.stock}}</span>  left in stock.</div>
                             {% endif %}
-                            <form method="post" action="{% url 'add_to_cart' product.slug %}" id="product_form_10508262282" accept-charset="UTF-8" class="product-form product-form-product-template hidedropdown" enctype="multipart/form-data">
+                            <form   id="product_form_10508262282" accept-charset="UTF-8" class="product-form product-form-product-template hidedropdown" enctype="multipart/form-data">
                                 <div class="swatch clearfix swatch-0 option1" data-option-index="0">
-                                  <label class="header">Color: <span id="selected-color" class="slVariant">Red</span></label>
                                   {% for color in product.available_colors.all %}
                                     <div data-value="{{color.name}}" class="swatch-element color {{color.name|lower}} available">
                                       <input class="swatchInput" id="swatch-{{forloop.counter}}-{{color.name|lower}}" type="radio" name="option-0" value="{{color.name}}"><label class="swatchLbl color small rounded" for="swatch-{{forloop.counter}}-{{color.name|lower}}" style="background-color:#{{color.code}};" title="{{color.name}}"></label>
@@ -470,18 +469,21 @@
                                                 <a class="qtyBtn plus" href="javascript:void(0);"><i class="fa anm anm-plus-r" aria-hidden="true"></i></a>
                                             </div>
                                         </div>
-                                    </div>                                
+                                    </div>             
+                                    
                                     <div class="product-form__item--submit">
-                                        <button type="button" name="add" class="btn product-form__cart-submit">
+                                        <button type="submit" name="action" value="add_to_cart" class="btn product-form__cart-submit">
                                             <span>Add to cart</span>
                                         </button>
-                                    </div>
+                                    </div></a>
+
                                     <div class="shopify-payment-button" data-shopify="payment-button">
-                                        <button type="button" class="shopify-payment-button__button shopify-payment-button__button--unbranded">Buy it now</button>
+                                        <button type="button" name="action" value="buy_now" class="shopify-payment-button__button shopify-payment-button__button--unbranded">Buy it now</button>
                                     </div>
                                 </div>
                                 <!-- End Product Action -->
                             </form>
+                            
                             <div class="display-table shareRow">
                                     <div class="display-table-cell medium-up--one-third">
                                         <div class="wishlist-btn">

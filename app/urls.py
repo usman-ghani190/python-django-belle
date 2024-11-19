@@ -13,10 +13,9 @@ from django.urls import include, path
 #     path('shop/product/', views.product_page, name='product'),
 #     path('shop/cart', views.cart_page, name='cart'),
 #     path('shop/list_view', views.listview, name='listview'),
-#     path('cart/add/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
+#     path('cart/add/<slug:slug>/', views.add_to_cart, name='add_to_cart'),
 #     path('checkout/', views.checkout, name='checkout'),
 #     path('checkout/buy-now/<int:product_id>/', views.buy_now, name='buy_now'),
-
 
 # ]
 
@@ -31,8 +30,6 @@ urlpatterns = [
         path('product/<slug:slug>/', views.product_page, name='product'),
         path('cart/', views.cart_page, name='cart'),
         path('list_view/', views.listview, name='listview'),
-        # path('add/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
-        # Update the URL pattern to use the slug
         path('cart/add/<slug:slug>/', views.add_to_cart, name='add_to_cart'),
         path('wishlist/<slug:slug>/', views.wishlist, name='wishlist'),
         path('checkout/', views.checkout, name='checkout'),

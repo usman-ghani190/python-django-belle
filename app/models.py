@@ -111,3 +111,25 @@ class SliderImages(models.Model):
 
     def __str__(self):
         return self.title
+    
+# Models (for cart and order)
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    def add_item(self, product, quantity):
+        cart_item, created = CartItem.objects.get_or_create(cart=self, product=product)
+        cart_item.quantity += quantity
+        cart_item.save()
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    status = models.CharField(max_length=50, default='pending')
+    # Additional fields like payment status, shipping details, etc.
+
