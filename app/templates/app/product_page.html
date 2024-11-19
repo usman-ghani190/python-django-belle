@@ -439,7 +439,8 @@
                             {% if product.stock <= 5 %}
                             <div id="quantity_message">Hurry! Only  <span class="items">{{product.stock}}</span>  left in stock.</div>
                             {% endif %}
-                            <form   id="product_form_10508262282" accept-charset="UTF-8" class="product-form product-form-product-template hidedropdown" enctype="multipart/form-data">
+                            <form   id="product_form_{{ product.id }}" accept-charset="UTF-8" class="product-form product-form-product-template hidedropdown" enctype="multipart/form-data" method="POST">
+                              {% csrf_token %}
                                 <div class="swatch clearfix swatch-0 option1" data-option-index="0">
                                   {% for color in product.available_colors.all %}
                                     <div data-value="{{color.name}}" class="swatch-element color {{color.name|lower}} available">
