@@ -34,6 +34,7 @@ urlpatterns = [
         path('wishlist/<slug:slug>/', views.wishlist, name='wishlist'),
         path('checkout/', views.checkout, name='checkout'),
     ])),
-    path('checkout/buy-now/<int:product_id>/', views.buy_now, name='buy_now'),
+    path('shop/checkout/', views.checkout, name='checkout'),
+
 ]
 

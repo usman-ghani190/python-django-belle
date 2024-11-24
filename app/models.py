@@ -114,7 +114,11 @@ class SliderImages(models.Model):
     
 # Models (for cart and order)
 class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    session_key = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return f"Cart (User: {self.user}, Session: {self.session_key})"
     
     def add_item(self, product, quantity):
         cart_item, created = CartItem.objects.get_or_create(cart=self, product=product)
