@@ -209,6 +209,16 @@ def product_page(request, slug):
     variants = ProductImage.objects.all()
     big_variants = ProductBigImage.objects.all()
     reviews = product.reviews.all()  # Fetch all reviews for the product
+    related_products = Product.objects.exclude(id=product.id)[:4]
+
+     # Fetch recently viewed products from session
+    recently_viewed = request.session.get('recently_viewed', [])
+    if product.id not in recently_viewed:
+        recently_viewed.append(product.id)
+        # Limit the number of stored products (e.g., 5)
+        if len(recently_viewed) > 5:
+            recently_viewed.pop(0)
+    request.session['recently_viewed'] = recently_viewed
 
     # Calculate savings
     you_saved, percentage_saved = None, None
@@ -218,7 +228,7 @@ def product_page(request, slug):
 
     # Handle ReviewForm submission
     review_form = ReviewForm()
-    if request.method == 'POST' and 'review_submit' in request.POST:
+    if request.method == 'POST':
         review_form = ReviewForm(request.POST)
         if review_form.is_valid():
             # Save the form data and associate with the product
@@ -247,6 +257,8 @@ def product_page(request, slug):
         'reviews': reviews,
         'review_form': review_form,
         'form': form,
+        'related_products':related_products,
+        
     }
 
     return render(request, 'app/product_page.html', context)

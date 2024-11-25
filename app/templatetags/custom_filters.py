@@ -8,3 +8,7 @@ def negative(value):
         return -int(value)
     except (ValueError, TypeError):
         return value  # Return the original value if conversion fails
+
+@register.filter
+def range_filter(value):
+    return range(value)

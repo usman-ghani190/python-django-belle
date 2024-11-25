@@ -580,41 +580,22 @@
                                                     </form>
                                                 </div>
                                                 <div class="spr-reviews">
-                                                    <div class="spr-review">
+                                                      {% for review in reviews %}
+                                                    <div class="spr-review"> 
                                                         <div class="spr-review-header">
-                                                            <span class="product-review spr-starratings spr-review-header-starratings"><span class="reviewLink"><i class="fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i></span></span>
-                                                            <h3 class="spr-review-header-title">Lorem ipsum dolor sit amet</h3>
-                                                            <span class="spr-review-header-byline"><strong>dsacc</strong> on <strong>Apr 09, 2019</strong></span>
+                                                            <span class="product-review spr-starratings spr-review-header-starratings">
+                                                              <span class="reviewLink">
+                                                               Ratings: {{review.rating}}
+                                                             </span>
+                                                            </span>
+                                                            <h3 class="spr-review-header-title">{{review.review_title}}</h3>
+                                                            <span class="spr-review-header-byline"><strong>{{review.name}}</strong> on <strong>{{review.created_at}}</strong></span>
                                                         </div>
                                                         <div class="spr-review-content">
-                                                            <p class="spr-review-content-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                                                            <p class="spr-review-content-body">{{review.comment}}</p>
                                                         </div>
                                                     </div>
-                                                    <div class="spr-review">
-                                                      <div class="spr-review-header">
-                                                        <span class="product-review spr-starratings spr-review-header-starratings"><span class="reviewLink"><i class="fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i></span></span>
-                                                        <h3 class="spr-review-header-title">Lorem Ipsum is simply dummy text of the printing</h3>
-                                                        <span class="spr-review-header-byline"><strong>larrydude</strong> on <strong>Dec 30, 2018</strong></span>
-                                                      </div>
-                                                
-                                                      <div class="spr-review-content">
-                                                        <p class="spr-review-content-body"><br><br>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.<br><br>
-                                                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.<br><br>Lorem Ipsum is simply dummy text of the printing and typesetting industry.<br>
-                                                        </p>
-                                                      </div>
-                                                    </div>
-                                                    <div class="spr-review">
-                                                      <div class="spr-review-header">
-                                                        <span class="product-review spr-starratings spr-review-header-starratings"><span class="reviewLink"><i class="fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i></span></span>
-                                                        <h3 class="spr-review-header-title">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</h3>
-                                                        <span class="spr-review-header-byline"><strong>quoctri1905</strong> on <strong>Dec 30, 2018</strong></span>
-                                                      </div>
-                                                
-                                                      <div class="spr-review-content">
-                                                        <p class="spr-review-content-body">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.<br>
-                                                        <br>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                                      </div>
-                                                    </div>
+                                                      {% endfor %} 
                                                 </div>
                                             </div>
                                             </div>
@@ -717,7 +698,7 @@
                                       </tbody>
                                     </table>
                                     <div class="text-center">
-                                        <img src="assets/images/size.jpg" alt="" />
+                                        <img src="{% static 'images/size.jpg' %}" alt="" />
                                     </div>
                               </div>
                                 
@@ -741,19 +722,19 @@
                         <div class="prFeatures">
                             <div class="row">
                                 <div class="feature">
-                                    <img src="assets/images/credit-card.png" alt="Safe Payment" title="Safe Payment" />
+                                    <img src="{% static 'images/credit-card.png' %}" alt="Safe Payment" title="Safe Payment" />
                                     <div class="details"><h5>Safe Payment</h5>Pay with the world's most payment methods.</div>
                                 </div>
                                 <div class="feature">
-                                    <img src="assets/images/shield.png" alt="Confidence" title="Confidence" />
+                                    <img src="{% static 'images/shield.png' %}" alt="Confidence" title="Confidence" />
                                     <div class="details"><h5>Confidence</h5>Protection covers your purchase and personal data.</div>
                                 </div>
                                 <div class="feature">
-                                    <img src="assets/images/worldwide.png" alt="Worldwide Delivery" title="Worldwide Delivery" />
+                                    <img src="{% static 'images/worldwide.png' %}" alt="Worldwide Delivery" title="Worldwide Delivery" />
                                     <div class="details"><h5>Worldwide Delivery</h5>FREE &amp; fast shipping to over 200+ countries &amp; regions.</div>
                                 </div>
                                 <div class="feature">
-                                    <img src="assets/images/phone-call.png" alt="Hotline" title="Hotline" />
+                                    <img src="{% static 'images/phone-call.png' %}" alt="Hotline" title="Hotline" />
                                     <div class="details"><h5>Hotline</h5>Talk to help line for your question on 4141 456 789, 4125 666 888</div>
                                 </div>
                             </div>
@@ -762,106 +743,41 @@
                         <!--Related Product-->
                         <div class="related-product grid-products">
                           <header class="section-header">
-                                <h2 class="section-header__title text-center h2"><span>Related Products</span></h2>
-                                <p class="sub-heading">You can stop autoplay, increase/decrease aniamtion speed and number of grid to show and products from store admin.</p>
+                                <h2 class="section-header__title text-center h2"><span>Featured Products</span></h2>
+                                <p class="sub-heading">You can manage this section from store admin as describe in above section</p>
                             </header>
-                            <div class="grid">
-                                <div class="grid__item">
-                                  <div class="mini-list-item">
-                                    <div class="mini-view_image">
-                                        <a class="grid-view-item__link" href="#">
-                                            <img class="grid-view-item__image" src="assets/images/product-images/product-image21.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="details">
-                                      <a class="grid-view-item__title" href="#">Cena Skirt</a>
-                                        <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">$173.60</span></span></div>
-                                        <div class="product-review">
-                                            <i class="font-13 fa fa-star"></i>
-                                            <i class="font-13 fa fa-star"></i>
-                                            <i class="font-13 fa fa-star"></i>
-                                            <i class="font-13 fa fa-star"></i>
-                                            <i class="font-13 fa fa-star"></i>
-                                        </div>
-                                    </div>
+                             {% for p in related_products %}
+                              <div class="grid">
+                                  <div class="grid__item">
+                                      <div class="mini-list-item">
+                                          <div class="mini-view_image">
+                                              <a class="grid-view-item__link" href="{% url 'product' slug=product.slug %}">
+                                                  <img class="grid-view-item__image" src="{{ p.main_image.url }}" alt="{{ p.name }}">
+                                              </a>
+                                          </div>
+                                          <div class="details">
+                                              <a class="grid-view-item__title" href="{% url 'product' slug=product.slug %}">
+                                                  {{ p.name }}
+                                              </a>
+                                              <div class="grid-view-item__meta">
+                                                  <span class="product-price__price">
+                                                      <span class="money">${{ p.price }}</span>
+                                                  </span>
+                                              </div>
+                                              <div class="product-review">
+                                                 {% for i in stars %}
+                                                        {% if i < rating %}
+                                                            <i class="font-13 fa fa-star"></i>
+                                                        {% else %}
+                                                            <i class="font-13 fa fa-star-o"></i>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                              </div>
+                                          </div>
+                                      </div>
                                   </div>
-                                </div>
-                                <div class="grid__item">
-                                  <div class="mini-list-item">
-                                    <div class="mini-view_image"> <a class="grid-view-item__link" href="#"><img class="grid-view-item__image" src="assets/images/product-images/product-image18.jpg" alt=""></a> </div>
-                                    <div class="details"> <a class="grid-view-item__title" href="#">Block Button Up</a>
-                                      <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">$378.00</span></span></div>
-                                      <div class="product-review">
-                                            <i class="font-13 fa fa-star"></i>
-                                            <i class="font-13 fa fa-star"></i>
-                                            <i class="font-13 fa fa-star"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                        </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div class="grid__item">
-                                  <div class="mini-list-item">
-                                    <div class="mini-view_image"> <a class="grid-view-item__link" href="#"><img class="grid-view-item__image" src="assets/images/product-images/product-image22.jpg" alt=""></a> </div>
-                                    <div class="details"> <a class="grid-view-item__title" href="#">Balda Button Pant</a>
-                                      <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">$278.60</span></span></div>
-                                      <div class="product-review">
-                                            <i class="font-13 fa fa-star"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                        </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div class="grid__item">
-                                  <div class="mini-list-item">
-                                    <div class="mini-view_image"> <a class="grid-view-item__link" href="#"><img class="grid-view-item__image" src="assets/images/product-images/product-image23.jpg" alt=""></a> </div>
-                                    <div class="details"> <a class="grid-view-item__title" href="#">Border Dress in Black/Silver</a>
-                                      <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">$228.00</span></span></div>
-                                      <div class="product-review">
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                        </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div class="grid__item">
-                                  <div class="mini-list-item">
-                                    <div class="mini-view_image"><a class="grid-view-item__link" href="#"><img class="grid-view-item__image" src="assets/images/product-images/product-image24.jpg" alt=""></a> </div>
-                                    <div class="details"> <a class="grid-view-item__title" href="#">Buttercup Dress</a>
-                                      <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">$199.00</span></span></div>
-                                      <div class="product-review">
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                        </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div class="grid__item">
-                                  <div class="mini-list-item">
-                                    <div class="mini-view_image"><a class="grid-view-item__link" href="#"><img class="grid-view-item__image" src="assets/images/product-images/product-image25.jpg" alt=""></a> </div>
-                                    <div class="details"> <a class="grid-view-item__title" href="#">Lima Shirt</a>
-                                      <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">$698.00</span></span></div>
-                                      <div class="product-review">
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star"></i>
-                                            <i class="font-13 fa fa-star"></i>
-                                            <i class="font-13 fa fa-star"></i>
-                                            <i class="font-13 fa fa-star"></i>
-                                        </div>
-                                    </div>
-                                  </div>
-                                </div>
-                             </div>
+                              </div>
+                              {% endfor %}
                         </div>
                          <!--End Related Product-->
                         <!--Recently Viewed Product-->
@@ -870,103 +786,39 @@
                                 <h2 class="section-header__title text-center h2"><span>Recently Viewed Product</span></h2>
                                 <p class="sub-heading">You can manage this section from store admin as describe in above section</p>
                             </header>
-                            <div class="grid">
-                                <div class="grid__item">
-                                  <div class="mini-list-item">
-                                    <div class="mini-view_image">
-                                        <a class="grid-view-item__link" href="#">
-                                            <img class="grid-view-item__image" src="assets/images/product-images/product-image1.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="details">
-                                      <a class="grid-view-item__title" href="#">Camelia Reversible Jacket</a>
-                                        <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">$199.60</span></span></div>
-                                        <div class="product-review">
-                                            <i class="font-13 fa fa-star"></i>
-                                            <i class="font-13 fa fa-star"></i>
-                                            <i class="font-13 fa fa-star"></i>
-                                            <i class="font-13 fa fa-star"></i>
-                                            <i class="font-13 fa fa-star"></i>
-                                        </div>
-                                    </div>
+
+                            {% for p in related_products %}
+                              <div class="grid">
+                                  <div class="grid__item">
+                                      <div class="mini-list-item">
+                                          <div class="mini-view_image">
+                                              <a class="grid-view-item__link" href="{% url 'product' slug=product.slug %}">
+                                                  <img class="grid-view-item__image" src="{{ p.main_image.url }}" alt="{{ p.name }}">
+                                              </a>
+                                          </div>
+                                          <div class="details">
+                                              <a class="grid-view-item__title" href="{% url 'product' slug=product.slug %}">
+                                                  {{ p.name }}
+                                              </a>
+                                              <div class="grid-view-item__meta">
+                                                  <span class="product-price__price">
+                                                      <span class="money">${{ p.price }}</span>
+                                                  </span>
+                                              </div>
+                                              <div class="product-review">
+                                                 {% for i in stars %}
+                                                        {% if i < rating %}
+                                                            <i class="font-13 fa fa-star"></i>
+                                                        {% else %}
+                                                            <i class="font-13 fa fa-star-o"></i>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                              </div>
+                                          </div>
+                                      </div>
                                   </div>
-                                </div>
-                                <div class="grid__item">
-                                  <div class="mini-list-item">
-                                    <div class="mini-view_image"> <a class="grid-view-item__link" href="#"><img class="grid-view-item__image" src="assets/images/product-images/product-image42.jpg" alt=""></a> </div>
-                                    <div class="details"> <a class="grid-view-item__title" href="#">Cape Dress</a>
-                                      <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">$378.00</span></span></div>
-                                      <div class="product-review">
-                                            <i class="font-13 fa fa-star"></i>
-                                            <i class="font-13 fa fa-star"></i>
-                                            <i class="font-13 fa fa-star"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                        </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div class="grid__item">
-                                  <div class="mini-list-item">
-                                    <div class="mini-view_image"> <a class="grid-view-item__link" href="#"><img class="grid-view-item__image" src="assets/images/product-images/product-image40.jpg" alt=""></a> </div>
-                                    <div class="details"> <a class="grid-view-item__title" href="#">Raglan Maniche Coat in Olive</a>
-                                      <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">$278.60</span></span></div>
-                                      <div class="product-review">
-                                            <i class="font-13 fa fa-star"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                        </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div class="grid__item">
-                                  <div class="mini-list-item">
-                                    <div class="mini-view_image"> <a class="grid-view-item__link" href="#"><img class="grid-view-item__image" src="assets/images/product-images/product-image46.jpg" alt=""></a> </div>
-                                    <div class="details"> <a class="grid-view-item__title" href="#">Riga Jacket in Tar</a>
-                                      <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">$228.00</span></span></div>
-                                      <div class="product-review">
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                        </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div class="grid__item">
-                                  <div class="mini-list-item">
-                                    <div class="mini-view_image"><a class="grid-view-item__link" href="#"><img class="grid-view-item__image" src="assets/images/product-images/product-image45.jpg" alt=""></a> </div>
-                                    <div class="details"> <a class="grid-view-item__title" href="#">Reversible Quilted Coat</a>
-                                      <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">$199.00</span></span></div>
-                                      <div class="product-review">
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                        </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div class="grid__item">
-                                  <div class="mini-list-item">
-                                    <div class="mini-view_image"><a class="grid-view-item__link" href="#"><img class="grid-view-item__image" src="assets/images/product-images/product-image44.jpg" alt=""></a> </div>
-                                    <div class="details"> <a class="grid-view-item__title" href="#">Reversible Quilted Coat</a>
-                                      <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">$698.00</span></span></div>
-                                      <div class="product-review">
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star"></i>
-                                            <i class="font-13 fa fa-star"></i>
-                                            <i class="font-13 fa fa-star"></i>
-                                            <i class="font-13 fa fa-star"></i>
-                                        </div>
-                                    </div>
-                                  </div>
-                                </div>
-                             </div>
+                              </div>
+                              {% endfor %}
                         </div>
                          <!--End Recently Viewed Product-->
                     </div>
@@ -1081,7 +933,7 @@
     </tr>
   </tbody>
 </table>
-<div style="padding-left: 30px;"><img src="assets/images/size.jpg" alt=""></div>
+<div style="padding-left: 30px;"><img src="{% static 'images/size.jpg' %}" alt=""></div>
 </div>
 </div>
 <div class="hide">
@@ -1164,48 +1016,6 @@
 </div>
 
 <!-- Including Jquery -->
-
-{% comment %} <script>
-$(function(){
-    var $pswp = $('.pswp')[0],
-        image = [],
-        getItems = function() {
-            var items = [];
-            $('.lightboximages a').each(function() {
-                var $href   = $(this).attr('href'),
-                    $size   = $(this).data('size').split('x'),
-                    item = {
-                        src : $href,
-                        w: $size[0],
-                        h: $size[1]
-                    }
-                    items.push(item);
-            });
-            return items;
-        }
-    var items = getItems();
-
-    $.each(items, function(index, value) {
-        image[index]     = new Image();
-        image[index].src = value['src'];
-    });
-    $('.prlightbox').on('click', function (event) {
-        event.preventDefault();
-      
-        var $index = $(".active-thumb").parent().attr('data-slick-index');
-        $index++;
-        $index = $index-1;
-
-        var options = {
-            index: $index,
-            bgOpacity: 0.9,
-            showHideOpacity: true
-        }
-        var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
-        lightBox.init();
-    });
-});
-</scrip> {% endcomment %}
 <script>
   $(function () {
     var $pswp = $('.pswp')[0],
