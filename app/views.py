@@ -33,9 +33,26 @@ def index(request, slug=None):
 def shop_page(request):
     categories = Category.objects.filter(parent__isnull=True)
     products = Product.objects.all()
+    colors= Color.objects.all()
+    sizes = Size.objects.all()
+    selected_size = request.GET.get('size') 
+
+    if selected_size:
+        # Filter products that have the selected size
+        products = products.filter(available_sizes__name=selected_size)
+
+    # Get the min and max price from the query parameters
+    price = request.GET.get('amount')
+
+    # Filter products based on the price range
+    if price:
+        products = products.filter(price__lte=price)
+
     context = {
         "categories": categories,
         "products": products,
+        'colors':colors,
+        'sizes':sizes,
     }
     return render(request, 'app/shop.html', context)
 
