@@ -1,6 +1,6 @@
 
 from django import forms
-from .models import OrderItem, ProductQueryAsk
+from .models import OrderItem, ProductQueryAsk, Review
 from django.utils.translation import gettext_lazy as _
 
 
@@ -55,6 +55,19 @@ class ProductQueryAskForm(forms.ModelForm):
             'message': forms.Textarea(attrs={
                 'placeholder': 'Message', 'class': 'form-control', 'rows': 10
             }),
+        }
+
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['name', 'email', 'rating', 'review_title', 'comment']
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': 'Enter your name'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'john.smith@example.com'}),
+            'rating': forms.NumberInput(attrs={'min': 1, 'max': 5}),
+            'review_title': forms.TextInput(attrs={'placeholder': 'Give your review a title'}),
+            'comment': forms.Textarea(attrs={'rows': 5, 'placeholder': 'Write your review here'}),
         }
         
         

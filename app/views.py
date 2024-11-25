@@ -6,7 +6,7 @@ from django.urls import reverse
 
 
 
-from app.forms import OrderItemForm, ProductQueryAskForm
+from app.forms import OrderItemForm, ProductQueryAskForm, ReviewForm
 from app.models import Cart, CartItem, Color, Order, OrderItem, Product, ProductBigImage, ProductImage, Size, SliderImages
 
 # Create your views here.
@@ -99,10 +99,116 @@ def add_to_cart(request, product, quantity):
 
 
 
+# def product_page(request, slug):
+#     product = get_object_or_404(Product, slug=slug)
+#     variants = ProductImage.objects.all()
+#     big_variants = ProductBigImage.objects.all()
+#     reviews = product.reviews.all()  # Get reviews for the product
+#     review_form = ReviewForm()
+
+#     # Calculate savings
+#     you_saved, percentage_saved = None, None
+#     if product.price and product.discounted_price:
+#         you_saved = product.price - product.discounted_price
+#         percentage_saved = (you_saved / product.price) * 100
+
+#     # Form handling for ProductQueryAskForm
+#     form = ProductQueryAskForm(request.POST or None)
+#     if request.method == 'POST' and form.is_valid():
+#         form.save()
+#         messages.success(request, "Your query has been submitted successfully!")
+#         return redirect('product', slug=slug)
+#     elif request.method == 'POST':
+#         messages.error(request, "There was an error submitting your query. Please correct the form.")
+
+#     # Handle Add to Cart and Buy Now actions
+#     if request.method == 'POST':
+#         action = request.POST.get('action')
+#         quantity = int(request.POST.get('quantity', 1))  # Default to 1 if quantity is not provided
+
+#         if action == 'add_to_cart':
+#             return add_to_cart(request, product, quantity)
+#         elif action == 'buy_now':
+#             return buy_now(request, product, quantity)
+
+#     # Context for the template
+#     context = {
+#         'product': product,
+#         'variants': variants,
+#         'big_variants': big_variants,
+#         'you_saved': you_saved,
+#         'percentage_saved': percentage_saved,
+#         'form': form,
+#         'reviews':reviews,
+#         'review_form':review_form,
+        
+#     }
+
+#     return render(request, 'app/product_page.html', context)
+
+# def product_page(request, slug):
+#     product = get_object_or_404(Product, slug=slug)
+#     variants = ProductImage.objects.all()
+#     big_variants = ProductBigImage.objects.all()
+#     reviews = product.reviews.all()  # Get reviews for the product
+#     review_form = ReviewForm()
+
+#     # Calculate savings
+#     you_saved, percentage_saved = None, None
+#     if product.price and product.discounted_price:
+#         you_saved = product.price - product.discounted_price
+#         percentage_saved = (you_saved / product.price) * 100
+
+#     # Form handling for ProductQueryAskForm
+#     form = ProductQueryAskForm(request.POST or None)
+#     if request.method == 'POST' and form.is_valid():
+#         form.save()
+#         messages.success(request, "Your query has been submitted successfully!")
+#         return redirect('product', slug=slug)
+#     elif request.method == 'POST':
+#         messages.error(request, "There was an error submitting your query. Please correct the form.")
+
+#     # Handle ReviewForm submission
+#     if request.method == 'POST' and 'review_submit' in request.POST:
+#         review_form = ReviewForm(request.POST)
+#         if review_form.is_valid():
+#             review = review_form.save(commit=False)
+#             review.product = product  # Associate the review with the product
+#             review.save()
+#             messages.success(request, "Your review has been submitted successfully!")
+#             return redirect('product', slug=slug)
+#         else:
+#             messages.error(request, "There was an error submitting your review. Please correct the form.")
+
+#     # Handle Add to Cart and Buy Now actions
+#     if request.method == 'POST':
+#         action = request.POST.get('action')
+#         quantity = int(request.POST.get('quantity', 1))  # Default to 1 if quantity is not provided
+
+#         if action == 'add_to_cart':
+#             return add_to_cart(request, product, quantity)
+#         elif action == 'buy_now':
+#             return buy_now(request, product, quantity)
+
+#     # Context for the template
+#     context = {
+#         'product': product,
+#         'variants': variants,
+#         'big_variants': big_variants,
+#         'you_saved': you_saved,
+#         'percentage_saved': percentage_saved,
+#         'form': form,
+#         'reviews': reviews,
+#         'review_form': review_form,
+#     }
+
+#     return render(request, 'app/product_page.html', context)
+
 def product_page(request, slug):
     product = get_object_or_404(Product, slug=slug)
     variants = ProductImage.objects.all()
     big_variants = ProductBigImage.objects.all()
+    reviews = product.reviews.all()  # Fetch all reviews for the product
 
     # Calculate savings
     you_saved, percentage_saved = None, None
@@ -110,24 +216,26 @@ def product_page(request, slug):
         you_saved = product.price - product.discounted_price
         percentage_saved = (you_saved / product.price) * 100
 
-    # Form handling for ProductQueryAskForm
+    # Handle ReviewForm submission
+    review_form = ReviewForm()
+    if request.method == 'POST' and 'review_submit' in request.POST:
+        review_form = ReviewForm(request.POST)
+        if review_form.is_valid():
+            # Save the form data and associate with the product
+            review = review_form.save(commit=False)
+            review.product = product  # Link the review to the product
+            review.save()  # Save the review to the database
+            messages.success(request, "Your review has been submitted successfully!")
+            return redirect('product', slug=slug)  # Redirect to avoid form resubmission
+        else:
+            messages.error(request, "There was an error submitting your review. Please correct the form.")
+
+    # Handle ProductQueryAskForm submission (untouched logic)
     form = ProductQueryAskForm(request.POST or None)
-    if request.method == 'POST' and form.is_valid():
+    if request.method == 'POST' and form.is_valid() and 'query_submit' in request.POST:
         form.save()
         messages.success(request, "Your query has been submitted successfully!")
         return redirect('product', slug=slug)
-    elif request.method == 'POST':
-        messages.error(request, "There was an error submitting your query. Please correct the form.")
-
-    # Handle Add to Cart and Buy Now actions
-    if request.method == 'POST':
-        action = request.POST.get('action')
-        quantity = int(request.POST.get('quantity', 1))  # Default to 1 if quantity is not provided
-
-        if action == 'add_to_cart':
-            return add_to_cart(request, product, quantity)
-        elif action == 'buy_now':
-            return buy_now(request, product, quantity)
 
     # Context for the template
     context = {
@@ -136,12 +244,12 @@ def product_page(request, slug):
         'big_variants': big_variants,
         'you_saved': you_saved,
         'percentage_saved': percentage_saved,
+        'reviews': reviews,
+        'review_form': review_form,
         'form': form,
     }
 
     return render(request, 'app/product_page.html', context)
-
-
 # def cart_page(request):
 #     # Assuming you have a Cart model to fetch cart items for the user
 #     cart = Cart.objects.get_or_create(user=request.user)
