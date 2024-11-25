@@ -7,7 +7,7 @@
     <div id="page-content">
     	<!--Collection Banner-->
     <div>
-        <div class="collection-header">
+        <div class="collection-header" style="padding-bottom:45px;">
 			<div class="collection-hero">
         		<div class="collection-hero__image"><img class="blur-up lazyload" data-src="{% static 'images/shop/cat-women.jpg' %}" src="{% static 'images/shop/cat-women.jpg' %}" alt="Women" title="Women" /></div>
         		<div class="collection-hero__title-wrapper"><h1 class="collection-hero__title page-width">Shop</h1></div>
@@ -24,32 +24,27 @@
                 	<div class="sidebar_tags">
                     	<!--Categories-->
                     	<div class="sidebar_widget categories filter-widget">
-                            <div class="widget-title"><h2>Categories</h2></div>
-                            <div class="widget-content">
-                                <ul class="sidebar_categories">
-                                    <li class="level1 sub-level"><a href="#;" class="site-nav">Clothing</a>
-                                    	<ul class="sublinks">
-                                        	<li class="level2"><a href="#;" class="site-nav">Men</a></li>
-                                            <li class="level2"><a href="#;" class="site-nav">Women</a></li>
-                                            <li class="level2"><a href="#;" class="site-nav">Child</a></li>
-                                            <li class="level2"><a href="#;" class="site-nav">View All Clothing</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="level1 sub-level"><a href="#;" class="site-nav">Jewellery</a>
-                                    	<ul class="sublinks">
-                                        	<li class="level2"><a href="#;" class="site-nav">Ring</a></li>
-                                            <li class="level2"><a href="#;" class="site-nav">Neckalses</a></li>
-                                            <li class="level2"><a href="#;" class="site-nav">Eaarings</a></li>
-                                            <li class="level2"><a href="#;" class="site-nav">View All Jewellery</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="lvl-1"><a href="#;" class="site-nav">Shoes</a></li>
-                                    <li class="lvl-1"><a href="#;" class="site-nav">Accessories</a></li>
-                                    <li class="lvl-1"><a href="#;" class="site-nav">Collections</a></li>
-                                    <li class="lvl-1"><a href="#;" class="site-nav">Sale</a></li>
-                                    <li class="lvl-1"><a href="#;" class="site-nav">Page</a></li>
-                                </ul>
-                            </div>
+                        <div class="widget-title">
+                                    <h2>Categories</h2>
+                                </div>
+                                <div class="widget-content">
+                                    <ul class="sidebar_categories">
+                                        {% for category in categories %}
+                                        <li class="level1 {% if category.subcategories.exists %}sub-level{% endif %}">
+                                            <a href="#" class="site-nav">{{ category.name }}</a>
+                                            {% if category.subcategories.exists %}
+                                            <ul class="sublinks">
+                                                {% for subcategory in category.subcategories.all %}
+                                                <li class="level2"><a href="#" class="site-nav">{{ subcategory.name }}</a></li>
+                                                {% endfor %}
+                                            </ul>
+                                            {% endif %}
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+
+
                         </div>
                         <!--Categories-->
                         <!--Price Filter-->
@@ -286,12 +281,12 @@
                                 <div class="list-view-item__image-column">
                                     <div class="list-view-item__image-wrapper">
                                         <!-- Image -->
-                                        <a href="{% url 'product' %}"><img class="list-view-item__image blur-up lazyload" data-src="{% static 'images/product-images/product-image1.jpg' %}" src="{% static 'images/product-images/product-image1.jpg' %}" alt="image" title="product"></a>
+                                        <a href="#"><img class="list-view-item__image blur-up lazyload" data-src="{% static 'images/product-images/product-image1.jpg' %}" src="{% static 'images/product-images/product-image1.jpg' %}" alt="image" title="product"></a>
                                         <!-- End Image -->
                                     </div>
                                 </div>
                                 <div class="list-view-item__title-column">
-                                    <div class="h4 grid-view-item__title"><a href="{% url 'product' %}">Camelia Reversible Jacket</a></div>
+                                    <div class="h4 grid-view-item__title"><a href="#">Camelia Reversible Jacket</a></div>
                                     <!-- Product Review -->
                                     <p class="product-review"><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star-o"></i><i class="font-13 fa fa-star-o"></i></p>
                                     <!-- End Product Review -->
@@ -315,12 +310,12 @@
                                 <div class="list-view-item__image-column">
                                     <div class="list-view-item__image-wrapper">
                                         <!-- Image -->
-                                        <a href="{% url 'product' %}"><img class="list-view-item__image blur-up lazyload" data-src="{% static 'images/product-images/product-image2.jpg' %}" src="{% static 'images/product-images/product-image2.jpg' %}" alt="image" title="product"></a>
+                                        <a href="#"><img class="list-view-item__image blur-up lazyload" data-src="{% static 'images/product-images/product-image2.jpg' %}" src="{% static 'images/product-images/product-image2.jpg' %}" alt="image" title="product"></a>
                                         <!-- End Image -->
                                     </div>
                                 </div>
                                 <div class="list-view-item__title-column">
-                                    <div class="h4 grid-view-item__title"><a href="{% url 'product' %}">Elastic Waist Dress</a></div>
+                                    <div class="h4 grid-view-item__title"><a href="#">Elastic Waist Dress</a></div>
                                     <!-- Product Review -->
                                     <p class="product-review"><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i></p>
                                     <!-- End Product Review -->
@@ -348,7 +343,7 @@
                                     </div>
                                 </div>
                                 <div class="list-view-item__title-column">
-                                    <div class="h4 grid-view-item__title"><a href="{% url 'product' %}">3/4 Sleeve Kimono Dress</a></div>
+                                    <div class="h4 grid-view-item__title"><a href="#">3/4 Sleeve Kimono Dress</a></div>
                                     <!-- Product Review -->
                                     <p class="product-review"><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i></p>
                                     <!-- End Product Review -->

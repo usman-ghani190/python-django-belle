@@ -7,7 +7,7 @@ from django.urls import reverse
 
 
 from app.forms import OrderItemForm, ProductQueryAskForm, ReviewForm
-from app.models import Cart, CartItem, Color, Order, OrderItem, Product, ProductBigImage, ProductImage, Size, SliderImages
+from app.models import Cart, CartItem, Category, Color, Order, OrderItem, Product, ProductBigImage, ProductImage, Size, SliderImages
 
 # Create your views here.
 def index(request, slug=None):
@@ -31,41 +31,17 @@ def index(request, slug=None):
     return render(request, 'app/index.html', context)
 
 def shop_page(request):
-    context= {}
+    categories = Category.objects.filter(parent__isnull=True)
+    products = Product.objects.all()
+    context = {
+        "categories": categories,
+        "products": products,
+    }
     return render(request, 'app/shop.html', context)
 
 
 
-# def add_to_cart(request, product, quantity):
-#     # Get the selected color and size from the form
-#     color_name = request.POST.get('option-0')  # This is the color
-#     size_name = request.POST.get('option-1')   # This is the size
-    
-#     print(f"Selected color: {color_name}, Selected size: {size_name}")
 
-#     # Ensure color and size are selected
-#     if not color_name or not size_name:
-#         messages.error(request, "Please select both color and size.")
-#         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))  # Go back to the product page if not selected
-    
-#     # Get the color and size objects by their name
-#     color = get_object_or_404(Color, name=color_name)
-#     size = get_object_or_404(Size, name=size_name)
-    
-#     # Get or create a cart for the user
-#     cart, created = Cart.objects.get_or_create(user=request.user)
-    
-#     # Check if the item already exists in the cart (same product, color, and size)
-#     cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product, color=color, size=size)
-    
-#     # Update the quantity if the item already exists in the cart
-#     cart_item.quantity += int(quantity)
-#     cart_item.save()
-
-#     print("Redirecting to cart...")
-    
-#     # Redirect to the cart page
-#     return HttpResponseRedirect(reverse('cart'))
 
 def add_to_cart(request, product, quantity):
     color_name = request.POST.get('option-0')
@@ -98,111 +74,6 @@ def add_to_cart(request, product, quantity):
     return redirect(reverse('cart'))
 
 
-
-# def product_page(request, slug):
-#     product = get_object_or_404(Product, slug=slug)
-#     variants = ProductImage.objects.all()
-#     big_variants = ProductBigImage.objects.all()
-#     reviews = product.reviews.all()  # Get reviews for the product
-#     review_form = ReviewForm()
-
-#     # Calculate savings
-#     you_saved, percentage_saved = None, None
-#     if product.price and product.discounted_price:
-#         you_saved = product.price - product.discounted_price
-#         percentage_saved = (you_saved / product.price) * 100
-
-#     # Form handling for ProductQueryAskForm
-#     form = ProductQueryAskForm(request.POST or None)
-#     if request.method == 'POST' and form.is_valid():
-#         form.save()
-#         messages.success(request, "Your query has been submitted successfully!")
-#         return redirect('product', slug=slug)
-#     elif request.method == 'POST':
-#         messages.error(request, "There was an error submitting your query. Please correct the form.")
-
-#     # Handle Add to Cart and Buy Now actions
-#     if request.method == 'POST':
-#         action = request.POST.get('action')
-#         quantity = int(request.POST.get('quantity', 1))  # Default to 1 if quantity is not provided
-
-#         if action == 'add_to_cart':
-#             return add_to_cart(request, product, quantity)
-#         elif action == 'buy_now':
-#             return buy_now(request, product, quantity)
-
-#     # Context for the template
-#     context = {
-#         'product': product,
-#         'variants': variants,
-#         'big_variants': big_variants,
-#         'you_saved': you_saved,
-#         'percentage_saved': percentage_saved,
-#         'form': form,
-#         'reviews':reviews,
-#         'review_form':review_form,
-        
-#     }
-
-#     return render(request, 'app/product_page.html', context)
-
-# def product_page(request, slug):
-#     product = get_object_or_404(Product, slug=slug)
-#     variants = ProductImage.objects.all()
-#     big_variants = ProductBigImage.objects.all()
-#     reviews = product.reviews.all()  # Get reviews for the product
-#     review_form = ReviewForm()
-
-#     # Calculate savings
-#     you_saved, percentage_saved = None, None
-#     if product.price and product.discounted_price:
-#         you_saved = product.price - product.discounted_price
-#         percentage_saved = (you_saved / product.price) * 100
-
-#     # Form handling for ProductQueryAskForm
-#     form = ProductQueryAskForm(request.POST or None)
-#     if request.method == 'POST' and form.is_valid():
-#         form.save()
-#         messages.success(request, "Your query has been submitted successfully!")
-#         return redirect('product', slug=slug)
-#     elif request.method == 'POST':
-#         messages.error(request, "There was an error submitting your query. Please correct the form.")
-
-#     # Handle ReviewForm submission
-#     if request.method == 'POST' and 'review_submit' in request.POST:
-#         review_form = ReviewForm(request.POST)
-#         if review_form.is_valid():
-#             review = review_form.save(commit=False)
-#             review.product = product  # Associate the review with the product
-#             review.save()
-#             messages.success(request, "Your review has been submitted successfully!")
-#             return redirect('product', slug=slug)
-#         else:
-#             messages.error(request, "There was an error submitting your review. Please correct the form.")
-
-#     # Handle Add to Cart and Buy Now actions
-#     if request.method == 'POST':
-#         action = request.POST.get('action')
-#         quantity = int(request.POST.get('quantity', 1))  # Default to 1 if quantity is not provided
-
-#         if action == 'add_to_cart':
-#             return add_to_cart(request, product, quantity)
-#         elif action == 'buy_now':
-#             return buy_now(request, product, quantity)
-
-#     # Context for the template
-#     context = {
-#         'product': product,
-#         'variants': variants,
-#         'big_variants': big_variants,
-#         'you_saved': you_saved,
-#         'percentage_saved': percentage_saved,
-#         'form': form,
-#         'reviews': reviews,
-#         'review_form': review_form,
-#     }
-
-#     return render(request, 'app/product_page.html', context)
 
 def product_page(request, slug):
     product = get_object_or_404(Product, slug=slug)
@@ -246,6 +117,18 @@ def product_page(request, slug):
         form.save()
         messages.success(request, "Your query has been submitted successfully!")
         return redirect('product', slug=slug)
+    
+     # Handle Add to Cart and Buy Now actions
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        quantity = int(request.POST.get('quantity', 1))  # Default to 1 if quantity is not provided
+
+        if action == 'add_to_cart':
+            return add_to_cart(request, product, quantity)
+        elif action == 'buy_now':
+            return buy_now(request, product, quantity)
+
+
 
     # Context for the template
     context = {
@@ -262,13 +145,8 @@ def product_page(request, slug):
     }
 
     return render(request, 'app/product_page.html', context)
-# def cart_page(request):
-#     # Assuming you have a Cart model to fetch cart items for the user
-#     cart = Cart.objects.get_or_create(user=request.user)
-#     context = {
-#         'cart': cart,  # Pass cart to the template
-#     }
-#     return render(request, 'app/cart.html', context)
+
+
 
 def cart_page(request):
     if request.user.is_authenticated:
@@ -294,61 +172,6 @@ def cart_page(request):
 
 
 
-
-
-# def buy_now(request, product, quantity):
-#     # Get the selected color and size from the form
-#     color_name = request.POST.get('option-0')
-#     size_name = request.POST.get('option-1')
-
-#     # Ensure color and size are selected
-#     if not color_name or not size_name:
-#         messages.error(request, "Please select both color and size.")
-#         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/')) 
-#     # Get the color and size objects by their name
-#     color = get_object_or_404(Color, name=color_name)
-#     size = get_object_or_404(Size, name=size_name)
-
-#     # Get or create a cart for the user
-#     cart, created = Cart.objects.get_or_create(user=request.user)
-
-#     # Check if the item already exists in the cart (same product, color, and size)
-#     cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product, color=color, size=size)
-
-#     # Update the quantity if the item already exists in the cart
-#     cart_item.quantity += int(quantity)
-#     cart_item.save()
-
-#     # Redirect to the checkout page
-#     return HttpResponseRedirect(reverse('checkout'))  
-
-# def buy_now(request, product, quantity):
-#     color_name = request.POST.get('option-0')
-#     size_name = request.POST.get('option-1')
-
-#     if not color_name or not size_name:
-#         messages.error(request, "Please select both color and size.")
-#         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-
-#     color = get_object_or_404(Color, name=color_name)
-#     size = get_object_or_404(Size, name=size_name)
-
-#     # Determine whether to use user or session_key
-#     if request.user.is_authenticated:
-#         cart, created = Cart.objects.get_or_create(user=request.user)
-#     else:
-#         session_key = request.session.session_key
-#         if not session_key:
-#             request.session.create()  # Create a new session if it doesn't exist
-#             session_key = request.session.session_key
-#         cart, created = Cart.objects.get_or_create(session_key=session_key)
-
-#     # Add or update the cart item
-#     cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product, color=color, size=size)
-#     cart_item.quantity += int(quantity)
-#     cart_item.save()
-
-#     return HttpResponseRedirect(reverse('checkout'))
 
 def buy_now(request, product, quantity):
     color_name = request.POST.get('option-0')
