@@ -8,6 +8,13 @@ from django.utils.text import slugify
 
 # Create your models here.
 
+class Brand(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
 class ProductQueryAsk(models.Model):  # Fixed typo in class name
     name = models.CharField(max_length=200)
     email = models.EmailField(max_length=150)
@@ -57,6 +64,7 @@ class Product(models.Model):
     discount_percentage = models.IntegerField(null=True, blank=True)
     limited_stock_message = models.CharField(max_length=255, null=True, blank=True)
     is_featured= models.BooleanField(default=False)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
 
 
     def __str__(self):
@@ -166,5 +174,7 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+    
 
     
