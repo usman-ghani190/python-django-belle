@@ -1,4 +1,3 @@
-from venv import logger
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
@@ -7,7 +6,7 @@ from django.urls import reverse
 
 
 from app.forms import OrderItemForm, ProductQueryAskForm, ReviewForm
-from app.models import Cart, CartItem, Category, Color, Order, OrderItem, Product, ProductBigImage, ProductImage, Size, SliderImages
+from app.models import Brand, Cart, CartItem, Category, Color, Order, OrderItem, Product, ProductBigImage, ProductImage, Size, SliderImages, Tag
 
 # Create your views here.
 def index(request, slug=None):
@@ -35,6 +34,8 @@ def shop_page(request):
     products = Product.objects.all()
     colors= Color.objects.all()
     sizes = Size.objects.all()
+    brands= Brand.objects.all()
+    tags= Tag.objects.all()
     selected_size = request.GET.get('size') 
 
     if selected_size:
@@ -48,11 +49,36 @@ def shop_page(request):
     if price:
         products = products.filter(price__lte=price)
 
+     # Get the selected sorting option from GET parameters
+    sort_option = request.GET.get('SortBy', 'title-ascending')
+    if sort_option == 'best-selling':
+        products = products.order_by('-is_on_sale')  # Example: Sort by sales
+    elif sort_option == 'alphabetically-az':
+        products = products.order_by('name')
+    elif sort_option == 'alphabetically-za':
+        products = products.order_by('-name')
+    elif sort_option == 'price-low-high':
+        products = products.order_by('price')
+    elif sort_option == 'price-high-low':
+        products = products.order_by('-price')
+    elif sort_option == 'discounted':
+        products = products.order_by('-discounted_price')
+    elif sort_option == 'non-discounted':
+        products = products.order_by('discounted_price')
+
+    # Get the total number of products after filtering
+    product_count = products.count()
+
     context = {
         "categories": categories,
         "products": products,
         'colors':colors,
         'sizes':sizes,
+        'brands':brands,
+        'tags':tags,
+        'selected_size': selected_size,
+        'sort_option': sort_option,
+        'product_count': product_count,
     }
     return render(request, 'app/shop.html', context)
 

@@ -117,28 +117,16 @@
                         <!--Brand-->
                         <div class="sidebar_widget filterBox filter-widget">
                             <div class="widget-title"><h2>Brands</h2></div>
-                            <ul>
+                            
+                            {% for brand in brands %}
+                                <ul>
                                 <li>
                                   <input type="checkbox" value="allen-vela" id="check1">
-                                  <label for="check1"><span><span></span></span>Allen Vela</label>
+                                  <label for="check1"><span><span></span></span>{{brand.name}}</label>
                                 </li>
-                                <li>
-                                  <input type="checkbox" value="oxymat" id="check3">
-                                  <label for="check3"><span><span></span></span>Oxymat</label>
-                                </li>
-                                <li>
-                                  <input type="checkbox" value="vanelas" id="check4">
-                                  <label for="check4"><span><span></span></span>Vanelas</label>
-                                </li>
-                                <li>
-                                  <input type="checkbox" value="pagini" id="check5">
-                                  <label for="check5"><span><span></span></span>Pagini</label>
-                                </li>
-                                <li>
-                                  <input type="checkbox" value="monark" id="check6">
-                                  <label for="check6"><span><span></span></span>Monark</label>
-                                </li>
+                                
                             </ul>
+                            {% endfor %}
                         </div>
                         <!--End Brand-->
                         <!--Popular Products-->
@@ -147,42 +135,22 @@
 							<div class="widget-content">
                                 <div class="list list-sidebar-products">
                                   <div class="grid">
+                                    {% for product in products %}
                                     <div class="grid__item">
                                       <div class="mini-list-item">
                                         <div class="mini-view_image">
                                             <a class="grid-view-item__link" href="#">
-                                                <img class="grid-view-item__image" src="{% static 'images/product-images/mini-product-img.jpg' %}" alt="" />
+                                                <img class="grid-view-item__image" src="{{product.main_image.url}}" alt="" />
                                             </a>
                                         </div>
-                                        <div class="details"> <a class="grid-view-item__title" href="#">Cena Skirt</a>
-                                          <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">$173.60</span></span></div>
+                                        <div class="details"> <a class="grid-view-item__title" href="#">{{product.name}}</a>
+                                          <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">{{product.discounted_price}}</span></span></div>
                                         </div>
                                       </div>
                                     </div>
-                                    <div class="grid__item">
-                                      <div class="mini-list-item">
-                                        <div class="mini-view_image"> <a class="grid-view-item__link" href="#"><img class="grid-view-item__image" src="{% static 'images/product-images/mini-product-img1.jpg' %}" alt="" /></a> </div>
-                                        <div class="details"> <a class="grid-view-item__title" href="#">Block Button Up</a>
-                                          <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">$378.00</span></span></div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class="grid__item">
-                                      <div class="mini-list-item">
-                                        <div class="mini-view_image"> <a class="grid-view-item__link" href="#"><img class="grid-view-item__image" src="{% static 'images/product-images/mini-product-img2.jpg' %}" alt="" /></a> </div>
-                                        <div class="details"> <a class="grid-view-item__title" href="#">Balda Button Pant</a>
-                                          <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">$278.60</span></span></div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class="grid__item">
-                                      <div class="mini-list-item">
-                                        <div class="mini-view_image"> <a class="grid-view-item__link" href="#"><img class="grid-view-item__image" src="{% static 'images/product-images/mini-product-img3.jpg' %}" alt="" /></a> </div>
-                                        <div class="details"> <a class="grid-view-item__title" href="#">Border Dress in Black/Silver</a>
-                                          <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">$228.00</span></span></div>
-                                        </div>
-                                      </div>
-                                    </div>
+                                        
+                                    {% endfor %}
+                                        
                                   </div>
                                 </div>
                           	</div>
@@ -205,35 +173,12 @@
                             <h2>Product Tags</h2>
                           </div>
                           <div class="widget-content">
-                            <ul class="product-tags">
-                              <li><a href="#" title="Show products matching tag $100 - $400">$100 - $400</a></li>
-                              <li><a href="#" title="Show products matching tag $400 - $600">$400 - $600</a></li>
-                              <li><a href="#" title="Show products matching tag $600 - $800">$600 - $800</a></li>
-                              <li><a href="#" title="Show products matching tag Above $800">Above $800</a></li>
-                              <li><a href="#" title="Show products matching tag Allen Vela">Allen Vela</a></li>
-                              <li><a href="#" title="Show products matching tag Black">Black</a></li>
-                              <li><a href="#" title="Show products matching tag Blue">Blue</a></li>
-                              <li><a href="#" title="Show products matching tag Cantitate">Cantitate</a></li>
-                              <li><a href="#" title="Show products matching tag Famiza">Famiza</a></li>
-                              <li><a href="#" title="Show products matching tag Gray">Gray</a></li>
-                              <li><a href="#" title="Show products matching tag Green">Green</a></li>
-                              <li><a href="#" title="Show products matching tag Hot">Hot</a></li>
-                              <li><a href="#" title="Show products matching tag jean shop">jean shop</a></li>
-                              <li><a href="#" title="Show products matching tag jesse kamm">jesse kamm</a></li>
-                              <li><a href="#" title="Show products matching tag L">L</a></li>
-                              <li><a href="#" title="Show products matching tag Lardini">Lardini</a></li>
-                              <li><a href="#" title="Show products matching tag lareida">lareida</a></li>
-                              <li><a href="#" title="Show products matching tag Lirisla">Lirisla</a></li>
-                              <li><a href="#" title="Show products matching tag M">M</a></li>
-                              <li><a href="#" title="Show products matching tag mini-dress">mini-dress</a></li>
-                              <li><a href="#" title="Show products matching tag Monark">Monark</a></li>
-                              <li><a href="#" title="Show products matching tag Navy">Navy</a></li>
-                              <li><a href="#" title="Show products matching tag new">new</a></li>
-                              <li><a href="#" title="Show products matching tag new arrivals">new arrivals</a></li>
-                              <li><a href="#" title="Show products matching tag Orange">Orange</a></li>
-                              <li><a href="#" title="Show products matching tag oxford">oxford</a></li>
-                              <li><a href="#" title="Show products matching tag Oxymat">Oxymat</a></li>
+                            {% for tag in tags %}
+                                <ul class="product-tags">
+                              <li><a href="#" >{{tag.name}}</a></li>
+                              
                             </ul>
+                            {% endfor %}
                             <span class="btn btn--small btnview">View all</span> </div>
                         </div>
                         <!--end Product Tags-->
@@ -256,9 +201,9 @@
                             	<div class="row">
                                 	
                                     <div class="col-4 col-md-4 col-lg-4 text-center filters-toolbar__item filters-toolbar__item--count d-flex justify-content-center align-items-center">
-                                    	<span class="filters-toolbar__product-count">Showing: 22</span>
+                                    	<span class="filters-toolbar__product-count">Showing: {{product_count}}</span>
                                     </div>
-                                    <div class="col-4 col-md-4 col-lg-4 text-right">
+                                    {% comment %} <div class="col-4 col-md-4 col-lg-4 text-right">
                                     	<div class="filters-toolbar__item">
                                       		<label for="SortBy" class="hidden">Sort</label>
                                       		<select name="SortBy" id="SortBy" class="filters-toolbar__input filters-toolbar__input--sort">
@@ -273,6 +218,23 @@
                                       		</select>
                                       		<input class="collection-header__default-sort" type="hidden" value="manual">
                                         </div>
+                                    </div> {% endcomment %}
+                                    <div class="col-4 col-md-4 col-lg-4 text-right">
+                                        <div class="filters-toolbar__item">
+                                            <label for="SortBy" class="hidden">Sort</label>
+                                            <form method="GET" action="{% url 'shop' %}">
+                                                <select name="SortBy" id="SortBy" class="filters-toolbar__input filters-toolbar__input--sort" onchange="this.form.submit()">
+                                                    <option value="title-ascending" {% if sort_option == 'title-ascending' %}selected{% endif %}>Sort</option>
+                                                    <option value="best-selling" {% if sort_option == 'best-selling' %}selected{% endif %}>Best Selling</option>
+                                                    <option value="alphabetically-az" {% if sort_option == 'alphabetically-az' %}selected{% endif %}>Alphabetically, A-Z</option>
+                                                    <option value="alphabetically-za" {% if sort_option == 'alphabetically-za' %}selected{% endif %}>Alphabetically, Z-A</option>
+                                                    <option value="price-low-high" {% if sort_option == 'price-low-high' %}selected{% endif %}>Price, low to high</option>
+                                                    <option value="price-high-low" {% if sort_option == 'price-high-low' %}selected{% endif %}>Price, high to low</option>
+                                                    <option value="date-new-old" {% if sort_option == 'discounted' %}selected{% endif %}>Discounted Products</option>
+                                                    <option value="date-old-new" {% if sort_option == 'none-discounted' %}selected{% endif %}>Non-Discounted Products</option>
+                                                </select>
+                                            </form>
+                                        </div>
                                     </div>
 
                                 </div>
@@ -281,90 +243,46 @@
                         <!--End Toolbar-->
                         <div class="list-view-items grid--view-items">
                         	<!--ListView Item-->
+                            {% for product in products %}
+                            
                             <div class="list-product list-view-item">
                                 <div class="list-view-item__image-column">
                                     <div class="list-view-item__image-wrapper">
                                         <!-- Image -->
-                                        <a href="#"><img class="list-view-item__image blur-up lazyload" data-src="{% static 'images/product-images/product-image1.jpg' %}" src="{% static 'images/product-images/product-image1.jpg' %}" alt="image" title="product"></a>
+                                        <a href="#"><img class="list-view-item__image blur-up lazyload" data-src="{{product.main_image.url}}" src="{{product.main_image.url}}" alt="image" title="product"></a>
                                         <!-- End Image -->
                                     </div>
                                 </div>
                                 <div class="list-view-item__title-column">
-                                    <div class="h4 grid-view-item__title"><a href="#">Camelia Reversible Jacket</a></div>
+                                    <div class="h4 grid-view-item__title"><a href="#">{{product.name}}</a></div>
                                     <!-- Product Review -->
-                                    <p class="product-review"><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star-o"></i><i class="font-13 fa fa-star-o"></i></p>
+                                    <div class="product-review">
+                                                 {% for i in stars %}
+                                                        {% if i < rating %}
+                                                            <i class="font-13 fa fa-star"></i>
+                                                        {% else %}
+                                                            <i class="font-13 fa fa-star-o"></i>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                              </div>
                                     <!-- End Product Review -->
                                     <!-- Sort Description -->
-                                    <p>Belle Multipurpose Bootstrap 4 Html Template that will give you and your customers a smooth shopping experience which can be used for various kinds of stores such as boutiques, bookstores, technology stores, jewelries and other types of web shops....</p>
+                                    <p>{{product.description}}</p>
                                     <!-- End Sort Description -->
                                     <!-- Price -->
                                     <p class="product-price grid-view-item__meta">
-                                        <span class="old-price">$600.00</span>
-                                        <span class="product-price__price product-price__sale"><span class="money">$500.00</span></span>
+                                        <span class="old-price">${{product.price}}</span>
+                                        <span class="product-price__price product-price__sale"><span class="money">${{product.discounted_price}}</span></span>
                                     </p>
                                     <!-- End Price -->
-                                    <form class="variants" action="#">
-                                    	<button class="btn btn--small" type="button">Select Options</button>
+                                    <form class="variants" action="{% url 'product' product.slug %}">
+                                    	<button class="btn btn--small" type="submit">Select Options</button>
 	                                </form>
                                 </div>
                             </div>
+                            {% endfor %}
                             <!--End ListView Item-->
-                            <!--ListView Item-->
-                            <div class="list-product list-view-item">
-                                <div class="list-view-item__image-column">
-                                    <div class="list-view-item__image-wrapper">
-                                        <!-- Image -->
-                                        <a href="#"><img class="list-view-item__image blur-up lazyload" data-src="{% static 'images/product-images/product-image2.jpg' %}" src="{% static 'images/product-images/product-image2.jpg' %}" alt="image" title="product"></a>
-                                        <!-- End Image -->
-                                    </div>
-                                </div>
-                                <div class="list-view-item__title-column">
-                                    <div class="h4 grid-view-item__title"><a href="#">Elastic Waist Dress</a></div>
-                                    <!-- Product Review -->
-                                    <p class="product-review"><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i></p>
-                                    <!-- End Product Review -->
-                                    <!-- Sort Description -->
-                                    <p>Belle Multipurpose Bootstrap 4 Html Template that will give you and your customers a smooth shopping experience which can be used for various kinds of stores such as boutiques, bookstores, technology stores, jewelries and other types of web shops....</p>
-                                    <!-- End Sort Description -->
-                                    <!-- Price -->
-                                    <p class="product-price grid-view-item__meta">
-                                        <span class="product-price__price"><span class="money">$693.00</span></span>
-                                    </p>
-                                    <!-- End Price -->
-                                    <form class="variants" action="#">
-                                        <button class="btn btn--small" type="button">Select Options</button>
-                                    </form>
-                                </div>
-                            </div>
-                            <!--End ListView Item-->
-                            <!--ListView Item-->
-                            <div class="list-product list-view-item">
-                                <div class="list-view-item__image-column">
-                                    <div class="list-view-item__image-wrapper">
-                                        <!-- Image -->
-                                        <a href="product-layout-2.html"><img class="list-view-item__image blur-up lazyload" data-src="{% static 'images/product-images/product-image3.jpg' %}" src="{% static 'images/product-images/product-image3.jpg' %}" alt="image" title="product"></a>
-                                        <!-- End Image -->
-                                    </div>
-                                </div>
-                                <div class="list-view-item__title-column">
-                                    <div class="h4 grid-view-item__title"><a href="#">3/4 Sleeve Kimono Dress</a></div>
-                                    <!-- Product Review -->
-                                    <p class="product-review"><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i></p>
-                                    <!-- End Product Review -->
-                                    <!-- Sort Description -->
-                                    <p>Belle Multipurpose Bootstrap 4 Html Template that will give you and your customers a smooth shopping experience which can be used for various kinds of stores such as boutiques, bookstores, technology stores, jewelries and other types of web shops....</p>
-                                    <!-- End Sort Description -->
-                                    <!-- Price -->
-                                    <p class="product-price grid-view-item__meta">
-                                        <span class="product-price__price"><span class="money">$500.00</span></span>
-                                    </p>
-                                    <!-- End Price -->
-                                    <form class="variants" action="#">
-                                        <button class="btn btn--small" type="button">Select Options</button>
-                                    </form>
-                                </div>
-							</div>
-                            <!--End ListView Item-->
+                            
                         </div>
                     </div>
                     <div class="infinitpaginOuter">
