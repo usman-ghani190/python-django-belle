@@ -83,41 +83,6 @@ def shop_page(request):
     return render(request, 'app/shop.html', context)
 
 
-
-
-
-def add_to_cart(request, product, quantity):
-    color_name = request.POST.get('option-0')
-    size_name = request.POST.get('option-1')
-
-    if not color_name or not size_name:
-        messages.error(request, "Please select both color and size.")
-        return redirect(request.META.get('HTTP_REFERER', '/'))
-
-    color = get_object_or_404(Color, name=color_name)
-    size = get_object_or_404(Size, name=size_name)
-
-    if request.user.is_authenticated:
-        # Use the user for authenticated users
-        cart, created = Cart.objects.get_or_create(user=request.user)
-    else:
-        # Use the session key for anonymous users
-        session_key = request.session.session_key
-        if not session_key:
-            request.session.create()  # Create a session if none exists
-            session_key = request.session.session_key
-        cart, created = Cart.objects.get_or_create(session_key=session_key)
-
-    # Add or update the cart item
-    cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product, color=color, size=size)
-    cart_item.quantity += int(quantity)
-    cart_item.save()
-
-    messages.success(request, "Item added to cart!")
-    return redirect(reverse('cart'))
-
-
-
 def product_page(request, slug):
     product = get_object_or_404(Product, slug=slug)
     variants = ProductImage.objects.all()
@@ -191,9 +156,20 @@ def product_page(request, slug):
 
 
 
-def cart_page(request):
+
+def add_to_cart(request, product, quantity):
+    color_name = request.POST.get('option-0')
+    size_name = request.POST.get('option-1')
+
+    if not color_name or not size_name:
+        messages.error(request, "Please select both color and size.")
+        return redirect(request.META.get('HTTP_REFERER', '/'))
+
+    color = get_object_or_404(Color, name=color_name)
+    size = get_object_or_404(Size, name=size_name)
+
     if request.user.is_authenticated:
-        # Use the user to fetch or create the cart for authenticated users
+        # Use the user for authenticated users
         cart, created = Cart.objects.get_or_create(user=request.user)
     else:
         # Use the session key for anonymous users
@@ -203,14 +179,74 @@ def cart_page(request):
             session_key = request.session.session_key
         cart, created = Cart.objects.get_or_create(session_key=session_key)
 
-    # Fetch the cart items
+    # Add or update the cart item
+    cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product, color=color, size=size)
+    cart_item.quantity += int(quantity)
+    cart_item.save()
+
+    messages.success(request, "Item added to cart!")
+    return redirect(reverse('cart'))
+
+
+def cart_page(request):
+    if request.user.is_authenticated:
+        cart, created = Cart.objects.get_or_create(user=request.user)
+    else:
+        session_key = request.session.session_key
+        if not session_key:
+            request.session.create()
+            session_key = request.session.session_key
+        cart, created = Cart.objects.get_or_create(session_key=session_key)
+
+
+         # Handle remove functionality
+    if 'remove_item' in request.GET:
+        item_id = request.GET.get('remove_item')
+        cart_item = get_object_or_404(CartItem, id=item_id, cart=cart)
+        cart_item.delete()
+        return redirect('cart')  # Refresh the cart page after removing the item
+
     cart_items = cart.cartitem_set.all()
+
+    # Calculate the total price for each item in the cart
+    for item in cart_items:
+        item.total_price = item.product.price * item.quantity
+
+    # Calculate the grand total for the cart
+    # total = sum(item.total_price for item in cart_items)
 
     context = {
         'cart': cart,
         'cart_items': cart_items,
+        # 'total': total,
     }
+
     return render(request, 'app/cart.html', context)
+
+
+
+
+
+# def cart_page(request):
+#     if request.user.is_authenticated:
+#         # Use the user to fetch or create the cart for authenticated users
+#         cart, created = Cart.objects.get_or_create(user=request.user)
+#     else:
+#         # Use the session key for anonymous users
+#         session_key = request.session.session_key
+#         if not session_key:
+#             request.session.create()  # Create a session if none exists
+#             session_key = request.session.session_key
+#         cart, created = Cart.objects.get_or_create(session_key=session_key)
+
+#     # Fetch the cart items
+#     cart_items = cart.cartitem_set.all()
+
+#     context = {
+#         'cart': cart,
+#         'cart_items': cart_items,
+#     }
+#     return render(request, 'app/cart.html', context)
 
 
 
