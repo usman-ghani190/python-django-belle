@@ -189,6 +189,7 @@ def add_to_cart(request, product, quantity):
 
 
 def cart_page(request):
+    # product= get_object_or_404(Product, slug=slug)
     if request.user.is_authenticated:
         cart, created = Cart.objects.get_or_create(user=request.user)
     else:
@@ -197,6 +198,17 @@ def cart_page(request):
             request.session.create()
             session_key = request.session.session_key
         cart, created = Cart.objects.get_or_create(session_key=session_key)
+
+    if request.method == 'POST':
+            note = request.POST.get('note')
+            terms_agreed = request.POST.get('tearm')  # Handling the terms and conditions checkbox
+            cart.note = note
+            cart.terms_agreed = terms_agreed
+            cart.save()
+
+            if 'checkout' in request.POST and terms_agreed:
+                # Handle checkout logic here (e.g., create an order)
+                return HttpResponseRedirect('/checkout/')  # Redirect to checkout page
 
 
          # Handle remove functionality
@@ -211,13 +223,15 @@ def cart_page(request):
     # Calculate the total price for each item in the cart
     for item in cart_items:
         item.total_price = item.product.price * item.quantity
-
+    subtotal = sum(item.product.price * item.quantity for item in cart_items)
     # Calculate the grand total for the cart
     # total = sum(item.total_price for item in cart_items)
 
     context = {
         'cart': cart,
         'cart_items': cart_items,
+        'subtotal':subtotal,
+        # 'product':product,
         # 'total': total,
     }
 

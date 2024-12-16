@@ -78,7 +78,7 @@ class Product(models.Model):
     discount_percentage = models.IntegerField(null=True, blank=True)
     limited_stock_message = models.CharField(max_length=255, null=True, blank=True)
     is_featured= models.BooleanField(default=False)
-    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True)
     tags = models.ManyToManyField(Tag, blank=True)
 
 
@@ -140,6 +140,8 @@ class SliderImages(models.Model):
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     session_key = models.CharField(max_length=255, null=True, blank=True)
+    note = models.TextField(null=True, blank=True, default='')
+    terms_agreed = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Cart (User: {self.user}, Session: {self.session_key})"
