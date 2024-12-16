@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from django.urls import reverse
@@ -181,15 +181,83 @@ def add_to_cart(request, product, quantity):
 
     # Add or update the cart item
     cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product, color=color, size=size)
-    cart_item.quantity += int(quantity)
+    cart_item.quantity = int(quantity)
     cart_item.save()
 
     messages.success(request, "Item added to cart!")
     return redirect(reverse('cart'))
 
 
+# def cart_page(request):
+    
+#     if request.user.is_authenticated:
+#         cart, created = Cart.objects.get_or_create(user=request.user)
+#     else:
+#         session_key = request.session.session_key
+#         if not session_key:
+#             request.session.create()
+#             session_key = request.session.session_key
+#         cart, created = Cart.objects.get_or_create(session_key=session_key)
+
+#     if request.method == 'POST':
+#             note = request.POST.get('note')
+#             terms_agreed = request.POST.get('tearm')  # Handling the terms and conditions checkbox
+#             cart.note = note
+#             cart.terms_agreed = terms_agreed
+#             cart.save()
+
+#             if 'checkout' in request.POST and terms_agreed:
+#                 # Handle checkout logic here (e.g., create an order)
+#                 return HttpResponseRedirect('/checkout/')  # Redirect to checkout page
+
+
+#     if request.method == 'POST':
+#             if 'update_quantity' in request.POST:  # Quantity update logic
+#                 item_id = request.POST.get('item_id')
+#                 new_quantity = int(request.POST.get('quantity', 1))
+#                 cart_item = get_object_or_404(CartItem, id=item_id, cart=cart)
+#                 cart_item.quantity = max(1, new_quantity)  # Avoid zero/negative quantities
+#                 cart_item.save()
+#                 return JsonResponse({
+#                     'total_price': cart_item.product.price * cart_item.quantity,
+#                     'subtotal': sum(i.product.price * i.quantity for i in cart.cartitem_set.all())
+#                 })
+#             # Remove item logic
+#             if request.method == 'GET':
+#                 if 'remove_item' in request.GET:
+#                     item_id = request.GET.get('remove_item')
+#                     if item_id:
+#                         cart_item = CartItem.objects.filter(id=item_id, cart=cart).first()
+#                         if cart_item:
+#                             cart_item.delete()
+#                             messages.success(request, "Item removed from cart.")
+#                         else:
+#                             messages.error(request, "Item not found in cart.")
+#                     else:
+#                         messages.error(request, "Item ID not provided.")
+#                     return redirect('cart')
+
+    
+
+#     cart_items = cart.cartitem_set.all()
+
+#     # Calculate the total price for each item in the cart
+#     for item in cart_items:
+#         item.total_price = item.product.price * item.quantity
+#     subtotal = sum(item.product.price * item.quantity for item in cart_items)
+#     # Calculate the grand total for the cart
+#     # total = sum(item.total_price for item in cart_items)
+
+#     context = {
+#         'cart': cart,
+#         'cart_items': cart_items,
+#         'subtotal':subtotal,
+        
+#     }
+
+#     return render(request, 'app/cart.html', context)
+
 def cart_page(request):
-    # product= get_object_or_404(Product, slug=slug)
     if request.user.is_authenticated:
         cart, created = Cart.objects.get_or_create(user=request.user)
     else:
@@ -200,23 +268,41 @@ def cart_page(request):
         cart, created = Cart.objects.get_or_create(session_key=session_key)
 
     if request.method == 'POST':
-            note = request.POST.get('note')
-            terms_agreed = request.POST.get('tearm')  # Handling the terms and conditions checkbox
-            cart.note = note
-            cart.terms_agreed = terms_agreed
-            cart.save()
+        # Handle the 'note' and 'terms_agreed' in POST
+        note = request.POST.get('note')
+        terms_agreed = request.POST.get('tearm')  # Handling the terms and conditions checkbox
+        cart.note = note
+        cart.terms_agreed = terms_agreed
+        cart.save()
 
-            if 'checkout' in request.POST and terms_agreed:
-                # Handle checkout logic here (e.g., create an order)
-                return HttpResponseRedirect('/checkout/')  # Redirect to checkout page
+        if 'checkout' in request.POST and terms_agreed:
+            # Handle checkout logic here (e.g., create an order)
+            return HttpResponseRedirect('/checkout/')  # Redirect to checkout page
 
+        if 'update_quantity' in request.POST:  # Quantity update logic
+            item_id = request.POST.get('item_id')
+            new_quantity = int(request.POST.get('quantity', 1))
+            cart_item = get_object_or_404(CartItem, id=item_id, cart=cart)
+            cart_item.quantity = max(1, new_quantity)  # Avoid zero/negative quantities
+            cart_item.save()
+            return JsonResponse({
+                'total_price': cart_item.product.price * cart_item.quantity,
+                'subtotal': sum(i.product.price * i.quantity for i in cart.cartitem_set.all())
+            })
 
-         # Handle remove functionality
-    if 'remove_item' in request.GET:
-        item_id = request.GET.get('remove_item')
-        cart_item = get_object_or_404(CartItem, id=item_id, cart=cart)
-        cart_item.delete()
-        return redirect('cart')  # Refresh the cart page after removing the item
+    elif request.method == 'GET':
+        if 'remove_item' in request.GET:
+            item_id = request.GET.get('remove_item')
+            if item_id:
+                cart_item = CartItem.objects.filter(id=item_id, cart=cart).first()
+                if cart_item:
+                    cart_item.delete()
+                    messages.success(request, "Item removed from cart.")
+                else:
+                    messages.error(request, "Item not found in cart.")
+            else:
+                messages.error(request, "Item ID not provided.")
+            return redirect('cart')  # Redirect to cart page after removal
 
     cart_items = cart.cartitem_set.all()
 
@@ -224,15 +310,11 @@ def cart_page(request):
     for item in cart_items:
         item.total_price = item.product.price * item.quantity
     subtotal = sum(item.product.price * item.quantity for item in cart_items)
-    # Calculate the grand total for the cart
-    # total = sum(item.total_price for item in cart_items)
 
     context = {
         'cart': cart,
         'cart_items': cart_items,
-        'subtotal':subtotal,
-        # 'product':product,
-        # 'total': total,
+        'subtotal': subtotal,
     }
 
     return render(request, 'app/cart.html', context)
