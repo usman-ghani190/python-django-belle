@@ -189,54 +189,6 @@ def add_to_cart(request, product, quantity):
 
 
 
-# def cart_page(request):
-#     # Get the cart for the authenticated user or session-based user
-#     if request.user.is_authenticated:
-#         cart, created = Cart.objects.get_or_create(user=request.user)
-#     else:
-#         session_key = request.session.session_key or request.session.create()
-#         cart, created = Cart.objects.get_or_create(session_key=session_key)
-
-#     if request.method == 'POST':
-#         item_id = request.POST.get('item_id')  # Get the cart item ID
-#         action = request.POST.get('update_quantity')  # 'increment' or 'decrement'
-#         cart_item = get_object_or_404(CartItem, id=item_id, cart=cart)
-
-#     elif request.method == 'GET':
-#         if 'remove_item' in request.GET:
-#             item_id = request.GET.get('remove_item')
-#             if item_id:
-#                 cart_item = CartItem.objects.filter(id=item_id, cart=cart).first()
-#                 if cart_item:
-#                     cart_item.delete()
-#                     messages.success(request, "Item removed from cart.")
-#                 else:
-#                     messages.error(request, "Item not found in cart.")
-#             else:
-#                 messages.error(request, "Item ID not provided.")
-#             return redirect('cart')  # Redirect to cart page after removal
-
-#     # Adjust quantity based on the action
-#     if action == 'increment':
-#         cart_item.quantity += 1
-#     elif action == 'decrement' and cart_item.quantity > 1:
-#         cart_item.quantity -= 1
-
-#     cart_item.save()  # Save the updated quantity
-#     return redirect('cart')  # Reload the cart page
-
-#     # Fetch all cart items
-#     cart_items = cart.cartitem_set.all()
-#     # Calculate the total price for each item in the cart
-#     for item in cart_items:
-#         item.total_price = item.product.price * item.quantity
-#     subtotal = sum(item.product.price * item.quantity for item in cart_items)
-
-#     context = {
-#         'cart_items': cart_items,
-#         'subtotal': subtotal,
-#     }
-#     return render(request, 'app/cart.html', context)
 
 # def cart_page(request):
 #     # Get the cart for the authenticated user or session-based user
@@ -246,72 +198,88 @@ def add_to_cart(request, product, quantity):
 #         session_key = request.session.session_key or request.session.create()
 #         cart, created = Cart.objects.get_or_create(session_key=session_key)
 
-#     if request.method == 'POST':
-#         item_id = request.POST.get('item_id')  # Get the cart item ID
-#         action = request.POST.get('update_quantity')  # 'increment' or 'decrement'
+#     # Handle Quantity Updates
+#     if 'update_quantity' in request.GET and 'item_id' in request.GET:
+#         action = request.GET.get('update_quantity')  # increment or decrement
+#         item_id = request.GET.get('item_id')
 #         cart_item = get_object_or_404(CartItem, id=item_id, cart=cart)
 
-#         # # Adjust quantity based on the action
-#         # if action == 'increment':
-#         #     cart_item.quantity += 1
-#         # elif action == 'decrement' and cart_item.quantity > 1:
-#         #     cart_item.quantity -= 1
+#         # Adjust quantity based on action
+#         if action == 'increment':
+#             cart_item.quantity += 1
+#         elif action == 'decrement' and cart_item.quantity > 1:
+#             cart_item.quantity -= 1
 
-#         # cart_item.save()  # Save the updated quantity
-#         # return redirect('cart')  # Reload the cart page
+#         cart_item.save()
+#         return redirect('cart')  # Reload the cart page
 
-#     elif request.method == 'GET':
-#         if 'remove_item' in request.GET:
-#             item_id = request.GET.get('remove_item')
-#             if item_id:
-#                 cart_item = CartItem.objects.filter(id=item_id, cart=cart).first()
-#                 if cart_item:
-#                     cart_item.delete()
-#                     messages.success(request, "Item removed from cart.")
-#                 else:
-#                     messages.error(request, "Item not found in cart.")
-#             else:
-#                 messages.error(request, "Item ID not provided.")
-#             return redirect('cart')  # Redirect to cart page after removal
+#     # Handle item removal
+#     if 'remove_item' in request.GET:
+#         item_id = request.GET.get('remove_item')
+#         cart_item = CartItem.objects.filter(id=item_id, cart=cart).first()
+#         if cart_item:
+#             cart_item.delete()
+#             messages.success(request, "Item removed from cart.")
+#         else:
+#             messages.error(request, "Item not found in cart.")
+#         return redirect('cart')  # Reload the cart page
 
-#     # Fetch all cart items
+#     # Fetch cart items and calculate totals
 #     cart_items = cart.cartitem_set.all()
-#     # Calculate the total price for each item in the cart
-#     for item in cart_items:
-#         item.total_price = item.product.price * item.quantity
+#     subtotal = 0  # Initialize subtotal
 
-#     # Calculate the subtotal
-#     subtotal = sum(item.product.price * item.quantity for item in cart_items)
+#     for item in cart_items:
+#         # Update total price for each item dynamically
+#         item.total_price = item.product.price * item.quantity
+#         subtotal += item.total_price  # Add to subtotal
 
 #     context = {
 #         'cart_items': cart_items,
 #         'subtotal': subtotal,
 #     }
 #     return render(request, 'app/cart.html', context)
+
 
 
 def cart_page(request):
-    # Get the cart for the authenticated user or session-based user
     if request.user.is_authenticated:
         cart, created = Cart.objects.get_or_create(user=request.user)
     else:
         session_key = request.session.session_key or request.session.create()
         cart, created = Cart.objects.get_or_create(session_key=session_key)
 
-    # Handle Quantity Updates
-    if 'update_quantity' in request.GET and 'item_id' in request.GET:
-        action = request.GET.get('update_quantity')  # increment or decrement
-        item_id = request.GET.get('item_id')
+    # Handle Quantity Updates via POST (AJAX)
+    if request.method == 'POST' and 'id' in request.POST and 'quantity' in request.POST:
+        item_id = request.POST['id']
+        quantity = int(request.POST['quantity'])
         cart_item = get_object_or_404(CartItem, id=item_id, cart=cart)
 
-        # Adjust quantity based on action
-        if action == 'increment':
-            cart_item.quantity += 1
-        elif action == 'decrement' and cart_item.quantity > 1:
-            cart_item.quantity -= 1
-
+        # Update the quantity
+        cart_item.quantity = quantity
         cart_item.save()
-        return redirect('cart')  # Reload the cart page
+
+        # Recalculate total price for the item
+        cart_item.total_price = cart_item.product.price * cart_item.quantity
+        cart_item.save()
+
+        # Recalculate the subtotal
+        subtotal = sum(item.total_price for item in cart.cartitem_set.all())
+
+        # Prepare the response data
+        cart_items = cart.cartitem_set.all()
+        response_data = {
+            'success': True,
+            'cart_items': [
+                {
+                    'id': item.id,
+                    'total_price': item.total_price,
+                    'quantity': item.quantity,
+                }
+                for item in cart_items
+            ],
+            'subtotal': subtotal,
+        }
+        return JsonResponse(response_data)
 
     # Handle item removal
     if 'remove_item' in request.GET:
@@ -322,71 +290,20 @@ def cart_page(request):
             messages.success(request, "Item removed from cart.")
         else:
             messages.error(request, "Item not found in cart.")
-        return redirect('cart')  # Reload the cart page
+        return redirect('cart')
 
     # Fetch cart items and calculate totals
     cart_items = cart.cartitem_set.all()
-    subtotal = 0  # Initialize subtotal
-
+    subtotal = 0
     for item in cart_items:
-        # Update total price for each item dynamically
         item.total_price = item.product.price * item.quantity
-        subtotal += item.total_price  # Add to subtotal
+        subtotal += item.total_price
 
     context = {
         'cart_items': cart_items,
         'subtotal': subtotal,
     }
     return render(request, 'app/cart.html', context)
-
-
-
-
-
-
-# def cart_page(request):
-#     # Get the cart for the authenticated user or session-based user
-#     if request.user.is_authenticated:
-#         cart, created = Cart.objects.get_or_create(user=request.user)
-#     else:
-#         session_key = request.session.session_key or request.session.create()
-#         cart, created = Cart.objects.get_or_create(session_key=session_key)
-
-#     if request.method == 'POST':
-#         item_id = request.POST.get('item_id')
-#         action = request.POST.get('update_quantity')  # 'increment' or 'decrement'
-#         cart_item = get_object_or_404(CartItem, id=item_id, cart=cart)
-
-#         # Adjust quantity based on the action
-#         if action == 'increment':
-#             cart_item.quantity += 1
-#         elif action == 'decrement' and cart_item.quantity > 1:
-#             cart_item.quantity -= 1
-
-#         cart_item.save()  # Save updated quantity
-
-#         # Recalculate totals
-#         total_price = cart_item.product.price * cart_item.quantity
-#         subtotal = sum(item.product.price * item.quantity for item in cart.cartitem_set.all())
-
-#         # Return JSON response
-#         return JsonResponse({
-#             'item_id': cart_item.id,
-#             'total_price': f"{total_price:.2f}",
-#             'subtotal': f"{subtotal:.2f}",
-#         })
-
-#     # Regular cart page render
-#     cart_items = cart.cartitem_set.all()
-#     for item in cart_items:
-#         item.total_price = item.product.price * item.quantity
-#     subtotal = sum(item.product.price * item.quantity for item in cart_items)
-
-#     context = {
-#         'cart_items': cart_items,
-#         'subtotal': subtotal,
-#     }
-#     return render(request, 'app/cart.html', context)
 
 
 

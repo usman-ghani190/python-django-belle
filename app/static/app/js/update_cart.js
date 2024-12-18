@@ -32,20 +32,72 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Update subtotal for all items
       updateSubtotal();
+
+      // Send updated cart data to the server
+      updateCartServer(itemId, quantity);
     });
   });
 
   // Function to calculate and update the subtotal
   function updateSubtotal() {
     let subtotal = 0;
-
-    // Sum up all total prices
     document.querySelectorAll(".cart-price .money").forEach((field) => {
       const price = parseFloat(field.textContent.replace("$", "").trim()) || 0;
       subtotal += price;
     });
 
-    // Update the subtotal field
+    const subtotalField = document.querySelector("#subtotal");
+    if (subtotalField) {
+      subtotalField.textContent = `$${subtotal.toFixed(2)}`;
+    }
+  }
+
+  // Function to send updated cart data to the server
+  function updateCartServer(itemId, quantity) {
+    const formData = new FormData();
+    formData.append("id", itemId);
+    formData.append("quantity", quantity);
+
+    const csrfToken = document.querySelector(
+      "[name=csrfmiddlewaretoken]"
+    ).value;
+
+    fetch(window.location.href, {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": csrfToken,
+        "X-Requested-With": "XMLHttpRequest", // Identify as AJAX request
+      },
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          console.log("Cart updated successfully");
+          updateCartUI(data.cart_items, data.subtotal);
+        } else {
+          alert("Error updating cart. Please try again.");
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  }
+
+  // Function to update the cart UI dynamically
+  function updateCartUI(cartItems, subtotal) {
+    cartItems.forEach((item) => {
+      const totalField = document.querySelector(`#total-${item.id}`);
+      if (totalField) {
+        totalField.textContent = `$${item.total_price.toFixed(2)}`;
+      }
+
+      const qtyField = document.querySelector(
+        `.product-form__input[data-id='${item.id}']`
+      );
+      if (qtyField) {
+        qtyField.value = item.quantity;
+      }
+    });
+
     const subtotalField = document.querySelector("#subtotal");
     if (subtotalField) {
       subtotalField.textContent = `$${subtotal.toFixed(2)}`;
