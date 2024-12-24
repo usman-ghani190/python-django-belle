@@ -199,4 +199,32 @@ class Category(models.Model):
 
     
 
-    
+class Checkout(models.Model):
+    first_name= models.CharField(max_length=100)
+    last_name= models.CharField(max_length=100, null=True, blank=True)
+    email= models.EmailField(max_length=100)
+    telephone= PhoneNumberField(null=False, unique=True)
+    company= models.CharField(max_length=100, null=True, blank=True)
+    address= models.CharField(max_length=500)
+    apartment= models.CharField(max_length=50, blank=True, null=True)
+    city= models.CharField(max_length=200)
+    post_code= models.IntegerField(null=True, blank=True)
+    country= models.CharField(max_length=200)
+    state= models.CharField(max_length=200, null=True, blank=True)
+    order_notes= models.TextField(null=True, blank=True)
+
+
+
+class Payment(models.Model):
+    CARD_TYPES = [
+        (1, "American Express"),
+        (2, "Visa Card"),
+        (3, "Master Card"),
+        (4, "Discover Card"),
+    ]
+
+    cardname = models.CharField(max_length=100)
+    cardtype = models.PositiveSmallIntegerField(choices=CARD_TYPES)
+    cardno = models.CharField(max_length=16)  # Use CharField for card number
+    cvv = models.CharField(max_length=3)  # CVV is typically 3 or 4 digits
+    exdate = models.DateField()  # Expiration date

@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
@@ -5,7 +6,7 @@ from django.urls import reverse
 
 
 
-from app.forms import OrderItemForm, ProductQueryAskForm, ReviewForm
+from app.forms import CheckoutForm, OrderItemForm, PaymentForm, ProductQueryAskForm, ReviewForm
 from app.models import Brand, Cart, CartItem, Category, Color, Order, OrderItem, Product, ProductBigImage, ProductImage, Size, SliderImages, Tag
 
 # Create your views here.
@@ -303,6 +304,167 @@ def buy_now(request, product, quantity):
 
 
 
+# def checkout(request):
+#     # Fetch all cart items for the current user or session
+#     if request.user.is_authenticated:
+#         cart = Cart.objects.filter(user=request.user).first()
+#     else:
+#         session_key = request.session.session_key
+#         if not session_key:
+#             request.session.create()
+#             session_key = request.session.session_key
+#         cart = Cart.objects.filter(session_key=session_key).first()
+
+#     if request.method == "POST":
+#         form = CheckoutForm(request.POST)
+#         if form.is_valid():
+#             # Save form data to database
+#             form.save()
+#             # Redirect to a success page or send JSON response for AJAX
+#             return JsonResponse({"success": True, "message": "Checkout completed successfully!"})
+#         else:
+#             # Return form errors for AJAX
+#             return JsonResponse({"success": False, "errors": form.errors}, status=400)
+#     else:
+#         form=CheckoutForm()
+
+#     if request.method == "POST":
+#         form = PaymentForm(request.POST)
+#         if form.is_valid():
+#             form.save()  # Save the payment details to the database
+#             return redirect('success')  # Redirect to a success page
+#     else:
+#         form = PaymentForm()
+
+#     if not cart:
+#         messages.error(request, "Your cart is empty.")
+#         return HttpResponseRedirect('/shop/')
+
+#     cart_items = cart.cartitem_set.all()
+#     subtotal = sum(item.total_price for item in cart_items)
+#     shipping_cost = Decimal('50.00')  # Example shipping cost
+#     total_cost = subtotal + shipping_cost
+
+
+#     context = {
+#         'cart_items': cart_items,
+#         'form':form,
+#         'subtotal':subtotal,
+#         'shipping_cost':shipping_cost,
+#         'total_cost':total_cost,
+#     }
+#     return render(request, 'app/checkout.html', context)
+
+
+# def checkout(request):
+#     # Fetch all cart items for the current user or session
+#     if request.user.is_authenticated:
+#         cart = Cart.objects.filter(user=request.user).first()
+#     else:
+#         session_key = request.session.session_key
+#         if not session_key:
+#             request.session.create()
+#             session_key = request.session.session_key
+#         cart = Cart.objects.filter(session_key=session_key).first()
+
+#     if not cart:
+#         messages.error(request, "Your cart is empty.")
+#         return HttpResponseRedirect('/shop/')
+
+#     # Handle POST request for CheckoutForm
+#     if request.method == "POST":
+#         form = CheckoutForm(request.POST)
+#         if form.is_valid():
+#             # Save form data to database
+#             form.save()
+#             return JsonResponse({"success": True, "message": "Checkout completed successfully!"})
+#         else:
+#             return JsonResponse({"success": False, "errors": form.errors}, status=400)
+
+#     # Initialize CheckoutForm
+#     checkout_form = CheckoutForm()
+
+#     # Handle POST request for PaymentForm
+#     if request.method == "POST":
+#         payment_form = PaymentForm(request.POST)
+#         if payment_form.is_valid():
+#             payment_form.save()  # Save payment details
+#             return redirect('success')  # Redirect to a success page
+#     else:
+#         payment_form = PaymentForm()
+
+#     # Calculate totals
+#     cart_items = cart.cartitem_set.all()
+#     subtotal = sum(item.total_price for item in cart_items)
+#     shipping_cost = Decimal('50.00')  # Example shipping cost
+#     total_cost = subtotal + shipping_cost
+
+#     context = {
+#         'cart_items': cart_items,
+#         'checkout_form': checkout_form,
+#         'payment_form': payment_form,
+#         'subtotal': subtotal,
+#         'shipping_cost': shipping_cost,
+#         'total_cost': total_cost,
+#     }
+#     return render(request, 'app/checkout.html', context)
+
+
+# def checkout(request):
+#     # Fetch all cart items for the current user or session
+#     if request.user.is_authenticated:
+#         cart = Cart.objects.filter(user=request.user).first()
+#     else:
+#         session_key = request.session.session_key
+#         if not session_key:
+#             request.session.create()
+#             session_key = request.session.session_key
+#         cart = Cart.objects.filter(session_key=session_key).first()
+
+#     if not cart:
+#         messages.error(request, "Your cart is empty.")
+#         return HttpResponseRedirect('/shop/')
+
+#     # Initialize forms
+#     checkout_form = CheckoutForm()
+#     payment_form = PaymentForm()
+
+#     # Process forms on POST
+#     if request.method == "POST":
+#         if 'checkout_form_submit' in request.POST:  # For CheckoutForm
+#             checkout_form = CheckoutForm(request.POST)
+#             if checkout_form.is_valid():
+#                 checkout_form.save()
+#                 messages.success(request, "Billing details saved successfully!")
+#                 return redirect('checkout')  # Redirect to refresh the page
+#             else:
+#                 messages.error(request, "Please correct the errors in the billing form.")
+
+#         elif 'payment_form_submit' in request.POST:  # For PaymentForm
+#             payment_form = PaymentForm(request.POST)
+#             if payment_form.is_valid():
+#                 payment_form.save()
+#                 messages.success(request, "Payment completed successfully!")
+#                 return redirect('success')  # Redirect to a success page
+#             else:
+#                 messages.error(request, "Please correct the errors in the payment form.")
+
+#     # Calculate totals
+#     cart_items = cart.cartitem_set.all()
+#     subtotal = sum(item.total_price for item in cart_items)
+#     shipping_cost = Decimal('50.00')  # Example shipping cost
+#     total_cost = subtotal + shipping_cost
+
+#     context = {
+#         'cart_items': cart_items,
+#         'checkout_form': checkout_form,
+#         'payment_form': payment_form,
+#         'subtotal': subtotal,
+#         'shipping_cost': shipping_cost,
+#         'total_cost': total_cost,
+#     }
+#     return render(request, 'app/checkout.html', context)
+
 def checkout(request):
     # Fetch all cart items for the current user or session
     if request.user.is_authenticated:
@@ -318,13 +480,45 @@ def checkout(request):
         messages.error(request, "Your cart is empty.")
         return HttpResponseRedirect('/shop/')
 
+    # Initialize forms
+    checkout_form = CheckoutForm()
+    payment_form = PaymentForm()
+
+    # Handle POST request for CheckoutForm
+    if request.method == request.POST:
+        checkout_form = CheckoutForm(request.POST)
+        if checkout_form.is_valid():
+            checkout_form.save()
+            messages.success(request, "Billing details saved successfully!")
+            return redirect("checkout")  # Redirect to refresh the page
+        else:
+            messages.error(request, "Please correct the errors in the billing form.")
+
+    # Handle POST request for PaymentForm
+    elif request.method ==  request.POST:
+        payment_form = PaymentForm(request.POST)
+        if payment_form.is_valid():
+            payment_form.save()
+            messages.success(request, "Payment completed successfully!")
+            return redirect("success")  # Redirect to a success page
+        else:
+            messages.error(request, "Please correct the errors in the payment form.")
+
+    # Calculate totals
     cart_items = cart.cartitem_set.all()
+    subtotal = sum(item.total_price for item in cart_items)
+    shipping_cost = Decimal("50.00")  # Example shipping cost
+    total_cost = subtotal + shipping_cost
 
     context = {
-        'cart_items': cart_items,
+        "cart_items": cart_items,
+        "checkout_form": checkout_form,
+        "payment_form": payment_form,
+        "subtotal": subtotal,
+        "shipping_cost": shipping_cost,
+        "total_cost": total_cost,
     }
-    return render(request, 'app/checkout.html', context)
-
+    return render(request, "app/checkout.html", context)
 
 
 def listview(request):
@@ -347,3 +541,10 @@ def wishlist(request, slug):
 
     context={'product':product }
     return render(request, 'app/wishlist.html', context)
+
+
+def thank_you(request):
+    
+    context={}
+
+    return render(request, 'app/thanks.html', context)

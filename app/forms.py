@@ -1,6 +1,6 @@
 
 from django import forms
-from .models import OrderItem, ProductQueryAsk, Review
+from .models import Checkout, OrderItem, Payment, ProductQueryAsk, Review
 from django.utils.translation import gettext_lazy as _
 
 
@@ -11,26 +11,6 @@ class OrderItemForm(forms.ModelForm):
         model = OrderItem
         fields = ['product', 'quantity']
 
-
-# class ProductQeuryAskForm(forms.ModelForm):
-#     class Meta:
-#         model= ProductQueryAsk
-#         fields='__all__'
-#         labels= {'name': _(''),
-#                  'email': _(''),
-#                  'phone_number': _(''),
-#                  'message': _('')}
-
-        
-#         def __init__(self, *args, **kwargs):
-#             super().__init__(*args, **kwargs)
-#             self.fields['name'].widget.attrs['placeholder'] = 'Name'
-#             self.fields['email'].widget.attrs['placeholder'] = 'Email'
-#             self.fields['phone_number'].widget.attrs['placeholder'] = 'Phone Number'
-#             # self.fields['message'].widget.attrs.update({
-#             # 'placeholder': 'Message',
-#             # 'rows': 10,  # Add the rows attribute here
-#             self.fields['message'].widget.attrs['placeholder'] = 'Message'
 
 class ProductQueryAskForm(forms.ModelForm):
     class Meta:
@@ -72,6 +52,42 @@ class ReviewForm(forms.ModelForm):
         
         
             
+class CheckoutForm(forms.ModelForm):
+    class Meta:
+        model= Checkout
+        fields= '__all__'
+    
+
+
+class PaymentForm(forms.ModelForm):
+    class Meta:
+        model = Payment
+        fields = ['cardname', 'cardtype', 'cardno', 'cvv', 'exdate']
+
+        widgets = {
+            'cardname': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Card Name',
+                'id': 'input-cardname',
+            }),
+            'cardtype': forms.Select(attrs={
+                'class': 'form-control',
+            }),
+            'cardno': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Credit Card Number',
+                'id': 'input-cardno',
+            }),
+            'cvv': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Card Verification Number',
+                'id': 'input-cvv',
+            }),
+            'exdate': forms.DateInput(attrs={
+                'class': 'form-control',
+                'type': 'date',
+            }),
+        }
     
         
                  
