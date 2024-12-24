@@ -4,336 +4,7 @@
 
 
 
-{% comment %} {% block content %}     {% endcomment %}
-        <!--Body Content-->
-        <div id="page-content">
-            <!--MainContent-->
-            <div id="MainContent" class="main-content" role="main">
-                <!--Breadcrumb-->
-                <div class="bredcrumbWrap">
-                    <div class="container-fluid breadcrumbs">
-                        <a href="{% url 'index' %}" title="Back to the home page">Home</a><span aria-hidden="true">›</span><span>Products</span>
-                    </div>
-                </div>
-                <!--End Breadcrumb-->
-                
-                <div id="ProductSection-product-template" class="product-template__container prstyle3 container-fluid">
-                    <!--#ProductSection-product-template-->
-                    <div class="product-single product-single-1">
-                    	<div class="left-content-product">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                                    <div class="product-details-img product-single__photos bottom">
-                                        <div class="zoompro-wrap product-zoom-right pl-20">
-                                            <div class="zoompro-span">
-                                                <img class="blur-up lazyload zoompro" data-zoom-image="{{product.main_image.url}}" alt="" src="{{product.main_image.url}}" />
-                                            </div>
-                                            <div class="product-labels"><span class="lbl on-sale">Sale</span><span class="lbl pr-label1">new</span></div>
-                                            <div class="product-buttons">
-                                                <a href="https://www.youtube.com/watch?v=93A2jOW5Mog" class="btn popup-video" title="View Video"><i class="icon anm anm-play-r" aria-hidden="true"></i></a>
-                                                <a href="#" class="btn prlightbox" title="Zoom"><i class="icon anm anm-expand-l-arrows" aria-hidden="true"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="product-thumb product-thumb-1">
-                                            <div id="gallery" class="product-dec-slider-1 product-tab-left">
-                                              {% for image in product.image.all %}
-                                              <a data-image="{{ image.image.url }}" data-zoom-image="{{ image.image.url }}" class="slick-slide" data-slick-index="{{ forloop.counter }}" aria-hidden="true" tabindex="-1">
-                                                  <img class="blur-up lazyload" src="{{ image.image.url }}" alt="{{ image.alt_text }}" />
-                                              </a>
-                                              {% endfor %}
-                                            </div>
-                                        </div>
-                                        <div class="lightboximages">
-                                            <a href="{% static 'images/camelia-reversible-big1.jpg' %}" data-size="1462x2048"></a>
-                                            <a href="{% static 'images/camelia-reversible-big2.jpg' %}" data-size="1462x2048"></a>
-                                            <a href="{% static 'images/camelia-reversible-big3.jpg' %}" data-size="1462x2048"></a>
-                                            <a href="{% static 'images/camelia-reversible-big4.jpg' %}" data-size="1462x2048"></a>
-                                            <a href="{% static 'images/camelia-reversible-big5.jpg' %}" data-size="1462x2048"></a>
-                                            <a href="{% static 'images/camelia-reversible-big6.jpg' %}" data-size="1462x2048"></a>
-                                        </div>
-            
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                                    <div class="product-single__meta">
-                                        <h1 class="product-single__title">{{product.name}}</h1>
-                                        <div class="product-nav clearfix">					
-                                            <a href="#" class="next" title="Next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                                        </div>
-                                        <div class="prInfoRow">
-                                            
-                                            {% if product.in_stock %}
-                                            <div class="product-stock"> <span class="instock ">In Stock</span> <span class="outstock hide">Unavailable</span> </div>
-                                            {% else %}
-                                            <div class="product-stock"> <span class="instock ">Out of Stock</span> <span class="outstock hide">Unavailable</span> </div>
-                                            {% endif %}
-                                              
-                                            <div class="product-sku">SKU: <span class="variant-sku">{{product.SKU}}</span></div>
-                                            <div class="product-review"><a class="reviewLink" href="#tab2"><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star-o"></i><i class="font-13 fa fa-star-o"></i><span class="spr-badge-caption">{{product.reviews_count}}</span></a></div>
-                                        </div>
-                                        <p class="product-single__price product-single__price-product-template">
-                                            <span class="visually-hidden">Regular price</span>
-                                            <s id="ComparePrice-product-template"><span class="money">{{product.price}}</span></s>
-                                            <span class="product-price__price product-price__price-product-template product-price__sale product-price__sale--single">
-                                                <span id="ProductPrice-product-template"><span class="money">{{product.discounted_price}}</span></span>
-                                            </span>
-                                            <span class="discount-badge"> <span class="devider">|</span>&nbsp;
-                                                <span>You Save</span>
-                                                <span id="SaveAmount-product-template" class="product-single__save-amount">
-                                                <span class="money">$100.00</span>
-                                                </span>
-                                                <span class="off">(<span>16</span>%)</span>
-                                            </span>  
-                                        </p>
-                                    <div class="product-single__description rte">
-                                        {{product.drescription|truncatechars:200}}
-                                    </div>
-                                    <div id="quantity_message">Hurry! Only  <span class="items">{{product.stock}}</span>  left in stock.</div>
-                                    <form method="post" action="{% url 'cart' %}" id="product_form_10508262282" accept-charset="UTF-8" class="product-form product-form-product-template hidedropdown" enctype="multipart/form-data">
-                                      {% csrf_token %}
-                                        <div class="swatch clearfix swatch-0 option1" data-option-index="0">
-                                            <div class="product-form__item">
-                                              <label class="header">Color: </label>
-                                              {% for color in product.available_colors.all %}
-                                              <div data-value="{{ color.name }}" class="swatch-element color {{ color.name|lower }} available">
-                                                <input class="swatchInput" id="swatch-{{ forloop.counter }}-{{ color.name|lower }}" type="radio" name="option-0" value="{{ color.name }}"><label class="swatchLbl color small rounded" for="swatch-{{ forloop.counter }}-{{ color.name|lower }}" style="background-color:#{{ color.code }};" title="{{ color.name }}"></label>
-                                              </div>
-                                              {% endfor %}
-                                             
-                                              
-                                        </div>
-                                        <div class="swatch clearfix swatch-1 option2" data-option-index="1">
-                                            <div class="product-form__item">
-                                              {% for size in product.available_sizes.all %}
-                                              <div data-value="{{ size }}" class="swatch-element {{ size|lower }} available">
-                                                <input class="swatchInput" id="swatch-{{ forloop.counter }}-{{ size|lower }}" type="radio" name="option-1" value="{{ size }}">
-                                                <label class="swatchLbl small flat" for="swatch-{{ forloop.counter }}-{{ size|lower }}" title="{{ size }}">{{ size }}</label>
-                                            </div>
-                                              {% endfor %}
-                                        </div>
-                                      <form id="addToCartForm" action="{% url 'add_to_cart' slug=product.slug %}" method="POST">
-                                        {% csrf_token %}
-                                        <div class="product-action clearfix">
-                                            
-                                            <!-- Quantity Adjustment Section -->
-                                            <div class="product-form__item--quantity">
-                                                <div class="wrapQtyBtn">
-                                                    <div class="qtyField">
-                                                        <a class="qtyBtn minus" href="javascript:void(0);"><i class="fa anm anm-minus-r" aria-hidden="true"></i></a>
-                                                        <input type="text" id="Quantity" name="quantity" value="1" class="product-form__input qty" readonly>
-                                                        <a class="qtyBtn plus" href="javascript:void(0);"><i class="fa anm anm-plus-r" aria-hidden="true"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <!-- Add to Cart Button -->
-                                            <div class="product-form__item--submit">
-                                                <button type="submit" name="add" class="btn product-form__cart-submit">
-                                                  <a href="{% url 'cart' %}"> Add to cart</a>
-                                                </button>
-                                            </div>
-                                    
-                                            <!-- Buy Now Button (Optional) -->
-                                            <div class="shopify-payment-button" data-shopify="payment-button">
-                                                <button type="button" class="shopify-payment-button__button shopify-payment-button__button--unbranded">Buy it now</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                      <!-- End Product Action -->
-                                    
-                                    </form>
-                                    <div class="display-table shareRow">
-                                            <div class="display-table-cell medium-up--one-third">
-                                                
-                                            </div>
-                                            
-                                        </div>
-                                    <div class="product-info">
-                                      <p class="product-type"><span class="lbl">Product Type:</span> <a href="http://annimexweb.com/collections/types?q=Women%27s" title="Women's">Women's</a></p>
-                                      <p class="product-cat"> <span class="lbl">Collections: </span><a href="http://annimexweb.com/collections/notifications" title="">Product Notifications</a> <a href="http://annimexweb.com/collections/women" title="">Women</a> </p>
-                                    </div>
-                                </div>
-                                </div>
-                                <div>
-                                  <h1>Description</h1>
-                                  <p>{{product.drescription}}</p>
 
-                                </div>
-                            </div>
-                        </div>
-                    	<!--End-product-single-->
-                        {% comment %} <!--Product Sidebar-->
-                        <div class="prSidebar sidebar-product">
-                    		<div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                <!--Product Feature-->
-                                <div class="prFeatures">
-                                    <div class="row">
-                                        <div class="feature">
-                                            <img src="{% static 'images/credit-card.png' %}" alt="Safe Payment" title="Safe Payment" />
-                                            <div class="details"><h5>Safe Payment</h5>Pay with the world's most payment methods.</div>
-                                        </div>
-                                        <div class="feature">
-                                            <img src="{% static 'images/shield.png' %}" alt="Confidence" title="Confidence" />
-                                            <div class="details"><h5>Confidence</h5>Protection covers your purchase and personal data.</div>
-                                        </div>
-                                        <div class="feature">
-                                            <img src="{% static 'images/worldwide.png' %}" alt="Worldwide Delivery" title="Worldwide Delivery" />
-                                            <div class="details"><h5>Worldwide Delivery</h5>FREE &amp; fast shipping to over 200+ countries &amp; regions.</div>
-                                        </div>
-                                        <div class="feature">
-                                            <img src="{% static 'images/phone-call.png' %}" alt="Hotline" title="Hotline" />
-                                            <div class="details"><h5>Hotline</h5>Talk to help line for your question on 4141 456 789, 4125 666 888</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--End Product Feature-->
-                                <!--Related Product-->
-                                <div class="related-product grid-products">
-                                	<header class="section-header">
-                                        <h2 class="section-header__title text-center h2"><span>Related Products</span></h2>
-                                        <p class="sub-heading">You can stop autoplay, increase/decrease aniamtion speed and number of grid to show and products from store admin.</p>
-                                    </header>
-                                    <div class="grid">
-                                        <div class="grid__item">
-                                          <div class="mini-list-item">
-                                            <div class="mini-view_image">
-                                                <a class="grid-view-item__link" href="#">
-                                                    <img class="grid-view-item__image" src="{% static 'images/product-images/product-image21.jpg' %}" alt="">
-                                                </a>
-                                            </div>
-                                            <div class="details">
-                                            	<a class="grid-view-item__title" href="#">Cena Skirt</a>
-                                              	<div class="grid-view-item__meta"><span class="product-price__price"><span class="money">$173.60</span></span></div>
-                                                <div class="product-review">
-                                                    <i class="font-13 fa fa-star"></i>
-                                                    <i class="font-13 fa fa-star"></i>
-                                                    <i class="font-13 fa fa-star"></i>
-                                                    <i class="font-13 fa fa-star"></i>
-                                                    <i class="font-13 fa fa-star"></i>
-                                                </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div class="grid__item">
-                                          <div class="mini-list-item">
-                                            <div class="mini-view_image"> <a class="grid-view-item__link" href="#"><img class="grid-view-item__image" src="{% static 'images/product-images/product-image18.jpg' %}" alt=""></a> </div>
-                                            <div class="details"> <a class="grid-view-item__title" href="#">Block Button Up</a>
-                                              <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">$378.00</span></span></div>
-                                              <div class="product-review">
-                                                    <i class="font-13 fa fa-star"></i>
-                                                    <i class="font-13 fa fa-star"></i>
-                                                    <i class="font-13 fa fa-star"></i>
-                                                    <i class="font-13 fa fa-star-o"></i>
-                                                    <i class="font-13 fa fa-star-o"></i>
-                                                </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div class="grid__item">
-                                          <div class="mini-list-item">
-                                            <div class="mini-view_image"> <a class="grid-view-item__link" href="#"><img class="grid-view-item__image" src="{% static 'images/product-images/product-image22.jpg' %}" alt=""></a> </div>
-                                            <div class="details"> <a class="grid-view-item__title" href="#">Balda Button Pant</a>
-                                              <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">$278.60</span></span></div>
-                                              <div class="product-review">
-                                                    <i class="font-13 fa fa-star"></i>
-                                                    <i class="font-13 fa fa-star-o"></i>
-                                                    <i class="font-13 fa fa-star-o"></i>
-                                                    <i class="font-13 fa fa-star-o"></i>
-                                                    <i class="font-13 fa fa-star-o"></i>
-                                                </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div class="grid__item">
-                                          <div class="mini-list-item">
-                                            <div class="mini-view_image"> <a class="grid-view-item__link" href="#"><img class="grid-view-item__image" src="{% static 'images/product-images/product-image23.jpg' %}" alt=""></a> </div>
-                                            <div class="details"> <a class="grid-view-item__title" href="#">Border Dress in Black/Silver</a>
-                                              <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">$228.00</span></span></div>
-                                              <div class="product-review">
-                                                    <i class="font-13 fa fa-star-o"></i>
-                                                    <i class="font-13 fa fa-star-o"></i>
-                                                    <i class="font-13 fa fa-star-o"></i>
-                                                    <i class="font-13 fa fa-star-o"></i>
-                                                    <i class="font-13 fa fa-star-o"></i>
-                                                </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div class="grid__item">
-                                          <div class="mini-list-item">
-                                            <div class="mini-view_image"><a class="grid-view-item__link" href="#"><img class="grid-view-item__image" src="{% static 'images/product-images/product-image24.jpg' %}" alt=""></a> </div>
-                                            <div class="details"> <a class="grid-view-item__title" href="#">Buttercup Dress</a>
-                                              <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">$199.00</span></span></div>
-                                              <div class="product-review">
-                                                    <i class="font-13 fa fa-star-o"></i>
-                                                    <i class="font-13 fa fa-star-o"></i>
-                                                    <i class="font-13 fa fa-star-o"></i>
-                                                    <i class="font-13 fa fa-star-o"></i>
-                                                    <i class="font-13 fa fa-star-o"></i>
-                                                </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div class="grid__item">
-                                          <div class="mini-list-item">
-                                            <div class="mini-view_image"><a class="grid-view-item__link" href="#"><img class="grid-view-item__image" src="{% static 'images/product-images/product-image25.jpg' %}" alt=""></a> </div>
-                                            <div class="details"> <a class="grid-view-item__title" href="#">Lima Shirt</a>
-                                              <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">$698.00</span></span></div>
-                                              <div class="product-review">
-                                                    <i class="font-13 fa fa-star-o"></i>
-                                                    <i class="font-13 fa fa-star"></i>
-                                                    <i class="font-13 fa fa-star"></i>
-                                                    <i class="font-13 fa fa-star"></i>
-                                                    <i class="font-13 fa fa-star"></i>
-                                                </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                     </div>
-                                </div>
-                               	<!--End Related Product-->
-                            </div>
-                        </div>
-                        <!--Product Sidebar--> {% endcomment %}
-                    </div>
-                	<!--#ProductSection-product-template-->
-            	</div>
-            <!--MainContent-->
-        </div>
-    	<!--End Body Content-->
-    
-  
-        
-   
-    <!--Scoll Top-->
-    <span id="site-scroll"><i class="icon anm anm-angle-up-r"></i></span>
-    <!--End Scoll Top-->
-    
-
-
-	<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-        	<div class="pswp__bg"></div>
-            <div class="pswp__scroll-wrap"><div class="pswp__container"><div class="pswp__item"></div><div class="pswp__item"></div><div class="pswp__item"></div></div><div class="pswp__ui pswp__ui--hidden"><div class="pswp__top-bar"><div class="pswp__counter"></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button><button class="pswp__button pswp__button--share" title="Share"></button><button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button><button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class="pswp__preloader"><div class="pswp__preloader__icn"><div class="pswp__preloader__cut"><div class="pswp__preloader__donut"></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class="pswp__share-tooltip"></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button><button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class="pswp__caption"><div class="pswp__caption__center"></div></div></div></div></div>
-
-            <script>
-              function updateQuantity(change) {
-                const quantityInput = document.getElementById("Quantity");
-                let currentQuantity = parseInt(quantityInput.value);
-            
-                // Update the quantity based on the clicked button (+1 or -1)
-                currentQuantity += change;
-            
-                // Ensure the quantity doesn't go below 1
-                if (currentQuantity < 1) {
-                    currentQuantity = 1;
-                }
-            
-                quantityInput.value = currentQuantity;
-            }
-            </script> 
-
-{% comment %} </body> {% endcomment %}
-{% comment %} {% endblock content %} {% endcomment %}
 
 
 {% block content %}
@@ -465,9 +136,9 @@
                                     <div class="product-form__item--quantity">
                                         <div class="wrapQtyBtn">
                                             <div class="qtyField">
-                                                <a class="qtyBtn minus" data-id="{{ item.id }}" href="javascript:void(0);"><i class="fa anm anm-minus-r" aria-hidden="true"></i></a>
-                                                <input type="text" id="Quantity" name="quantity" value="{{ cart_item.quantity|default:1 }}" data-id="{{ item.id }}" class="product-form__input qty">
-                                                <a class="qtyBtn plus" data-id="{{ item.id }}" href="javascript:void(0);"><i class="fa anm anm-plus-r" aria-hidden="true"></i></a>
+                                                <a class="qtyBtn minus" data-id="{{ product.id }}" href="javascript:void(0);"><i class="fa anm anm-minus-r" aria-hidden="true"></i></a>
+                                                <input type="text" id="Quantity-{{ product.id }}" name="quantity" value="{{ product_quantity }}" data-id="{{ item.id }}" class="product-form__input qty">
+                                                <a class="qtyBtn plus" data-id="{{ product.id }}" href="javascript:void(0);"><i class="fa anm anm-plus-r" aria-hidden="true"></i></a>
                                             </div>
                                         </div>
                                     </div>             
@@ -751,12 +422,12 @@
                                   <div class="grid__item">
                                       <div class="mini-list-item">
                                           <div class="mini-view_image">
-                                              <a class="grid-view-item__link" href="{% url 'product' slug=product.slug %}">
+                                              <a class="grid-view-item__link" href="{% url 'product' product.slug %}">
                                                   <img class="grid-view-item__image" src="{{ p.main_image.url }}" alt="{{ p.name }}">
                                               </a>
                                           </div>
                                           <div class="details">
-                                              <a class="grid-view-item__title" href="{% url 'product' slug=product.slug %}">
+                                              <a class="grid-view-item__title" href="{% url 'product' product.slug %}">
                                                   {{ p.name }}
                                               </a>
                                               <div class="grid-view-item__meta">
@@ -1017,54 +688,54 @@
 
 <!-- Including Jquery -->
 <script>
-  $(function () {
-    var $pswp = $('.pswp')[0],
-        image = [],
-        getItems = function () {
-            var items = [];
-            $('.lightboximages a').each(function () {
-                var $href = $(this).attr('href'),
-                    $size = $(this).data('size').split('x'),
-                    item = {
-                        src: $href,
-                        w: parseInt($size[0], 10),
-                        h: parseInt($size[1], 10)
-                    };
-                items.push(item);
-            });
-            return items;
-        };
-    var items = getItems();
+jQuery(function () {
+  var $pswp = jQuery('.pswp')[0],
+      image = [],
+      getItems = function () {
+          var items = [];
+          jQuery('.lightboximages a').each(function () {
+              var $href = jQuery(this).attr('href'),
+                  $size = jQuery(this).data('size').split('x'),
+                  item = {
+                      src: $href,
+                      w: parseInt($size[0], 10),
+                      h: parseInt($size[1], 10)
+                  };
+              items.push(item);
+          });
+          return items;
+      };
+  var items = getItems();
 
-    $.each(items, function (index, value) {
-        image[index] = new Image();
-        image[index].src = value['src'];
-    });
+  jQuery.each(items, function (index, value) {
+      image[index] = new Image();
+      image[index].src = value['src'];
+  });
 
-    $('.prlightbox').on('click', function (event) {
-        event.preventDefault();
+  jQuery('.prlightbox').on('click', function (event) {
+      event.preventDefault();
 
-        // Get active thumbnail index
-        var $index = $(".active-thumb").parent().attr('data-slick-index') || 0;
-        $index = parseInt($index, 10);
+      // Get active thumbnail index
+      var $index = jQuery(".active-thumb").parent().attr('data-slick-index') || 0;
+      $index = parseInt($index, 10);
 
-        var options = {
-            index: $index,
-            bgOpacity: 0.9,
-            showHideOpacity: true
-        };
-        var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
-        lightBox.init();
-    });
+      var options = {
+          index: $index,
+          bgOpacity: 0.9,
+          showHideOpacity: true
+      };
+      var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
+      lightBox.init();
+  });
 
-    // Update active thumbnail
-    $('#gallery a').on('click', function () {
-        $('#gallery a').removeClass('active-thumb');
-        $(this).addClass('active-thumb');
-    });
+  // Update active thumbnail
+  jQuery('#gallery a').on('click', function () {
+      jQuery('#gallery a').removeClass('active-thumb');
+      jQuery(this).addClass('active-thumb');
+  });
 });
-
 </script>
+
 </div>
 </div>
 

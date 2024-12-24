@@ -249,7 +249,7 @@
                                 <div class="list-view-item__image-column">
                                     <div class="list-view-item__image-wrapper">
                                         <!-- Image -->
-                                        <a href="#"><img class="list-view-item__image blur-up lazyload" data-src="{{product.main_image.url}}" src="{{product.main_image.url}}" alt="image" title="product"></a>
+                                        <a href="{% url 'product' product.slug %}"><img class="list-view-item__image blur-up lazyload" data-src="{{product.main_image.url}}" src="{{product.main_image.url}}" alt="image" title="product"></a>
                                         <!-- End Image -->
                                     </div>
                                 </div>

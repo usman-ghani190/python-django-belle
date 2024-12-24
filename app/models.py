@@ -158,6 +158,11 @@ class CartItem(models.Model):
     size = models.ForeignKey(Size, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
 
+    @property
+    def total_price(self):
+        return self.product.price * self.quantity
+    
+
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

@@ -32,7 +32,7 @@
                                 
                                 <tr class="cart__row border-bottom line1 cart-flex border-top">
                                     <td class="cart__image-wrapper cart-flex-item">
-                                        <a href="{% url 'shop'  %}"><img class="cart__image" src="{{ item.product.main_image.url }}" alt="{{ item.product.name }}"></a>
+                                        <a href="{% url 'product' item.product.slug  %}"><img class="cart__image" src="{{ item.product.main_image.url }}" alt="{{ item.product.name }}"></a>
                                     </td>
                                     <td class="cart__meta small--text-left cart-flex-item">
                                         <div class="list-view-item__title">
@@ -50,7 +50,7 @@
                                         <div class="cart__qty text-center">
                                             <div class="qtyField">
                                                 <a class="qtyBtn minus" data-id="{{ item.id }}" href="javascript:void(0);"><i class="fa anm anm-minus-r" aria-hidden="true"></i></a>
-                                                <input type="text" readonly name="quantity" value="{{ item.quantity }}" data-id="{{ item.id }}" class="product-form__input qty">
+                                                <input type="text" readonly name="quantity" value="{{ item.quantity | default:1 }}" data-id="{{ item.id }}" class="product-form__input qty">
                                                 <a class="qtyBtn plus" data-id="{{ item.id }}" href="javascript:void(0);"><i class="fa anm anm-plus-r" aria-hidden="true"></i></a>
                                             </div>
 
@@ -63,7 +63,7 @@
                                 </tr>
                                 {% empty %}
                                 <tr>
-                                    <td colspan="6" class="text-center">Your cart is empty.</td>
+                                    <td colspan="6" class="text-center">Your cart is empty. <a href="{% url 'shop' %}">Browse products</a></td>
                                 </tr>
                                 {% endfor %}
 
