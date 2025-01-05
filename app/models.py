@@ -81,6 +81,7 @@ class Product(models.Model):
     is_featured= models.BooleanField(default=False)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True)
     tags = models.ManyToManyField(Tag, blank=True)
+    wished_by = models.ManyToManyField(User, related_name='wishlisted_products', blank=True)
 
 
     def __str__(self):

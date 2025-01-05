@@ -841,48 +841,110 @@ def register_page(request):
             # Save the new user
             user = form.save()
             login(request, user)  # Log the user in automatically after registration
-            return redirect('home')  # Redirect to the home page or wherever
+            return redirect('index')  # Redirect to the home page or wherever
     else:
         form = RegisterForm()
 
     context = {'form': form}
     return render(request, 'app/register.html', context)
 
+# def login_page(request):
+#     if request.user.is_authenticated:
+#         messages.info(request, "You are already logged in.")
+#         return redirect('home')  # Redirect to home if already logged in
+
+#     if request.method == 'POST':
+#         form = AuthenticationForm(request, data=request.POST)
+#         if form.is_valid():
+#             # Directly get the authenticated user from the form
+#             user = form.get_user()
+#             login(request, user)  # Log the user in
+#             messages.success(request, f"Welcome back, {user.username}!")
+#             return redirect('home')  # Redirect to home after successful login
+#         else:
+#             # Iterate through form errors and display them
+#             for field in form:
+#                 for error in field.errors:
+#                     messages.error(request, f"{field.label}: {error}")
+#             for error in form.non_field_errors():
+#                 messages.error(request, error)
+#     else:
+#         form = AuthenticationForm()
+
+#     context = {
+#         'form': form
+#     }
+#     return render(request, 'app/login.html', context)
+
 def login_page(request):
     if request.user.is_authenticated:
-        return redirect('home')  # Redirect to home if the user is already logged in
+        messages.info(request, "You are already logged in.")
+        return redirect('index')  # or 'index' based on your choice
 
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            # Authenticate and log the user in
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(username=username, password=password)
-
-            if user is not None:
-                login(request, user)  # Log the user in
-                return redirect('home')  # Redirect to a page after successful login
-            else:
-                messages.error(request, "Invalid username or password.")
+            user = form.get_user()
+            login(request, user)
+            messages.success(request, f"Welcome back, {user.username}!")
+            print(f"DEBUG: User {user.username} logged in. Authenticated: {user.is_authenticated}")
+            return redirect('index')  # or 'index'
         else:
-            messages.error(request, "Invalid form submission.")
+            for field in form:
+                for error in field.errors:
+                    messages.error(request, f"{field.label}: {error}")
+            for error in form.non_field_errors():
+                messages.error(request, error)
+            print("DEBUG: Login form is invalid.")
     else:
         form = AuthenticationForm()
 
-    context = {
-        'form': form
-    }
+    context = {'form': form}
     return render(request, 'app/login.html', context)
 
 def logout_view(request):
     logout(request)  # Automatically deletes the session
     return redirect('login')
 
-def wishlist(request, slug):
-    product = get_object_or_404(Product, slug=slug)
-    context = {'product': product}
+@login_required
+def wishlist_view(request):
+    """
+    Display all products in the authenticated user's wishlist.
+    """
+    user = request.user
+    wishlist_products = user.wishlisted_products.all()
+    context = {
+        'wishlist_products': wishlist_products,
+    }
     return render(request, 'app/wishlist.html', context)
+
+@login_required
+def add_to_wishlist(request, slug):
+    """
+    Add a specific product to the user's wishlist.
+    """
+    product = get_object_or_404(Product, slug=slug)
+    user = request.user
+    if product in user.wishlisted_products.all():
+        messages.info(request, f"'{product.name}' is already in your wishlist.")
+    else:
+        user.wishlisted_products.add(product)
+        messages.success(request, f"Added '{product.name}' to your wishlist.")
+    return redirect('wishlist')
+
+@login_required
+def remove_from_wishlist(request, slug):
+    """
+    Remove a specific product from the user's wishlist.
+    """
+    product = get_object_or_404(Product, slug=slug)
+    user = request.user
+    if product in user.wishlisted_products.all():
+        user.wishlisted_products.remove(product)
+        messages.success(request, f"Removed '{product.name}' from your wishlist.")
+    else:
+        messages.error(request, f"'{product.name}' is not in your wishlist.")
+    return redirect('wishlist')
 
 def thank_you(request):
     context = {}

@@ -93,15 +93,14 @@ class PaymentForm(forms.ModelForm):
         }
 
 
+
 class RegisterForm(UserCreationForm):
-    first_name = forms.CharField(max_length=100, required=True)
-    last_name = forms.CharField(max_length=100, required=True)
-    email = forms.EmailField(required=True)
+    email = forms.EmailField(required=True, help_text="Required. Enter a valid email address.")
 
     # Meta class to define the model and fields to include
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'email', 'username', 'password1', 'password2')
+        fields = ('username', 'email', 'password1', 'password2')
 
     # Optional: Customize the password confirmation logic if needed
     def clean(self):
@@ -109,10 +108,39 @@ class RegisterForm(UserCreationForm):
         password = cleaned_data.get("password1")
         confirm_password = cleaned_data.get("password2")
 
-        if password != confirm_password:
+        if password and confirm_password and password != confirm_password:
             self.add_error('password2', "Passwords do not match")
         
         return cleaned_data
+
+    # Optional: Ensure email is unique (recommended)
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("This email address is already in use.")
+        return email
+
+
+# class RegisterForm(UserCreationForm):
+#     first_name = forms.CharField(max_length=100, required=True)
+#     last_name = forms.CharField(max_length=100, required=True)
+#     email = forms.EmailField(required=True)
+
+#     # Meta class to define the model and fields to include
+#     class Meta:
+#         model = User
+#         fields = ('first_name', 'last_name', 'email', 'username', 'password1', 'password2')
+
+#     # Optional: Customize the password confirmation logic if needed
+#     def clean(self):
+#         cleaned_data = super().clean()
+#         password = cleaned_data.get("password1")
+#         confirm_password = cleaned_data.get("password2")
+
+#         if password != confirm_password:
+#             self.add_error('password2', "Passwords do not match")
+        
+#         return cleaned_data
     
 
 # class LoginForm(forms.Form):
