@@ -1,3 +1,4 @@
+from os import name
 from phonenumber_field.modelfields import PhoneNumberField
 from django.db import models
 from django.urls import reverse
@@ -228,3 +229,10 @@ class Payment(models.Model):
     cardno = models.CharField(max_length=16)  # Use CharField for card number
     cvv = models.CharField(max_length=3)  # CVV is typically 3 or 4 digits
     exdate = models.DateField()  # Expiration date
+
+
+class Register(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100, unique=True)
+    password = models.CharField(max_length=255)

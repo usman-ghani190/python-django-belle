@@ -1,17 +1,8 @@
 // document.addEventListener("DOMContentLoaded", function () {
-//   // Attach event listeners for all cart actions
 //   attachCartEventListeners();
 
-//   // Function to attach event listeners for increment, decrement, and remove buttons
 //   function attachCartEventListeners() {
-//     // Clear previous event listeners (to prevent duplicates)
-//     const buttons = document.querySelectorAll(".qtyBtn, .remove");
-//     buttons.forEach((button) => {
-//       const newButton = button.cloneNode(true);
-//       button.parentNode.replaceChild(newButton, button);
-//     });
-
-//     // Attach quantity increment/decrement listeners
+//     // Attach event listeners for quantity increment/decrement
 //     document.querySelectorAll(".qtyBtn").forEach((button) => {
 //       button.addEventListener("click", function (event) {
 //         event.preventDefault();
@@ -22,27 +13,39 @@
 //           return;
 //         }
 
-//         const inputField = document.querySelector(`#Quantity-${itemId}`);
-//         if (!inputField) {
+//         // Identify if we're on the cart page or mini-cart
+//         const isCartPage = this.closest(".cart__qty") !== null;
+//         const isMiniCart = this.closest(".mini-products-list") !== null;
+
+//         // Identify the appropriate input field
+//         const qtyField = document.querySelector(
+//           isCartPage
+//             ? `.product-form__input[data-id='${itemId}']`
+//             : `#Quantity-${itemId}`
+//         );
+
+//         if (!qtyField) {
 //           console.error("Quantity input field not found for item:", { itemId });
 //           return;
 //         }
 
-//         let quantity = parseInt(inputField.value) || 1;
+//         // Get current quantity and update it based on button action
+//         let quantity = parseInt(qtyField.value) || 1;
 //         if (this.classList.contains("plus")) {
 //           quantity++;
 //         } else if (this.classList.contains("minus")) {
 //           quantity = Math.max(1, quantity - 1);
 //         }
 
-//         inputField.value = quantity;
+//         // Update the quantity field
+//         qtyField.value = quantity;
 
-//         // Send the updated quantity to the server
+//         // Send updated quantity to the server
 //         updateCartServer(itemId, quantity);
 //       });
 //     });
 
-//     // Attach remove button listeners
+//     // Attach event listeners for remove buttons
 //     document.querySelectorAll(".remove").forEach((button) => {
 //       button.addEventListener("click", function (event) {
 //         event.preventDefault();
@@ -53,13 +56,13 @@
 //           return;
 //         }
 
-//         // Send a request to remove the item from the cart
+//         // Send a request to remove the item
 //         removeItemFromCart(itemId);
 //       });
 //     });
 //   }
 
-//   // Function to send updated cart data to the server
+//   // Function to update cart on the server
 //   function updateCartServer(itemId, quantity) {
 //     const csrfToken = document.querySelector(
 //       "[name=csrfmiddlewaretoken]"
@@ -76,10 +79,11 @@
 //       .then((response) => response.json())
 //       .then((data) => {
 //         if (data.success) {
-//           // Update both cart page and mini cart UI
+//           // Update both cart page and mini-cart dynamically
 //           updateCartUI(data.cart_items, data.subtotal);
 //           updateMiniCartUI(data.cart_items, data.subtotal);
 //         } else {
+//           console.error("Error updating cart:", data.error);
 //           alert("Error updating cart. Please try again.");
 //         }
 //       })
@@ -103,9 +107,11 @@
 //       .then((response) => response.json())
 //       .then((data) => {
 //         if (data.success) {
+//           // Update UI dynamically
 //           updateCartUI(data.cart_items, data.subtotal);
 //           updateMiniCartUI(data.cart_items, data.subtotal);
 //         } else {
+//           console.error("Error removing item:", data.error);
 //           alert("Error removing item. Please try again.");
 //         }
 //       })
@@ -114,34 +120,30 @@
 
 //   // Function to update the cart page UI dynamically
 //   function updateCartUI(cartItems, subtotal) {
-//     const cartTableBody = document.querySelector(".cart__row");
-//     if (cartTableBody) {
-//       cartItems.forEach((item) => {
-//         const totalField = document.querySelector(`#total-${item.id}`);
-//         if (totalField) {
-//           totalField.textContent = `$${item.total_price.toFixed(2)}`;
-//         }
-
-//         const qtyField = document.querySelector(`#Quantity-${item.id}`);
-//         if (qtyField) {
-//           qtyField.value = item.quantity;
-//         }
-//       });
-
-//       const subtotalField = document.querySelector("#subtotal");
-//       if (subtotalField) {
-//         subtotalField.textContent = `$${subtotal.toFixed(2)}`;
+//     cartItems.forEach((item) => {
+//       const totalField = document.querySelector(`#total-${item.id}`);
+//       if (totalField) {
+//         totalField.textContent = `$${item.total_price.toFixed(2)}`;
 //       }
+
+//       const qtyField = document.querySelector(`#Quantity-${item.id}`);
+//       if (qtyField) {
+//         qtyField.value = item.quantity; // Update the quantity field
+//       }
+//     });
+
+//     const subtotalField = document.querySelector("#subtotal");
+//     if (subtotalField) {
+//       subtotalField.textContent = `$${subtotal.toFixed(2)}`;
 //     }
 //   }
 
-//   // Function to update the mini cart UI dynamically
+//   // Function to update the mini-cart UI dynamically
 //   function updateMiniCartUI(cartItems, subtotal) {
 //     const miniCartList = document.querySelector(".mini-products-list");
 //     if (miniCartList) {
-//       // Update each item in the mini cart without replacing the entire container
-//       miniCartList.innerHTML = ""; // Clear current items
-
+//       // Clear current items and re-render
+//       miniCartList.innerHTML = "";
 //       cartItems.forEach((item) => {
 //         miniCartList.innerHTML += `
 //           <li class="item">
@@ -178,7 +180,7 @@
 //           </li>`;
 //       });
 
-//       // Reattach event listeners to new buttons
+//       // Re-attach event listeners for newly rendered items
 //       attachCartEventListeners();
 //     }
 
@@ -255,6 +257,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Function to update cart count dynamically
+  function updateCartCount(cartCount) {
+    const cartCountElement = document.getElementById("CartCount");
+    if (cartCountElement) {
+      cartCountElement.textContent = cartCount; // Update the cart count
+    }
+  }
+
   // Function to update cart on the server
   function updateCartServer(itemId, quantity) {
     const csrfToken = document.querySelector(
@@ -275,6 +285,7 @@ document.addEventListener("DOMContentLoaded", function () {
           // Update both cart page and mini-cart dynamically
           updateCartUI(data.cart_items, data.subtotal);
           updateMiniCartUI(data.cart_items, data.subtotal);
+          updateCartCount(data.cart_count); // Update the cart count
         } else {
           console.error("Error updating cart:", data.error);
           alert("Error updating cart. Please try again.");
@@ -303,6 +314,7 @@ document.addEventListener("DOMContentLoaded", function () {
           // Update UI dynamically
           updateCartUI(data.cart_items, data.subtotal);
           updateMiniCartUI(data.cart_items, data.subtotal);
+          updateCartCount(data.cart_count); // Update the cart count
         } else {
           console.error("Error removing item:", data.error);
           alert("Error removing item. Please try again.");

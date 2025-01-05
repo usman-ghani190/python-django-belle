@@ -144,10 +144,16 @@
                                     </div>             
                                     
                                     <div class="product-form__item--submit">
+                                      {% if user.is_authenticated %}
                                         <button type="submit" name="action" value="add_to_cart" class="btn product-form__cart-submit">
                                             <span>Add to cart</span>
                                         </button>
+                                      {% else %}
+                                        <button type="submit" name="action" value="add_to_cart" class="btn product-form__cart-submit">
+                                            <span>Please <a href="{% url 'login' %}">log in</a> to add items to your cart.</span>
+                                        </button>
                                     </div></a>
+                                    {% endif %}
 
                                     <div class="shopify-payment-button" data-shopify="payment-button">
                                         <button type="submit" name="action" value="buy_now" class="shopify-payment-button__button shopify-payment-button__button--unbranded">Buy it now</button>
