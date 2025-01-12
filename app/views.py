@@ -583,6 +583,7 @@ def shop_page(request):
     }
     return render(request, 'app/shop.html', context)
 
+
 @login_required
 def product_page(request, slug):
     product = get_object_or_404(Product, slug=slug)
@@ -631,9 +632,9 @@ def product_page(request, slug):
         quantity = int(request.POST.get('quantity', 1))
 
         if action == 'add_to_cart':
-            return add_to_cart(request, product, quantity)
+            return add_to_cart(request, slug)  # Pass only the slug
         elif action == 'buy_now':
-            return buy_now(request, product, quantity)
+            return buy_now(request, product, quantity)  # Assuming buy_now is defined
 
     cart = request.session.get('cart', {})
     product_quantity = cart.get(str(product.id), 1)
@@ -653,29 +654,70 @@ def product_page(request, slug):
 
     return render(request, 'app/product_page.html', context)
 
-@login_required
-def add_to_cart(request, product, quantity):
-    color_name = request.POST.get('option-0')
-    size_name = request.POST.get('option-1')
 
-    if not color_name or not size_name:
-        messages.error(request, "Please select both color and size.")
+
+@login_required
+def add_to_cart(request, slug):
+    # Get the product by slug
+    product = get_object_or_404(Product, slug=slug)
+    
+    # Default quantity to 1 if not provided in POST
+    quantity = request.POST.get('quantity', 1)
+
+    try:
+        quantity = int(quantity)
+        if quantity <= 0:
+            raise ValueError("Quantity must be greater than 0.")
+    except (ValueError, TypeError):
+        messages.error(request, "Invalid quantity.")
         return redirect(request.META.get('HTTP_REFERER', '/'))
 
+    # Check if user is authenticated
+    if not request.user.is_authenticated:
+        messages.error(request, "You need to be logged in to add items to your cart.")
+        return redirect(reverse('login'))  # Redirect to login page
+
+    # Check if the user is adding the product from their wishlist (via wished_by relation)
+    if product.wished_by.filter(id=request.user.id).exists():
+        # User has this product in their wishlist, remove it from wishlist
+        product.wished_by.remove(request.user)
+        messages.info(request, f"{product.name} has been removed from your wishlist.")
+
+    # Get the first available color and size (defaults)
+    default_color = product.available_colors.first()
+    default_size = product.available_sizes.first()
+
+    if not default_color or not default_size:
+        messages.error(request, "This product does not have default color or size options.")
+        return redirect(request.META.get('HTTP_REFERER', '/'))
+
+    # Proceed with default color and size
+    color_name = default_color.name
+    size_name = default_size.name
+
+    # Fetch color and size objects
     color = get_object_or_404(Color, name=color_name)
     size = get_object_or_404(Size, name=size_name)
 
-    # Since the view is protected, user is authenticated
+    # Get or create the cart for the user
     cart, created = Cart.objects.get_or_create(user=request.user)
 
-    # Add or update the cart item
+    # Add the product with color and size to the cart
     cart_item, created = CartItem.objects.get_or_create(
         cart=cart, product=product, color=color, size=size
     )
-    cart_item.quantity = int(quantity)
-    cart_item.save()
 
-    messages.success(request, "Item added to cart!")
+    # Update the cart item quantity
+    if not created:
+        cart_item.quantity += quantity  # Increment quantity if already in cart
+    else:
+        cart_item.quantity = quantity  # Set the quantity for the first time
+
+    cart_item.save()  # Save the cart item
+
+    # Success message
+    messages.success(request, f"{product.name} has been added to your cart!")
+
     return redirect(reverse('cart'))
 
 @login_required
@@ -848,33 +890,6 @@ def register_page(request):
     context = {'form': form}
     return render(request, 'app/register.html', context)
 
-# def login_page(request):
-#     if request.user.is_authenticated:
-#         messages.info(request, "You are already logged in.")
-#         return redirect('home')  # Redirect to home if already logged in
-
-#     if request.method == 'POST':
-#         form = AuthenticationForm(request, data=request.POST)
-#         if form.is_valid():
-#             # Directly get the authenticated user from the form
-#             user = form.get_user()
-#             login(request, user)  # Log the user in
-#             messages.success(request, f"Welcome back, {user.username}!")
-#             return redirect('home')  # Redirect to home after successful login
-#         else:
-#             # Iterate through form errors and display them
-#             for field in form:
-#                 for error in field.errors:
-#                     messages.error(request, f"{field.label}: {error}")
-#             for error in form.non_field_errors():
-#                 messages.error(request, error)
-#     else:
-#         form = AuthenticationForm()
-
-#     context = {
-#         'form': form
-#     }
-#     return render(request, 'app/login.html', context)
 
 def login_page(request):
     if request.user.is_authenticated:
