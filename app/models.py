@@ -237,3 +237,13 @@ class Register(models.Model):
     last_name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100, unique=True)
     password = models.CharField(max_length=255)
+
+
+class NewsletterSubscriber(models.Model):
+    email = models.EmailField(unique=True)  # Ensure email is unique
+    is_subscribed = models.BooleanField(default=True)  # A flag for active subscription
+    subscribed_at = models.DateTimeField(auto_now_add=True)  # Subscription date
+    unsubscribed_at = models.DateTimeField(null=True, blank=True)  # Date when unsubscribed
+
+    def __str__(self):
+        return self.email

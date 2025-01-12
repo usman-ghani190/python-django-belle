@@ -1,0 +1,26 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<!--Body Content-->
+<div id="page-content">
+  <!-- Lookbook Start -->
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="empty-page-content text-center">
+          <h1>Thank You</h1>
+          <p>You have successfully subscribed to the newsletter!</p>
+          <p>
+            <a href="{% url 'shop' %}" class="btn btn--has-icon-after"
+              >Continue shopping
+              <i class="fa fa-caret-right" aria-hidden="true"></i
+            ></a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Lookbook Start -->
+</div>
+<!--End Body Content-->
+
+{% endblock content %}

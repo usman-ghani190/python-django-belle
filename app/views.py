@@ -502,8 +502,8 @@ from django.urls import reverse
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 
-from app.forms import CheckoutForm, PaymentForm, ProductQueryAskForm, RegisterForm, ReviewForm
-from app.models import Brand, Cart, CartItem, Category, Color, Product, ProductBigImage, ProductImage, Size, SliderImages, Tag
+from app.forms import CheckoutForm, NewsletterSubscriptionForm, PaymentForm, ProductQueryAskForm, RegisterForm, ReviewForm
+from app.models import Brand, Cart, CartItem, Category, Color, NewsletterSubscriber, Product, ProductBigImage, ProductImage, Size, SliderImages, Tag
 
 # Create your views here.
 def index(request, slug=None):
@@ -1035,3 +1035,23 @@ def remove_from_wishlist(request, slug):
 def thank_you(request):
     context = {}
     return render(request, 'app/thanks.html', context)
+
+
+def subscribe_newsletter(request):
+
+    if request.method == 'POST':
+        form = NewsletterSubscriptionForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            # Check if email is already subscribed
+            if not NewsletterSubscriber.objects.filter(email=email).exists():
+                # Create a new subscriber
+                NewsletterSubscriber.objects.create(email=email)
+                # messages.success(request, 'You have successfully subscribed to the newsletter!')
+            else:
+                messages.info(request, 'This email is already subscribed.')
+            return redirect('subscribe_newsletter')  # Redirect to a thank-you page or home page
+    else:
+        form = NewsletterSubscriptionForm()
+    return render(request, 'app/subscribe.html', {'form': form})
+

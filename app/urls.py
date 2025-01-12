@@ -23,6 +23,7 @@ urlpatterns = [
         path('thank_you',views.thank_you, name='thank_you' )
     ])),
     path('shop/checkout/', views.checkout, name='checkout'),
+    path('subscribe/', views.subscribe_newsletter, name='subscribe_newsletter'),
     path('logout/', views.logout_view, name='logout'),
 
 ]
