@@ -584,11 +584,83 @@ def shop_page(request):
     return render(request, 'app/shop.html', context)
 
 
+# def product_page(request, slug):
+#     product = get_object_or_404(Product, slug=slug)
+#     variants = ProductImage.objects.all()
+#     # big_variants = ProductBigImage.objects.all()
+#     big_variants = product.big_images.all()
+#     reviews = product.reviews.all()
+#     related_products = Product.objects.exclude(id=product.id)[:4]
+
+#     # Access session only for authenticated users
+#     recently_viewed = request.session.get('recently_viewed', [])
+#     if product.id not in recently_viewed:
+#         recently_viewed.append(product.id)
+#         if len(recently_viewed) > 5:
+#             recently_viewed.pop(0)
+#     request.session['recently_viewed'] = recently_viewed
+
+#     # Calculate savings
+#     you_saved, percentage_saved = None, None
+#     if product.price and product.discounted_price:
+#         you_saved = product.price - product.discounted_price
+#         percentage_saved = (you_saved / product.price) * 100
+
+#     # Handle ReviewForm submission
+#     review_form = ReviewForm()
+#     if request.method == 'POST':
+#         review_form = ReviewForm(request.POST)
+#         if review_form.is_valid():
+#             review = review_form.save(commit=False)
+#             review.product = product
+#             review.save()
+#             messages.success(request, "Your review has been submitted successfully!")
+#             return redirect('product', slug=slug)
+#         else:
+#             messages.error(request, "There was an error submitting your review. Please correct the form.")
+
+#     # Handle ProductQueryAskForm submission
+#     form = ProductQueryAskForm(request.POST or None)
+#     if request.method == 'POST' and form.is_valid() and 'query_submit' in request.POST:
+#         form.save()
+#         messages.success(request, "Your query has been submitted successfully!")
+#         return redirect('product', slug=slug)
+
+#     # Handle Add to Cart and Buy Now actions
+#     if request.method == 'POST':
+#         action = request.POST.get('action')
+#         quantity = int(request.POST.get('quantity', 1))
+
+#         if action == 'add_to_cart':
+#             return add_to_cart(request, slug)  # Pass only the slug
+#         elif action == 'buy_now':
+#             return buy_now(request, product, quantity)  # Assuming buy_now is defined
+
+#     cart = request.session.get('cart', {})
+#     product_quantity = cart.get(str(product.id), 1)
+
+#     context = {
+#         'product': product,
+#         'variants': variants,
+#         'big_variants': big_variants,
+#         'you_saved': you_saved,
+#         'percentage_saved': percentage_saved,
+#         'reviews': reviews,
+#         'review_form': review_form,
+#         'form': form,
+#         'related_products': related_products,
+#         'product_quantity': product_quantity,
+#     }
+
+#     return render(request, 'app/product_page.html', context)
 @login_required
 def product_page(request, slug):
     product = get_object_or_404(Product, slug=slug)
-    variants = ProductImage.objects.all()
-    big_variants = ProductBigImage.objects.all()
+    
+    # Get product images specific to this product
+    variants = product.images.all()  # Get all ProductImage objects related to this product
+    big_variants = product.big_images.all()  # Get all ProductBigImage objects related to this product
+    
     reviews = product.reviews.all()
     related_products = Product.objects.exclude(id=product.id)[:4]
 
@@ -653,7 +725,6 @@ def product_page(request, slug):
     }
 
     return render(request, 'app/product_page.html', context)
-
 
 
 @login_required

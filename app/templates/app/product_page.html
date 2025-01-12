@@ -49,20 +49,19 @@
                                 <div class="product-thumb product-thumb-1">
                                     <div id="gallery" class="product-dec-slider-1 product-tab-left">
                                       
+                                      {% if big_variants %}
+                                        
                                       {% for big_variant in big_variants %}
                                       <a data-image="{{big_variant.image.url}}" data-zoom-image="{{big_variant.image.url}}" class="slick-slide slick-cloned" data-slick-index="{{ forloop.revcounter|negative }}" aria-hidden="true" tabindex="-1">
                                         <img class="blur-up lazyload" src="{{big_variant.image.url}}" alt="" />
                                     </a>
                                       {% endfor %}
+                                      {% else %}
+                                        <p> No variants available.  </p> 
+                                    
+                                      {% endif %}
                                     </div>
                                 </div>
-                                <div class="lightboximages">
-                                  {% for big_variant in big_variants %}
-                                  <a href="{{ big_variant.image.url }}" data-size="{{ big_variant.get_data_size }}"></a>
-                                  {% endfor %}
-                              </div>
-                              
-    
                             </div>
                         </div> 
                         
@@ -95,7 +94,7 @@
                                         <span id="SaveAmount-product-template" class="product-single__save-amount">
                                         <span class="money">${{you_saved}}</span>
                                         </span>
-                                        <span class="off">(<span>{{percentage_saved}}</span>%)</span>
+                                        <span class="off">(<span>{{percentage_saved|floatformat:2}}</span>%)</span>
                                     </span>  
                                 </p>
                             <div class="product-single__description rte">
@@ -424,12 +423,12 @@
                                   <div class="grid__item">
                                       <div class="mini-list-item">
                                           <div class="mini-view_image">
-                                              <a class="grid-view-item__link" href="{% url 'product' product.slug %}">
+                                              <a class="grid-view-item__link" href="{% url 'product' p.slug %}">
                                                   <img class="grid-view-item__image" src="{{ p.main_image.url }}" alt="{{ p.name }}">
                                               </a>
                                           </div>
                                           <div class="details">
-                                              <a class="grid-view-item__title" href="{% url 'product' product.slug %}">
+                                              <a class="grid-view-item__title" href="{% url 'product' p.slug %}">
                                                   {{ p.name }}
                                               </a>
                                               <div class="grid-view-item__meta">
@@ -465,12 +464,12 @@
                                   <div class="grid__item">
                                       <div class="mini-list-item">
                                           <div class="mini-view_image">
-                                              <a class="grid-view-item__link" href="{% url 'product' slug=product.slug %}">
+                                              <a class="grid-view-item__link" href="{% url 'product' p.slug %}">
                                                   <img class="grid-view-item__image" src="{{ p.main_image.url }}" alt="{{ p.name }}">
                                               </a>
                                           </div>
                                           <div class="details">
-                                              <a class="grid-view-item__title" href="{% url 'product' slug=product.slug %}">
+                                              <a class="grid-view-item__title" href="{% url 'product' p.slug %}">
                                                   {{ p.name }}
                                               </a>
                                               <div class="grid-view-item__meta">
