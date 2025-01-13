@@ -26,6 +26,7 @@ urlpatterns = [
     path('subscribe/', views.subscribe_newsletter, name='subscribe_newsletter'),
     path('about_us/', views.about_us, name='about_us'),
     path('contact_us/', views.contact_us, name='contact_us'),
+    path('contact_confirm/', views.contact_confirm, name='contact_confirm'),
     path('logout/', views.logout_view, name='logout'),
     
 

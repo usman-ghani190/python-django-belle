@@ -79,52 +79,37 @@
           your thoughts, our team is here to assist you every step of the way.
         </p>
         <div class="formFeilds contact-form form-vertical">
-          <form
-            action="http://annimexweb.com/items/belle/assets/php/mail.php"
-            method="post"
-            id="contact_form"
-            class="contact-form"
-          >
+          <form method="POST" id="contact_form" class="contact-form">
+            {% csrf_token %}
             <div class="row">
               <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                 <div class="form-group">
+                  {{ form.name.errors }}
                   <input
                     type="text"
                     id="ContactFormName"
                     name="name"
                     placeholder="Name"
-                    value=""
+                    value="{{ form.name.value|default:'' }}"
                     required=""
                   />
                 </div>
               </div>
               <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                 <div class="form-group">
+                  {{ form.email.errors }}
                   <input
                     type="email"
                     id="ContactFormEmail"
                     name="email"
                     placeholder="Email"
-                    value=""
+                    value="{{ form.email.value|default:''  }}"
                     required=""
                   />
                 </div>
               </div>
             </div>
             <div class="row">
-              <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                <div class="form-group">
-                  <input
-                    required=""
-                    type="tel"
-                    id="ContactFormPhone"
-                    name="phone"
-                    pattern="[0-9\-]*"
-                    placeholder="Phone Number"
-                    value=""
-                  />
-                </div>
-              </div>
               <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                 <div class="form-group">
                   <input
@@ -133,7 +118,7 @@
                     id="ContactSubject"
                     name="subject"
                     placeholder="Subject"
-                    value=""
+                    value="{{ form.subject.value|default:'' }}"
                   />
                 </div>
               </div>
@@ -141,13 +126,16 @@
             <div class="row">
               <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="form-group">
+                  {{ form.message.errors }}
                   <textarea
                     required=""
                     rows="10"
                     id="ContactFormMessage"
                     name="message"
                     placeholder="Your Message"
-                  ></textarea>
+                  >
+{{ form.message.value|default:'' }}</textarea
+                  >
                 </div>
               </div>
             </div>

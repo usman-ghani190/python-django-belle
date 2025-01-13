@@ -123,3 +123,27 @@ class RegisterForm(UserCreationForm):
 
 class NewsletterSubscriptionForm(forms.Form):
     email = forms.EmailField(required=True, label='Your Email')
+
+
+class ContactUsForm(forms.Form):
+    name = forms.CharField(
+        max_length=100,
+        label='Your Name',
+        required=True,
+        widget=forms.TextInput(attrs={'placeholder': 'Enter your name'})
+    )
+    email = forms.EmailField(
+        label='Your Email',
+        required=True,
+        widget=forms.EmailInput(attrs={'placeholder': 'Enter your email'})
+    )
+    subject = forms.CharField(
+        max_length=100,
+        label='Subject',
+        required=True,
+        widget=forms.TextInput(attrs={'placeholder': 'Enter the subject'})
+    )
+    message = forms.CharField(
+        required=True,
+        widget=forms.Textarea(attrs={'placeholder': 'Your message here...'}),
+    )

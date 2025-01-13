@@ -502,8 +502,8 @@ from django.urls import reverse
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 
-from app.forms import CheckoutForm, NewsletterSubscriptionForm, PaymentForm, ProductQueryAskForm, RegisterForm, ReviewForm
-from app.models import Brand, Cart, CartItem, Category, Color, NewsletterSubscriber, Product, ProductBigImage, ProductImage, Size, SliderImages, Tag
+from app.forms import CheckoutForm, ContactUsForm, NewsletterSubscriptionForm, PaymentForm, ProductQueryAskForm, RegisterForm, ReviewForm
+from app.models import Brand, Cart, CartItem, Category, Color, ContactUs, NewsletterSubscriber, Product, ProductBigImage, ProductImage, Size, SliderImages, Tag
 
 # Create your views here.
 def index(request, slug=None):
@@ -1061,7 +1061,32 @@ def about_us(request):
 
     return render(request, 'app/about_us.html', context)
 
+
 def contact_us(request):
+    if request.method == 'POST':
+        form = ContactUsForm(request.POST)
+        if form.is_valid():
+            # Save the form data to the database
+            contact_message = ContactUs(
+                name=form.cleaned_data['name'],
+                email=form.cleaned_data['email'],
+                subject=form.cleaned_data['subject'],
+                message=form.cleaned_data['message'],
+            )
+            contact_message.save()  # Save to database
+
+            # Show success message
+            messages.success(request, 'Your message has been sent successfully!')
+
+            return redirect('contact_confirm')  # Redirect to the confirmation page
+        else:
+            messages.error(request, 'There were errors in your form submission.')
+    else:
+        form = ContactUsForm()
+
+    return render(request, 'app/contact_us.html', {'form': form})
+
+def contact_confirm(request):
     context= {}
 
-    return render(request, 'app/contact_us.html', context)
+    return render(request, 'app/contact_confirm.html', context)
