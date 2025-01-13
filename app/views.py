@@ -1048,10 +1048,20 @@ def subscribe_newsletter(request):
                 # Create a new subscriber
                 NewsletterSubscriber.objects.create(email=email)
                 # messages.success(request, 'You have successfully subscribed to the newsletter!')
+                return redirect('subscribe_newsletter')
             else:
                 messages.info(request, 'This email is already subscribed.')
-            return redirect('subscribe_newsletter')  # Redirect to a thank-you page or home page
+            return redirect('index')  # Redirect to a thank-you page or home page
     else:
         form = NewsletterSubscriptionForm()
     return render(request, 'app/subscribe.html', {'form': form})
 
+def about_us(request):
+    context= {}
+
+    return render(request, 'app/about_us.html', context)
+
+def contact_us(request):
+    context= {}
+
+    return render(request, 'app/contact_us.html', context)

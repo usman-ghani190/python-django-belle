@@ -24,7 +24,10 @@ urlpatterns = [
     ])),
     path('shop/checkout/', views.checkout, name='checkout'),
     path('subscribe/', views.subscribe_newsletter, name='subscribe_newsletter'),
+    path('about_us/', views.about_us, name='about_us'),
+    path('contact_us/', views.contact_us, name='contact_us'),
     path('logout/', views.logout_view, name='logout'),
+    
 
 ]
 
