@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from app.models import Brand, Cart, Category, Color, Product, ProductBigImage, ProductImage, Size, SliderImages, Tag
+from app.models import Brand, Cart, Category, Color, Faq, Product, ProductBigImage, ProductImage, Size, SliderImages, Tag
 
 # Register your models here.
 admin.site.register(Product)
@@ -13,3 +13,4 @@ admin.site.register(Category)
 admin.site.register(Brand)
 admin.site.register(Tag)
 admin.site.register(Cart)
+admin.site.register(Faq)

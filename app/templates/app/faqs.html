@@ -1,0 +1,45 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<!--Body Content-->
+<div id="page-content">
+  <!--Page Title-->
+  <div class="page section-header text-center">
+    <div class="page-title">
+      <div class="wrapper"><h1 class="page-width">FAQs</h1></div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col">
+        <div id="accordionExample">
+          <!-- Category Title -->
+          <h2 class="title h2">Payment and Returns</h2>
+
+          <!-- Loop Through FAQs -->
+          {% for faq in faqs %}
+          <div class="faq-body">
+            <h4
+              class="panel-title"
+              data-toggle="collapse"
+              data-target="#collapse{{ forloop.counter }}"
+              aria-expanded="false"
+              aria-controls="collapse{{ forloop.counter }}"
+            >
+              {{ faq.question }}
+            </h4>
+            <div
+              id="collapse{{ forloop.counter }}"
+              class="collapse panel-content"
+              data-parent="#accordionExample"
+            >
+              {{ faq.answer }}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

@@ -1,3 +1,4 @@
+from ast import mod
 from os import name
 from phonenumber_field.modelfields import PhoneNumberField
 from django.db import models
@@ -258,3 +259,12 @@ class ContactUs(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+class Faq(models.Model):
+    question = models.CharField(max_length=200)
+    answer= models.TextField()
+
+    def __str__(self):
+        return self.question
+    

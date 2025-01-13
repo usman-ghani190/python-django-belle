@@ -503,7 +503,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 
 from app.forms import CheckoutForm, ContactUsForm, NewsletterSubscriptionForm, PaymentForm, ProductQueryAskForm, RegisterForm, ReviewForm
-from app.models import Brand, Cart, CartItem, Category, Color, ContactUs, NewsletterSubscriber, Product, ProductBigImage, ProductImage, Size, SliderImages, Tag
+from app.models import Brand, Cart, CartItem, Category, Color, ContactUs, Faq, NewsletterSubscriber, Product, ProductBigImage, ProductImage, Size, SliderImages, Tag
 
 # Create your views here.
 def index(request, slug=None):
@@ -1090,3 +1090,8 @@ def contact_confirm(request):
     context= {}
 
     return render(request, 'app/contact_confirm.html', context)
+
+def faqs(request):
+    faqs= Faq.objects.all()
+    context= {'faqs':faqs,}
+    return render(request, 'app/faqs.html', context)
